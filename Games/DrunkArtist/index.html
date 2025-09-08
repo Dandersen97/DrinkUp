@@ -1,0 +1,227 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Drunk Artist</title>
+	<!-- Styles -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
+	<style>
+		body {
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+	</style>
+</head>
+<body>
+	<!-- Fixed navbar -->
+	<div id="nav-placeholder"></div>
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+        <div class="navbar-header">
+			<span class="navbar-brand" style="height: auto;">Drunk Artist</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+        </div>
+      </div>
+    </nav>
+	<div id="ModalMainMenu">
+		
+		
+		<h1>Play As:</h1>
+		<button class="btn btn-block btn-primary" style="font-size: xxx-large;" data-bs-toggle="modal" data-bs-target="#ModalImageArtist">ARTIST</button>
+		<button class="btn btn-block btn-primary" style="font-size: xxx-large;" data-bs-toggle="modal" data-bs-target="#ModalImageDraw">LEADER</button>
+	</div>
+	<!-- Content -->
+	<div class="modal fade" id="ModalImageArtist" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5>Artist</h5>
+			</div>
+			<div class="modal-body">
+				<p>Listen to the instructions performed by the Leader. Draw what they tell you. You won't be able to see your work until it is finished.</p>
+				<svg id="drawSpace" width="95vw" height="95vw" ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)">
+						<rect x="0" y="0" width="95vw" height="95vw" stroke="black" fill="white" stroke-width="5"/>
+						<g id="drawGroup" style="stroke: white; fill: transparent;" stroke-width="5"></g>
+				</svg>
+				<button class="btn btn-primary" id="sig-submitBtn" onclick="Reveal()">REVEAL</button>
+				<input type="checkbox" onchange="ToggleEasy(event)">Easy Mode</input>
+			</div>
+			<div class="modal-footer">
+				
+				<button class="btn btn-secondary" onclick='NewArtist()'>Clear</button>
+			<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="modal fade" id="ModalImageDraw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+			<div class="modal-content">
+				<div class="modal-header">
+				<h5>Leader</h5>
+			</div>
+			<div class="modal-body">
+				<p>Give instructions to the other players on how to draw the image below. Use simple shapes and don't say what it is. For example, do not say "draw a snowman" but instead you can say "draw 3 circles on top of eachother" or "draw a circle, on top of that circle, draw another..."</p>
+				<svg id="ImageDraw" style="width: 95vw; height: 95vw;"></svg>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" onclick='GetImage()'>New Image</button>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+			</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p><b><u>REQUIRES A TOUCH SCREEN DEVICE</u></b></p>
+					<p>One player is the Leader, all others are Artists. The leader is given a random image and must give instructions for the artists to draw. Once finished the Artists guess their image. First person to guess correctly is the leader next. If nobody guesses correctly, the Leader chooses whoever he thinks got the closest to the original image and that player becomes the next Leader.</p>
+					<p>Oh, also, Artists can't see what they're drawing.</p>
+					<div>
+						<h1>As an Artist:</h1>
+						<p>Listen to the leaders instructions and draw as directed. Once done, click submit to see your drawing. You can enable easy mode to see your drawing before it's finished. Be sure to ask questions for unclear instructions. If the leader says "draw a rectangle" ask Where? What size? Verticle or Horizontal?</p>
+					</div>
+					<div>
+						<h1>As the Leader:</h1>
+						<p>You'll be given a random image. Do your best giving simple instructions to have the artists draw this. Don't simply say what to draw, for example, don't say "Draw a snowman". You can say "draw a square in the top center of your screen (the snomans hat) underneath that square draw a small circle. Under that circle draw a medium circle and under that circle draw a large circle"</p>
+					</div>
+					<div>
+						<h1>As a drinking game:</h1>
+						<p><i>Optional</i> drinking rules are as follows. Once the leader is finished the guessing begins</p>
+						<ul>
+							<li>BEFORE revealing your image</li>
+								<ul>
+									<li>If you can guess what it is without revealing your image, the leader takes 5 drinks for making it too easy</li>
+								</ul>
+							<li>Reveal your image WITHOUT sharing screens</li>
+								<ul>
+									<li>if you can guess based on your image, all other players drink</li>
+								</ul>
+							<li>Share screens</li>
+								<ul>
+									<li>Look at the other artists drawings. First to guess correctly and the Leader are safe, all others drink</li>
+								</ul>
+							<li>Nobody Can Guess</li>
+								<ul>
+									<li>If nobody can guess even when sharing screens, everyone drinks. Artists for drawing bad and Leader for giving bad direction.</li>
+								</ul>
+						</ul>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Settings</h5>
+				</div>
+				<div class="modal-body">
+					<p>Currently no modifiable settings. Sorry.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+	<div id="modalLogin-placeholder"></div>
+	<script src="jsonData.js"></script>
+	<script>
+	var isDrawing = false;
+	var svg = document.getElementById("drawSpace");
+	var drawGroup = document.getElementById("drawGroup");
+	var offsetX = svg.getBoundingClientRect().x;
+	var offsetY = svg.getBoundingClientRect().y;
+	var drawLine = "";
+	
+	window.onload = (event) => {
+		svgRect = svg.getBoundingClientRect()
+		
+	}
+
+	
+	function StartDraw(e){
+		console.log('Starting to draw');
+		console.log(e);
+		isDrawing = true;
+		e.preventDefault = true;
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="1"   /><polyline points="' + (e.touches[0].clientX - offsetX) + " " + (e.touches[0].clientY - offsetY);
+	}
+	
+	function StopDraw(e){
+		console.log(drawLine);
+		e.preventDefault = false;
+		drawLine += '" />';
+		drawGroup.innerHTML += drawLine;
+	}
+	
+	svg.addEventListener("touchmove", function (e) {
+		e.preventDefault();
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+		drawLine += " " + (e.touches[0].clientX - offsetX) + " " + (e.touches[0].clientY - offsetY);
+	}, false);
+		
+	function GetImage(){
+		console.log(jsonData.options[Math.floor(Math.random() * jsonData.options.length + 1)].img);
+		var img = document.getElementById("ImageDraw");				
+		img.innerHTML = '<image href="/images/outlines/' + jsonData.options[Math.floor(Math.random() * jsonData.options.length + 1)].img + '" style="width: 100%; height: 100%;"/>';
+	}
+	
+	function ToggleEasy(e){
+		console.log(e);
+		console.log(e.srcElement.checked);
+		if(e.srcElement.checked){
+			drawGroup.style.stroke="blue";
+		}
+		else{
+			drawGroup.style.stroke="white";
+		}
+	}
+	
+	function Reveal(){
+		drawGroup.style.stroke="green";
+		//svg.ontouchstart = "";
+		//svg.ontouchend = "";
+	}
+	
+	function NewArtist(){
+		svg.innerHTML = '<rect x="0" y="0" width="95vw" height="95vw" stroke="black" fill="white" stroke-width="5"/>' +
+						'<g id="drawGroup" style="stroke: white; fill: transparent;" stroke-width="5"></g>';
+		//svg.ontouchstart = StartDraw(event);
+		//svg.ontouchend = StopDraw(event);
+		drawGroup = document.getElementById("drawGroup");
+	}
+	</script>
+</body>
+</html>

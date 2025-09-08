@@ -1,0 +1,89 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.0/pixi.min.js"></script>
+  </head>
+  <body>
+    <h1>PIXI Test 3</h1>
+    <button onclick="ToggleAnim()">Toggle</button>
+    <script type="module">
+        // Create the application helper and add its render target to the page
+        const app = new PIXI.Application();
+        await app.init({ width: 640, height: 360, backgroundColor: 0xAAAAAA })
+        document.body.appendChild(app.canvas);
+        
+        console.log("asdf");
+        
+
+        //const t = await PIXI.Assets.load('/testpages/pixi/test2/reaperman-0.png');
+        //const t2 = await PIXI.Assets.load('/testpages/pixi/test2/reaperman-0.json'); //works
+        //const t2 = await PIXI.Assets.load('/testpages/pixi/test2-0.json'); //works
+
+        //PIXI.Assets.add({ alias: 'tRun', src: '/testpages/pixi/test3-Running.json'});
+        //PIXI.Assets.add({ alias: 'tDie', src: '/testpages/pixi/test3-Dying.json'});
+        console.log("added");
+        //const t2 = await PIXI.Assets.load('/testpages/pixi/test3-Dying.json');
+        const t2 = await PIXI.Assets.load(['/testpages/pixi/test4-0.json', '/testpages/pixi/test5-0.json']);
+        console.log(t2);
+        const anim = t2["/testpages/pixi/test5-0.json"].data.animations;
+        const anim2 = t2["/testpages/pixi/test4-0.json"].data.animations;
+        console.log(anim);
+        
+        var character = PIXI.AnimatedSprite.fromFrames(anim["0_Reaper_Man_Running"]);
+        //const b = new PIXI.Sprite(t);
+        //app.stage.addChild(b);
+
+        character.width = 200;
+        character.height = 200;
+        character.animationSpeed = 1 / 4;                     // 6 fps
+        character.position.set(50, 0); // almost bottom-left corner of the canvas
+        character.play();
+        console.log(character);
+        
+    // add it to the stage and render!
+    app.stage.addChild(character);
+
+        
+    /*  //Back and forth motion
+        let elapsed = 0.0;
+        app.ticker.add((ticker) =>{
+            elapsed += ticker.deltaTime;
+            character.x = 100.0 + Math.cos(elapsed/50.0) * 100;
+            character.y = 100.0;
+        });
+*/
+
+        character.eventMode = 'static';
+        character.cursor = 'pointer';
+        character.on('pointertap', () =>
+        {
+            console.log("Character Click")
+            let c2 = PIXI.AnimatedSprite.fromFrames(anim2["0_Reaper_Man_Dying"]);
+            c2.width = character.width;
+            c2.height = character.height;
+            c2.animationSpeed = character.animationSpeed;                     // 6 fps
+            c2.position.set(character.x, character.y); // almost bottom-left corner of the canvas
+            c2.loop = false;
+            c2.play();
+            app.stage.addChild(c2);
+            character.destroy();
+            
+            // Dynamically swap the texture
+            //character.totalFrames = t2.data.animations['0_Reaper_Man_Dying'].length;
+            //character.textures = PIXI.Assets.cache.get("/testpages/pixi/test3-Dying.json").textures; //isAlien1 ? anim['0_Reaper_Man_Dying'] : anim['0_Reaper_Man_Running'];
+            
+        });
+
+        function CharacterDie(c){
+            let c2 = PIXI.AnimatedSprite.fromFrames(anim2["0_Reaper_Man_Dying"]);
+            c2.width = c.width;
+            c2.height = c.height;
+            c2.animationSpeed = c.animationSpeed;                     // 6 fps
+            c2.position.set(c.x, c.y); // almost bottom-left corner of the canvas
+            c2.loop = false;
+            c2.play();
+            app.stage.addChild(c2);
+            c.destroy();
+        }
+      </script>
+  </body>
+</html>

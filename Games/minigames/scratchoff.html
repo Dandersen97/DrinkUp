@@ -1,0 +1,232 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Scratch Off</title>
+	<!-- Styles -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
+	<style>
+		body {
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+
+	</style>
+	
+</head>
+<body>
+	<div id="nav-placeholder"></div>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Scratch Off</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+        </div>
+      </div>
+    </nav>
+	<!-- Content -->
+	<div class="container">
+		<div id="GameBoard">
+		</div>
+	</div>
+
+
+
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p><b><u>REQUIRES TOUCH SCREEN DEVICE</u></b></p>
+					<p>Scratch out a single tile</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+    <script>
+        var target;
+        var attempts;
+        let gameState = "pending";
+
+	window.onload = (event) => {
+		NewCard();
+	}
+
+	
+	function StartDraw(e){
+		e.preventDefault = true;
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		var drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+
+        let otherSvg = document.getElementsByClassName("scratcher");
+        for(let i = 0; i < otherSvg.length; i++){
+            if(svg !== otherSvg[i]){
+                ScratcherRemoveListeners(otherSvg[i])
+            }
+        }
+	}
+	
+	function StopDraw(e){
+		e.preventDefault = false;
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		drawLine = "";
+	}
+	
+	function Drawing(e){
+		e.preventDefault();
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+		
+		
+		if(svg.children[0].children[0].children.length > 20){
+			drawGroup.innerHTML = '<rect width="100%" height="100%" />'
+            svg.classList.remove("scratcher")
+            svg.classList.add("scratched-100");
+            FinishScratch(svg);
+            UpdateScratcherListeners();
+		}
+	}
+	function ToggleModal(mod){
+		var togMod = document.getElementById(mod);
+		togMod.classList.toggle("modal-vis");
+	}
+		
+	function NewCard(){
+        const urlParams = new URLSearchParams(window.location.search)
+        target = (urlParams.get('target'))? urlParams.get('target') : "safe";
+        attempts = (urlParams.get('attempts'))? Number(urlParams.get('attempts')) : 1;
+		//var options = ['beer', 'beer', 'safe'];
+
+        let options =  (urlParams.get('cardArr'))? urlParams.get('cardArr').split(",") : ['red_X', 'red_X', 'safe'];
+		var repeatNum = [];
+		
+		document.getElementById("GameBoard").innerHTML = "";
+		for (let i=1; i <= options.length; i++){
+			var randNum = RandomNum(0, options.length);
+			var stopRepeat = false;
+			
+			while(!stopRepeat){
+				if(!repeatNum.includes(randNum)){
+					document.getElementById("GameBoard").innerHTML += '<div class="col-12 text-center"><svg class="scratcher-default scratcher ' + options[randNum] + '" width="30vh" height="30vh">' +
+																		'<defs><clipPath id="drawGroup' + i + '"></clipPath></defs><rect x="0" y="0" width="30vh" height="30vh" stroke="black" fill="gray" stroke-width="5" opacity="1" /><image href="/images/icons/' + options[randNum] + '.svg" height="100%" width="100%" clip-path="url(#drawGroup' + i + ')" />' +
+																		'</svg></div>';
+
+					
+					//document.getElementById("svg" + i).innerHTML = '<defs><clipPath id="drawGroup' + i + '"></clipPath></defs><rect x="0" y="0" width="22vw" height="22vw" stroke="black" fill="gray" stroke-width="5" opacity="1" /><image href="' + options[randNum] + '.svg" height="100%" width="100%" clip-path="url(#drawGroup' + i + ')" />';
+					
+					
+					repeatNum[i] = randNum;
+					stopRepeat = true;
+				}
+				else {
+					var randNum = RandomNum(0, options.length);
+					stopRepeat = false;
+				}
+			}	
+		}
+
+        let scratchers = document.getElementsByClassName("scratcher")
+        for(let i = 0; i < scratchers.length; i++){
+            ScratcherAddListeners(scratchers[i]);
+        }
+
+
+		
+	}
+	function RandomNum(min, max) { // min and max included 
+			return Math.floor(Math.random() * (max - min) + min)
+		};
+		
+        function ScratcherAddListeners(scratcher){
+            scratcher.addEventListener("touchstart", StartDraw);
+            scratcher.addEventListener("touchend", StopDraw);
+            scratcher.addEventListener("touchmove", Drawing);
+        }
+
+        function ScratcherRemoveListeners(scratcher){
+            scratcher.removeEventListener("touchstart", StartDraw);
+            scratcher.removeEventListener("touchend", StopDraw);
+            scratcher.removeEventListener("touchmove", Drawing);
+        }
+
+        function UpdateScratcherListeners(){
+            let scratchers = document.getElementsByClassName("scratcher")
+            for(let i = 0; i < scratchers.length; i++){
+                ScratcherAddListeners(scratchers[i]);
+            }
+
+            let scratched = document.getElementsByClassName("scratched-100")
+            for(let i = 0; i < scratched.length; i++){
+                ScratcherRemoveListeners(scratched[i]);
+            }
+        }
+	
+        
+    
+        function FinishScratch(svg){
+            let remainingAttempts = (attempts ) - document.getElementsByClassName('scratched-100').length;
+            if(gameState == "pending" && remainingAttempts >= 0){
+                CheckWin();
+                if(gameState == "pending" && remainingAttempts == 0){
+                    remainingAttempts = -100;
+                }
+            }
+
+            if(gameState == "pending" && remainingAttempts < 0){
+                gameState = "lose";
+            }
+
+
+            if(gameState !== 'pending'){
+                console.log("Final state: " + gameState)
+            }
+
+
+
+            
+            if (window.top != window.self && gameState !== 'pending') {
+                //send game result
+                console.log("Send message to top window");
+                window.top.postMessage({"type":"minigame","result":gameState}, '*');
+            
+            } 
+        }
+        function CheckWin(){
+            let scratchedSvg = document.getElementsByClassName('scratched-100')
+            for(let i = 0; i < scratchedSvg.length; i++){
+                        if (scratchedSvg[i].classList.contains(target)){
+                            gameState = "win";
+                            
+                            break;
+                        };
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Wheel Of Misfortune</title>
+		<!--<link href="../../css/bootstrap.min.3.4.1.css" rel="stylesheet">-->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    </head>
+<body>
+<style>
+:root {
+	--spinSec: 0ms;
+	--spinMax: 0deg;
+}
+.startSpin{
+	animation: rotation var(--spinSec) 1 forwards;
+	animation-timing-function: cubic-bezier(0, 0.75, 0.75, 1.0);
+	transform-origin: 100% 50%;
+	}
+@keyframes rotation {
+	from {transform: rotate(0deg);}
+	to   {transform: rotate(var(--spinMax));}
+	}
+.postSpin{
+	transform: rotate(var(--spinMax));
+	transform-origin: 100% 50%;
+}
+
+	.setting-option{
+		background-color: rgba(145,145,145, 0.2);
+	}
+	
+	.setting-option p{
+		display: inline-block;
+		margin: 10px 10px;
+	}
+	
+	.setting-option button{
+		display: inline-block;
+	}
+	
+
+</style>
+	<!-- Fixed navbar -->
+	<div id="nav-placeholder"></div>
+	
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Wheel of Misfortune</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+        </div>
+      </div>
+    </nav>
+		
+	<div>
+        <canvas id="cvs" width="600" height="600" style="width: 100%"></canvas>
+	</div>
+
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p>Tap the wheel to start spinning, then do whatever the spinner stops on.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Settings</h5>
+				</div>
+				<div class="modal-body">
+					<p>Add or Remove options for the wheel to land on. Make things more or less common to happen.</p>
+					<div id="activeSegments">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="MisfortuneModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+			<div class="modal-content">
+
+				<div class="modal-content" style="overflow-y: auto;">
+					<img id="MisfortuneModalImg"  style="width: 100%;" />
+					<span></span>
+					<h1 id="MisfortuneModalTitle">Test 1</h1>
+					<button data-bs-dismiss="modal"  class="btn btn-lg btn-primary">Close</button>
+					<h3 id="MisfortuneModalDesc"></h3>
+						<svg width="95vw" height="95vw" viewBox="250 0 250 500">
+							<g stroke-width="50%" fill="transparent" id="MisfortuneModalMiniWheel" class="startSpin"></g>
+							<line x1="450" y1="250" x2="500" y2="250" stroke-width="10" stroke="black" />
+						</svg>
+
+				
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+	<div id="modalLogin-placeholder"></div>
+<script>
+    class SpinObj{
+			constructor(id, desc, img, color, miniwheel){
+				this.id = id;
+                this.desc = desc;
+                this.img= new Image();
+	            this.img.src= img;
+				this.color = color            
+                this.miniwheel = miniwheel;
+                this.weight = 10;
+			}
+		}
+
+    const spinData = {
+	"Options":[
+		{
+			"ID":"Snake Eyes",
+			"Desc":"First person to make eye contact with you drinks.",
+			"Icon":"/images/icons/snake.svg",
+			"Color":"#63b598",
+            "Weight":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"For the love of God shut up",
+			"Desc":"You cannot talk until your next turn. You must drink for every word you said until then",
+			"Icon":"/images/icons/zipper-mouth.svg",
+			"Color":"#97dce6",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Thumb Master",
+			"Desc":"Whenever you put your thumb on a table, the last person to also put their thumb down drinks. (this can be a permanent effect until the next thumb master is spun or a single occurance right now)",
+			"Icon":"/images/icons/thumbs-up.svg",
+			"Color":"#01ac53",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Girls Drink",
+			"Desc":"All girls drink",
+			"Icon":"/images/icons/taco.svg",
+			"Color":"#d4ec84",
+			"MiniWheel":[1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 5]
+		},
+		{
+			"ID":"Keep Quite",
+			"Desc":"Do not read this aloud. First player to speak drinks.",
+			"Icon":"/images/icons/shush-face.svg",
+			"Color":"#a2c9ef",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"The Judge",
+			"Desc":"You are now The Judge. You decide who drinks in ties and arguments. (this is a permanent effect until the next judge is spun)",
+			"Icon":"/images/icons/judge.svg",
+			"Color":"#aeaeae",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Guys Drink",
+			"Desc":"All Guys Drink",
+			"Icon":"/images/icons/eggplant.svg",
+			"Color":"#ceb4f3",
+			"MiniWheel":[1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 5]
+		},
+		{
+			"ID":"Drink",
+			"Desc":"Have a drink",
+			"Icon":"/images/icons/beer-mug.svg",
+			"Color":"#9fd68c",
+			"MiniWheel":[1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4, 5]
+		},
+		{
+			"ID":"Social",
+			"Desc":"Cheers together and everyone drinks",
+			"Icon":"/images/icons/beer-mugs.svg",
+			"Color":"#8cd6d0",
+			"MiniWheel":[1, 1, 1, 1, 2, 2]
+		},
+		{
+			"ID":"This or That",
+			"Desc":"Present 2 options for people to vote upon. All vote together and minority drinks",
+			"Icon":"/images/icons/opposite.svg",
+			"Color":"#ef9292",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Mini Wheel",
+			"Desc":"Drink the Mini Wheel value",
+			"Icon":"/images/icons/multi-color-circle.svg",
+			"Color":"#05d371",
+			"MiniWheel":[1,2,3,4,5,4,3,2]
+		},
+		{
+			"ID":"Repeat",
+			"Desc":"Do whatever the player just before you did",
+			"Icon":"/images/icons/repeat2.svg",
+			"Color":"#9fb0f3",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Go Again",
+			"Desc":"Drink and go again.",
+			"Icon":"/images/icons/repeat-again.svg",
+			"Color":"#f3ca9f",
+			"MiniWheel":[1, 1, 1, 1, 2, 2, 2, 3]
+		},
+		{
+			"ID":"Waterfall",
+			"Desc":"Start off a waterfall",
+			"Icon":"/images/icons/waterfall.svg",
+			"Color":"#9fedf3",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Hello, My Name Is",
+			"Desc":"Take 1 drink for each syllable in your first name (no nicknames)",
+			"Icon":"/images/icons/hello-my-name-is.svg",
+			"Color":"#f58686",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Shot",
+			"Desc":"Take a shot",
+			"Icon":"/images/icons/syringe.svg",
+			"Color":"#c4c4c4",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Rock Paper Scissors",
+			"Desc":"Play rock paper scissors with another player, loser drinks. (1, 2, 3, Shoot)",
+			"Icon":"/images/icons/rock-paper-scissors.svg",
+			"Color":"#86e98f",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Point!",
+			"Desc":"QUICK! Everyone point at another player. Everyone drinks for each person pointing at them",
+			"Icon":"/images/icons/pointing-hands.svg",
+			"Color":"#99d4cf",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Lyric Time",
+			"Desc":"Choose any word. All players must sing a lyric that contains the word (no repeats). However, if nobody can come up with a song, then you must sing a song with that word or risk taking a drink for each other player.",
+			"Icon":"/images/icons/musical-notes.svg",
+			"Color":"#d4a3e8",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Never Have I Ever",
+			"Desc":"Start a single turn of Never Have I Ever",
+			"Icon":"/images/icons/prohibited.svg",
+			"Color":"#f58686",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Theres an App For That",
+			"Desc":"Pick a mobile phone app. All players who have that app drink. (no bullshit apps like calculator, notes, calendar, clock, etc)",
+			"Icon":"/images/icons/app.svg",
+			"Color":"#d0ea9c",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Potty Time",
+			"Desc":"The player who last used the restroom drinks",
+			"Icon":"/images/icons/toilet.svg",
+			"Color":"#f8f7e5",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Roll +1",
+			"Desc":"Permanently increase all your drinks by 1 (drink/give 1 is now drink/give 2, 2 is 3, etc) Reset back to 0 if you've already increased your drink count.",
+			"Icon":"/images/icons/dice.svg",
+			"Color":"#ffb0b0",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Too Drunk To Handle",
+			"Desc":"Vote on what player is the most drunk. Give them a glass of water they must finish before drinking alchohol again. This water can count as their drink on spins.",
+			"Icon":"/images/icons/spiral-eyes.svg",
+			"Color":"#bcb0ff",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Burn Up",
+			"Desc":"All smokers drink. Doesn't matter what is smoked, just smokers drink",
+			"Icon":"/images/icons/cigarette.svg",
+			"Color":"#f5ca9d",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Finisher",
+			"Desc":"First player to finish their drink gets immunity for the next 5 spins. (Immunity means they dont have to drink when theyre supposed to and not affected by things like keep quiet, snake eyes, the judge, etc.)",
+			"Icon":"/images/icons/chequered-flag.svg",
+			"Color":"#c4c4c4",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Baby",
+			"Desc":"Youngest player drinks. OR, if the youngest player spun this, drink 3 and grow the fuck up (or find a new younger player)",
+			"Icon":"/images/icons/baby.svg",
+			"Color":"#fcc0f1",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Couples Retreat",
+			"Desc":"All couples cross arms and drink together",
+			"Icon":"/images/icons/couple.svg",
+			"Color":"#9ee6d1",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"All The Single Ladies (and guys)",
+			"Desc":"All single players cheers to being alone and drink together",
+			"Icon":"/images/icons/single.svg",
+			"Color":"#deb7fc",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Hair Cut",
+			"Desc":"Choose shorter or longer. All players with hair shorter/longer than yours drink",
+			"Icon":"/images/icons/haircut.svg",
+			"Color":"#ea86b4",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Self Sacrifice",
+			"Desc":"Drink X many times to your liking. Then give X many drinks for each drink you just drank.",
+			"Icon":"/images/icons/bloodHand.svg",
+			"Color":"#f58686",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Full House",
+			"Desc":"Drink for each person living at your home (yourself, spouse, kids, roomates, siblings, etc)",
+			"Icon":"/images/icons/house.svg",
+			"Color":"#7ddb78",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Fri-Yay!",
+			"Desc":"It's Friday! Drink 3! (if it's not Friday better just drink 1, you've probably got work tomorrow)",
+			"Icon":"/images/icons/party.svg",
+			"Color":"#e5b0ff",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Fur Family",
+			"Desc":"Drink for each named pet you have",
+			"Icon":"/images/icons/paw-prints.svg",
+			"Color":"#b0bcff",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Return To Sender",
+			"Desc":"All players, if you drank the last turn, give a drink",
+			"Icon":"/images/icons/return-to-sender.svg",
+			"Color":"#ffe58f",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Where You Going?",
+			"Desc":"If you have shoes on take a drink",
+			"Icon":"/images/icons/shoe.svg",
+			"Color":"#6473fa",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"What Are You Wearing?",
+			"Desc":"Everyone else close their eyes. Choose an article of clothing you're wearing and everyone guesses the color. Wrong guessers drink",
+			"Icon":"/images/icons/question.svg",
+			"Color":"#7692ff",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Categories",
+			"Desc":"Pick the category and start a single round of Categories. First loser drinks.",
+			"Icon":"/images/icons/categories.svg",
+			"Color":"#76ffe6",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Netflix and Chill",
+			"Desc":"Give 2 drinks for each streaming service you pay for. ALSO, Take 1 drink for each streaming service you have that someone else is paying for. (including but not limited to Netflix, Hulu, Disney+, Peacock, HBO Max, Amazon, Apple TV, Youtube TV, ESPN, Paramount+)",
+			"Icon":"/images/icons/tv.svg",
+			"Color":"#fcff8f",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"A Little Bit of Variety",
+			"Desc":"Take 1 drink for each different type of drink of every player by brand name",
+			"Icon":"/images/icons/drinks.svg",
+			"Color":"#ffb576",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Put Your F-ing Hands Up",
+			"Desc":"All players, last to put both their hand up takes 2 drinks. One for being last and One for disappointing Bo Burnham",
+			"Icon":"/images/icons/hands-up.svg",
+			"Color":"#fbff8c",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Dick in a Box",
+			"Desc":"Share the ultimate gift and give a drink (just give a drink. Don't actually give another player your dick in a box)",
+			"Icon":"/images/icons/giftInABox.svg",
+			"Color":"#d3ff63",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Love Making",
+			"Desc":"All players who have had sex drink... And drink again if that was before marriage",
+			"Icon":"/images/icons/bedHearts.svg",
+			"Color":"#ffb2fd",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Edumacated",
+			"Desc":"Drink based on your highest degree tier. GED: 1, Associates: 2, Bachelors: 3, Masters: 4, Doctorate: 5. (That'll teach you for learning)",
+			"Icon":"/images/icons/girl-graduation.svg",
+			"Color":"#a8c5ef",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Movie Night",
+			"Desc":"Say aloud a movie you've seen before. All other players drink if they have <u>not</u> seen this movie.",
+			"Icon":"/images/icons/3d-movie.svg",
+			"Color":"#f58686",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Roast",
+			"Desc":"All other players take a turn roasting the spinner. Then clink and drink together, its just a game.",
+			"Icon":"/images/icons/roast-chicken.svg",
+			"Color":"#d59631",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"I like you, have a cupcake",
+			"Desc":"Give another player a compliment (and a drink)",
+			"Icon":"/images/icons/cupcake.svg",
+			"Color":"#c0f2fb",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"SHOTgun Wedding",
+			"Desc":"Choose a partner. Then both of you cross arms and take a shot together. (Or you can both shotgun a drink instead)",
+			"Icon":"/images/icons/wedding-cake.svg",
+			"Color":"#f3a3e8",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Mr Worldwide",
+			"Desc":"Give a drink for each foreign country you have visited (Layovers don't count)",
+			"Icon":"/images/icons/earth-face.svg",
+			"Color":"#93ccff",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Speak Easy",
+			"Desc":"Take a drink for each of your tongues (languages you speak)",
+			"Icon":"/images/icons/talking.svg",
+			"Color":"#fbff8c",
+			"MiniWheel":[]
+		},		
+		{
+			"ID":"I am your Father (or Mother)",
+			"Desc":"Give a drink for each child you have",
+			"Icon":"/images/icons/vader.svg",
+			"Color":"#a5a5a5",
+			"MiniWheel":[]
+		},
+		{
+			"ID":"ABC",
+			"Desc":"Choose before or after. All players with first names alphabetically before/after you drink",
+			"Icon":"/images/icons/abc.svg",
+			"Color":"#cdf09c",
+			"MiniWheel":[]
+		}
+	]
+}
+
+const canvas = document.getElementById("cvs");
+const ctx = canvas.getContext("2d");
+    let spinArr = [];						
+	for(i=0; i < spinData.Options.length; i++){
+				let tmpSpin = new SpinObj(spinData.Options[i].ID 
+									,spinData.Options[i].Desc
+									,spinData.Options[i].Icon
+									,spinData.Options[i].Color
+									,spinData.Options[i].MiniWheel
+								);
+                                tmpSpin.weight = 10;//Math.ceil(Math.random() * 20);
+                                spinArr.push(tmpSpin);
+			}
+
+    console.log(spinArr);
+    let weightSum = spinArr.reduce((a, {weight}) => a + weight, 0);
+    console.log(weightSum);
+
+
+	function toggleSpin(){
+		var spinner = document.getElementById("tire");
+		spinner.classList.add("startSpin");
+		spinner.classList.remove("postSpin");
+		var spinPower = Math.trunc((Math.random() * 720) + 720);
+		var spinSec = spinPower * 5;
+
+		var r = document.querySelector(':root');
+		r.style.setProperty('--spinMax', (spinPower * -1) + 'deg');
+		r.style.setProperty('--spinSec', spinSec + 'ms');
+		
+		//spinner.style= 'transform: rotate(' + spinPower + 'deg); transform-origin: 50% 50%;';
+	}
+
+	
+	function UpdateWheel(rotation){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let center = canvas.width / 2;
+        ctx.translate(0, center);	
+        let radiusLength = 300;
+        ctx.rotate(rotation * Math.PI / 180);
+        var degreesUsed = 0;
+spinArr[0].weight = 10;
+spinArr[1].weight = 10;
+
+        for(let i = 0; i < 2/*spinArr.length*/; i++){
+            
+            var degreesConsumed = (360 * ((spinArr[i].weight / weightSum)));
+            var degreeStart = degreesUsed;
+            ctx.save();
+            
+            
+            (spinArr[i].img.width == 150) ? console.log(spinArr[i].id + ": " + spinArr[i].img.width) : "" ;
+            /*
+            ctx.drawImage(spinArr[i].img, 0, 0, spinArr[i].img.width, spinArr[i].img.height
+                        , (Math.cos(degreesUsed * Math.PI / 180) * radiusLength) //X
+                        , (Math.sin(degreesUsed * Math.PI / 180) * radiusLength) //Y
+                        , 30 //Width
+                        , 30 //Height
+                        );
+            */
+           // ctx.fillStyle = '#000';
+            
+            
+            ctx.fillStyle= spinArr[i].color;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, radiusLength, (degreesUsed * Math.PI / 180), ((degreesUsed + degreesConsumed) * Math.PI / 180));
+            ctx.closePath();
+            ctx.stroke();
+            ctx.fill();
+
+
+            //let iconX = (Math.cos(degreesUsed * Math.PI / 180) * (radiusLength * .7));
+           // let iconY = (Math.sin(degreesUsed * Math.PI / 180) * (radiusLength * .7));
+
+          //  let iconX2 = iconX + (Math.cos(degreesConsumed * Math.PI / 180) * (radiusLength * .3));
+           // let iconY2 = iconY + (Math.sin(degreesUsed * Math.PI / 180) * (radiusLength * .3));
+
+
+            let a = Math.cos(degreesConsumed * Math.PI / 180) * radiusLength;
+            let b = Math.sin(degreesConsumed * Math.PI / 180) * radiusLength;
+            let c = (Math.sin((degreesConsumed /2) * Math.PI / 180) * radiusLength) * 2;
+            let e = Math.cos((degreesConsumed /2) * Math.PI / 180) * radiusLength;
+            let d = (c * e) / (c + e);
+            let f = d / (Math.cos((degreesConsumed /2) * Math.PI / 180));
+            let g = Math.sqrt(Math.pow(f, 2) - Math.pow(d, 2));
+            let x = radiusLength - ( (Math.cos(((180 - degreesConsumed) / 2) * Math.PI / 180) * g));
+            let y = Math.sin(((180 - degreesConsumed) / 2) * Math.PI / 180) * g;
+
+            console.log(
+                    " a: " + a +
+                    "\r\n b: " + b +
+                    "\r\n c: " + c +
+                    "\r\n d: " + d +
+                    "\r\n e: " + e +
+                    "\r\n f: " + f +
+                    "\r\n g: " + g +
+                    "\r\n x: " + x +
+                    "\r\n y: " + y +
+                    "\r\n Deg: " + degreesConsumed +
+                    "\r\n L: " + radiusLength 
+            )
+
+            let rotate = ((180 - degreesConsumed) / 2) + degreesUsed;
+            
+            console.log(x + ", " + y);
+            
+            //console.log("rotate " + rotate);
+
+            ctx.translate(x, y);
+            //ctx.rotate((45 * Math.PI / 180));
+            ctx.rect(0 //X
+                    ,0 //Y
+                    ,d, d
+            )
+            ctx.stroke();
+            ctx.translate(-x, -y);
+
+            degreesUsed += degreesConsumed;
+            ctx.restore();
+	    }
+        ctx.translate(0, -center);
+}
+	
+	function Spin(){
+        UpdateWheel(10);
+        console.log("spin");
+		var spinPower = Math.trunc((Math.random() * 720) + 720);
+		var spinSec = spinPower * 5;
+		//spinner.style= 'transform: rotate(' + spinPower + 'deg); transform-origin: 50% 50%;';
+	}
+	
+	function GetColor(ev){
+		var spinner = document.getElementById("tire");
+		spinner.classList.add("postSpin");
+		spinner.classList.remove("startSpin");
+		var spinVal = parseInt(getComputedStyle(spinner).getPropertyValue('--spinMax')) * -1;
+		var orgCount = spinner.getElementsByTagName("path").length;
+		var diff = 360 / orgCount;	
+		var spinRemainer = (spinVal / 360) - Math.floor((spinVal / 360));
+
+		//navigator.vibrate(100);
+		document.getElementById("MisfortuneModalTitle").innerHTML = ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].ID;
+		document.getElementById("MisfortuneModalDesc").innerHTML = ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].Desc;
+		document.getElementById("MisfortuneModalImg").src = '/images/Icons//' + ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].Icon + '.svg';
+		
+		
+		//console.log(ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel);
+		//console.log(ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel.length);
+		
+		
+		
+		
+		
+		//miniwheel
+		var count = ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel.length;
+		if(count > 0) {
+		var svg = document.getElementById("MisfortuneModalMiniWheel").parentElement;
+			svg.style.display = "block";
+		
+		
+		
+		var startPoint = '0 0'; //translate(50,50)
+		
+		var radius = 250;
+		var fPointX = radius;
+		var fPointY = 0;
+		var fPoint = fPointX + ' ' + fPointY; //very first point always radius,0
+
+		
+		var qPointX = Math.ceil(radius * Math.sin(360/count * Math.PI / 180.0));
+		var qPointY = Math.ceil(radius * Math.cos(360/count * Math.PI / 180.0));
+		var qPointX2 = Math.ceil((radius * .8) * Math.sin(360/count * Math.PI / 180.0));
+		var qPointY2 = Math.ceil((radius * .8) * Math.cos(360/count * Math.PI / 180.0));
+		var qPoint = qPointY + ' ' + qPointX;
+		
+		var qArcX = qPointX;
+		var qArcY = fPointY;
+		var qArc = qArcX + ' ' + qArcY;
+
+		var segWidth = Math.sqrt(Math.pow(qPointY2 - (radius * .8) ,2) + Math.pow(qPointX2 - fPointY ,2))
+		document.getElementById("MisfortuneModalMiniWheel").innerHTML = "";
+		for(var i = 0; i < count; i++){
+			var rotate = (360/count) * i;
+			
+			var imgSize = segWidth / 2;
+			var imgX = (qPointY - ((qPointY2 - (radius * .8)) / 2)) - (imgSize / 2);
+			var imgY = (qPointX - ((qPointX2 - fPointY) / 2)) - (imgSize / 2);
+			//svg.innerHTML += '<path d="M ' + startPoint + ' L ' + fPoint + ' Q ' + qArc + ' ' + qPoint + ' L ' + startPoint + '" fill="blue" stroke="blue" stroke-width="1"/>'; //curved arc
+			document.getElementById("MisfortuneModalMiniWheel").innerHTML += '<g transform="translate(' + radius + ',' + radius + ') rotate(' + rotate + ')">' + 
+							'<path d="M ' + startPoint + ' L ' + fPoint + ' L ' + qPoint + ' L ' + startPoint + '" fill="' + "#86e98f" + '" stroke="black" stroke-width="1" />' +							
+							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="/images/numbers/' + ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel[i] + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(108deg);"></image>' +
+							//'<circle cx="' + imgX + '" cy="' + imgY + '" r="5" fill="red"/>' +
+							'</g>'; //straight line
+			
+
+		}
+		}
+		else {
+			var svg = document.getElementById("MisfortuneModalMiniWheel").parentElement;
+			svg.style.display = "none";
+		}
+
+		$("#MisfortuneModal").modal('show');
+		//window.navigator.vibrate(100);
+
+	}
+	
+	function ToggleModal(mod){
+		$(mod).modal('toggle');
+		//var togMod = document.getElementById(mod);
+		//togMod.classList.toggle("modal-vis");
+	
+	}
+	
+	function UpdateAllOptions(){
+		//Get Active Options
+		var listbox = document.getElementById("activeSegments");
+		listbox.innerHTML = "";
+		jsonAllOptions.Options.sort(function (a, b) {return a.ID < b.ID ? -1 : a.ID > b.ID ? 1 : 0;});
+		for(var i = 0; i < jsonAllOptions.Options.length; i++){
+			var count = ActiveOptions.Options.filter((obj) => obj.ID === jsonAllOptions.Options[i].ID).length;
+			listbox.innerHTML += '<div class="setting-option">' + 						
+									'<p>' + jsonAllOptions.Options[i].ID + '</p>' +
+									'<button onclick=\'RemoveOption("' + jsonAllOptions.Options[i].ID +  '")\'>-</button>' +
+									'<p>' + count + '</p>' +
+									'<button onclick=\'AddOption("' + jsonAllOptions.Options[i].ID +  '")\'>+</button>' +
+								 '</div>';
+		}
+		
+
+	
+	}
+	
+	function AddOption(option){
+		var idx = ActiveOptions.Options.find(obj => obj.ID === option);
+
+		ActiveOptions.Options.push(idx);
+		UpdateSlice(1);		
+	}
+	
+	function RemoveOption(option){
+		var idx = ActiveOptions.Options.findIndex(obj => obj.ID === option);
+	
+		ActiveOptions.Options.splice(idx, 1);
+		UpdateSlice(-1);
+	}
+	
+window.onload = function() {
+    UpdateWheel(0);
+	canvas.addEventListener("click", Spin);
+	}
+	
+</script>
+    </body>
+</html>

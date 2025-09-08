@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	
+	<style>
+		.foo{
+			display: none;
+		}
+		.iconify{
+			display:in-line;
+		}
+
+		.cls-1{fill:#2abbbf;stroke:#010101;stroke-miterlimit:10;}
+			.cls-2{fill:#0088ff;stroke:#010101;stroke-miterlimit:10;}
+			.state1{display: none;}
+
+        .sliderGroup{
+            border: 1px solid black;
+        }
+        .cls-3{filter:url(#roughpaper); opacity: 1}
+
+		
+	</style>
+
+	</head>	
+
+
+
+
+
+
+<body id="body">
+	<filter id="roughpaper" filterUnits="userSpaceOnUse">
+
+		<feTurbulence type="fractalNoise" baseFrequency='0.04' result='noise' numOctaves="5" />
+
+		<feDiffuseLighting in='noise' lighting-color='#fff' surfaceScale='2'>
+			<feDistantLight azimuth='45' elevation='60' />
+		</feDiffuseLighting>
+		 <feComposite operator="in" in="ripples" in2="SourceGraphic"/>
+	</filter>
+	<!-- MAIN BODY DIV -->
+	<canvas id="myCanvas" width='400' height='200' onclick="Temp()" style='border: 1px solid black; ' class="cls-3"></canvas>
+    <div class="sliderGroup">
+        <input type="range" min="0" max="1" value="0" step="1" id="slideArmSelect"><br />
+        <input type="range" min="0" max="1" value="0" step="0.01" id="slideShoulderAnchorX"><br />
+        <input type="range" min="0" max="1" value="0" step="0.01" id="slideShoulderAnchorY"><br />
+        <input type="range" min="0" max="1" value="0" step="0.01" id="slidehandAnchorX"><br />
+        <input type="range" min="0" max="1" value="0" step="0.01" id="slidehandAnchorY"><br />
+        <input type="range" min="0" max="360" value="0" step="1" id="slidehandAngle"><br />
+    </div>
+
+    <div class="sliderGroup">
+        <input type="range" min="0" max="2" value="0" step="1" id="slideWeaponSelect"><br />
+        <input type="range" min="0" max="1" value="0" step="0.01" id="slideWeaponhandAnchorX"><br />
+        <input type="range" min="0" max="1" value="0" step="0.01" id="slideWeaponhandAnchorY"><br />
+        <input type="range" min="0" max="360" value="0" step="1" id="slideWeaponhandAngle"><br />
+    </div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+<script>
+const screenWidth = screen.width;
+const canvasWidth = $('#myCanvas').width();
+const canvasHeight = $('#myCanvas').height();
+const canvasCenterX = canvasWidth / 2;
+const canvasCenterY = canvasHeight / 2;
+const baseTime = 20;
+const gameTick = 10;
+
+$("#slideArmSelect").on("input", function(){
+    player1.lArmData =  SpriteData.Arm[$("#slideArmSelect").val()];
+    UpdateSliders();
+});
+$("#slideShoulderAnchorX").on("input", function(){
+    player1.lArmData.shoulderAnchorX = $("#slideShoulderAnchorX").val();
+});
+$("#slideShoulderAnchorY").on("input", function(){
+    player1.lArmData.shoulderAnchorY = $("#slideShoulderAnchorY").val();
+});
+$("#slidehandAnchorX").on("input", function(){
+    player1.lArmData.handAnchorX = $("#slidehandAnchorX").val();
+});
+$("#slidehandAnchorY").on("input", function(){
+    player1.lArmData.handAnchorY = $("#slidehandAnchorY").val();
+});
+$("#slidehandAngle").on("input", function(){
+    player1.lArmData.handAngle = $("#slidehandAngle").val();
+});
+
+
+$("#slideWeaponSelect").on("input", function(){
+    player1.weaponData =  SpriteData.Weapon[$("#slideWeaponSelect").val()];
+    UpdateSliders();
+});
+$("#slideWeaponhandAnchorX").on("input", function(){
+    player1.weaponData.handAnchorX = $("#slideWeaponhandAnchorX").val();
+});
+$("#slideWeaponhandAnchorY").on("input", function(){
+    player1.weaponData.handAnchorY = $("#slideWeaponhandAnchorY").val();
+});
+$("#slideWeaponhandAngle").on("input", function(){
+    player1.weaponData.handAngle = $("#slideWeaponhandAngle").val();
+});
+
+
+const SpriteData = {
+	"Arm":[
+		{"Name":"Basic Arm",
+		"src":"ArmSet1.png",
+        "zindex": 10,
+		"handAnchorX": 0.88,
+		"handAnchorY": 0.93,
+		"handAngle": 38,
+		"shoulderAnchorX": 1.0,
+		"shoulderAnchorY": 0.20,
+		"frame":
+			{"x": 0,
+			"y": 0,
+			"w": 32,
+			"h": 64
+			},
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Armored Arm",
+		"src":"ArmSet1.png",
+        "zindex": 10,
+		"handAnchorX": 0.98,
+		"handAnchorY": 0.85,
+		"handAngle": 10,
+		"shoulderAnchorX": 0.50,
+		"shoulderAnchorY": 0.15,
+		"frame":
+			{"x": 32,
+			"y": 0,
+			"w": 32,
+			"h": 64
+			},
+		"Effects":[
+			{"id":"defense", "value": 2}
+			]
+		}
+	],
+	"Weapon":[
+		{"Name":"Heavy Blue Sword",
+		"src":"WeaponSet1.png",
+        "zindex": 20,
+		"frame":
+			{"x": 0,
+			"y": 0,
+			"w": 32,
+			"h": 32
+			},
+		"handAnchorX": 0.51,
+		"handAnchorY": 0.87,
+		"handAngle": 70,
+		"weight": 10,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Light Blue Sword",
+		"src":"WeaponSet1.png",
+        "zindex": 1,
+		"frame":
+			{"x": 1,
+			"y": 0,
+			"w": 32,
+			"h": 32
+			},
+		"handAnchorX": 0.60,
+		"handAnchorY": 0.82,
+		"handAngle": 70,
+		"weight": 10,
+		"Effects":[
+			{"id":"speed", "value": 20},
+			{"id":"attack", "value": 1},
+			]
+		},
+		{"Name":"Rare Blue Sword",
+		"src":"WeaponSet1.png",
+        "zindex": 52,
+		"frame":
+			{"x": 64,
+			"y": 0,
+			"w": 32,
+			"h": 32
+			},
+		"handAnchorX": 0.56,
+		"handAnchorY": 0.56,
+		"handAngle": 20,
+		"weight": 1,
+		"Effects":[
+			{"id":"speed", "value": 40},
+			{"id":"attack", "value": 10},
+			]
+		},
+        {"Name":"HulkHand",
+		"src":"WeaponSet1.png",
+        "zindex": 10,
+		"frame":
+			{"x": 64,
+			"y": 32,
+			"w": 32,
+			"h": 32
+			},
+		"handAnchorX": 0.56,
+		"handAnchorY": 0.56,
+		"handAngle": 20,
+		"weight": 1,
+		"Effects":[
+			{"id":"speed", "value": 40},
+			{"id":"attack", "value": 10},
+			]
+		}
+	],
+	"Head":[
+		{"Name":"Heavy Blue Sword",
+		"src":"/images/icons/baby.svg",
+		"handAnchorX": 506,
+		"handAnchorY": 660,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Light Blue Sword",
+		"src":"/images/icons/baby.svg",
+		"handAnchorX": 506,
+		"handAnchorY": 660,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": 20},
+			{"id":"attack", "value": 1},
+			]
+		}
+	],
+	"Body":[
+		{"Name":"Basic Armor",
+		"src":"body1.svg",
+		"leftArmAnchorX": 0.14,
+		"leftArmAnchorY": 0.18,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Light Blue Sword",
+		"src":"body1.svg",
+		"leftArmAnchorX": 0.14,
+		"leftArmAnchorY": 0.18,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": 20},
+			{"id":"attack", "value": 1},
+			]
+		}
+	]
+}
+
+// define a class
+class PlayerObj{
+  // define a constructor inside class
+  constructor(face, headIndex, x, y, speed, lArmIndex, weaponIndex, bodyIndex){
+    this.x=x; // attribute x
+    this.y=y; // attribute y
+	this.face= new Image();
+	this.face.src = face;
+	this.head= new Image();
+	this.head.src= SpriteData.Head[headIndex].src;
+	this.baseSpeed= speed;
+	this.speed= 2;
+	this.ppt= 0; //((canvasWidth / (baseTime - (baseTime * (this.speed / 100)))) / 100);
+	this.direction= 1;
+	//Left Arm
+	this.lArmData = SpriteData.Arm[lArmIndex];
+	this.lArmImg = new Image();
+	this.lArmImg.src = SpriteData.Arm[lArmIndex].src;
+	this.lArmImg.style = "clip-path: inset(" + (this.lArmData.frame.y) + "px " + 
+											((this.lArmImg.width - (this.lArmImg.width - this.lArmData.frame.y)) + this.lArmData.frame.w) + "px " + 
+											(this.lArmImg.height - (this.lArmData.frame.x + this.lArmData.frame.h)) + "px " +
+											(this.lArmData.frame.x) + "px)";
+											
+	//Weapon
+	this.weaponData = SpriteData.Weapon[weaponIndex];
+	this.weapon = new Image();
+	this.weapon.src = SpriteData.Weapon[weaponIndex].src;
+	//Body
+	this.bodyData = SpriteData.Body[bodyIndex];
+	this.bodyImg = new Image();
+	this.bodyImg.src = SpriteData.Body[bodyIndex].src;
+	
+
+	//this.body.src = SpriteData.Body[bodyIndex].src;
+	//this.head2 = new Element();
+	//this.head2.data = head;
+  }
+  // method show
+	UpdateStats(){
+		//Add Speed from Equipment
+		let newSpeed = this.baseSpeed;
+		//Check Weapon
+		for(i=0; i < this.weaponData.Effects.length; i++){
+			if(this.weaponData.Effects[i].id == "speed"){
+				newSpeed += this.weaponData.Effects[i].value;
+			}
+		}
+		
+		//Check Arm
+		for(i=0; i < this.lArmData.Effects.length; i++){
+			if(this.lArmData.Effects[i].id == "speed"){
+				newSpeed += this.lArmData.Effects[i].value;
+			}
+		}
+		
+		
+		//Check Body
+		for(i=0; i < this.bodyData.Effects.length; i++){
+			if(this.bodyData.Effects[i].id == "speed"){
+				newSpeed += this.bodyData.Effects[i].value;
+			}
+		}
+		
+		
+		//minimum speed of 1
+		if(newSpeed < 1){
+			newSpeed = 1;
+		}
+		this.speed = newSpeed;
+		this.ppt = ((canvasWidth / (baseTime - (baseTime * (this.speed / 100)))) / 100);
+	}
+	Nothing(){
+		console.log(this);
+		console.log(this.ppt);
+		this.ppt = ((canvasWidth / (baseTime - (baseTime * (this.speed / 100)))) / 100);
+		console.log("Update Speed: " + this.ppt);
+	}
+}
+// call constructor by class name to create custom object
+let player1 = new PlayerObj("/TestPages/pixi/test1/face0.png", 
+							0, //headIndex
+							100, //X 
+							20, //Y
+							10, //Speed
+							1, //ArmIndex
+							1, //WeaponIndex
+							0 //BodyIndex
+							);
+
+let players = [player1];
+
+$('#body').append(players[0].lArmImg);
+console.log(players[0].lArmImg);
+
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+}
+
+// Usage:
+
+preload(["WeaponSet1.png", "ArmSet1.png"]);
+
+
+
+
+
+
+
+
+
+function Temp(){
+	console.log("TmpFunction");
+	for(let i=0; i < players.length; i++){
+	console.log("Update speed for player " + i);
+	players[i].UpdateStats();
+}
+    let tmpArr = new Array();
+    tmpArr.push([players[0].lArmData, players[0].lArmData.zindex]);
+    tmpArr.push([players[0].weaponData, players[0].weaponData.zindex]);
+
+    tmpArr.sort();
+    console.log(tmpArr);
+}
+
+
+
+
+
+
+
+function GameTick(){
+	//draw();
+
+
+	
+	
+}
+
+function draw() {
+
+  const ctx = document.getElementById("myCanvas").getContext("2d");
+	ctx.imageSmoothingEnabled = false;
+	ctx.imageSmoothingQuality = "low";
+  ctx.globalCompositeOperation = "destination-over";
+
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight); // clear canvas
+	//console.log(window.requestAnimationFrame());
+
+
+	
+
+	
+	for(i=0; i < players.length; i++){
+		
+		const time = new Date();
+		ctx.save();
+        //DrawStatText
+        ctx.font = "12px Arial";
+        ctx.fillText("ArmShoulderAnchor: " + players[i].lArmData.shoulderAnchorX + "," + players[i].lArmData.shoulderAnchorY, 200, 10);
+        ctx.fillText("ArmHandAnchor: " + players[i].lArmData.handAnchorX + "," + players[i].lArmData.handAnchorY, 200, 20);
+        ctx.fillText("ArmHandAngle: " + players[i].lArmData.handAngle, 200, 30);
+        ctx.fillText("HandAnchor: " + players[i].weaponData.handAnchorX + "," + players[i].weaponData.handAnchorY, 200, 50);
+        ctx.fillText("ArmHandAngle: " + players[i].weaponData.handAnchorX, 200, 60);
+
+		ctx.filter = "url(#roughpaper)"
+
+		ctx.scale(players[i].direction, 1);
+		let xPos = players[i].x;
+		let yPos = canvasHeight - players[i].y;
+		let imgWidth = 100;
+		let imgHeight = 200;
+		
+		ctx.translate(xPos * players[i].direction, yPos);
+		ctx.fillStyle = "rgba(0, 0, 0, 1)";
+		ctx.font = "12px Arial";
+		ctx.fillText("Speed: " + $("#slideShoulderAnchorX").val(), 0, 0);
+		
+		
+		ctx.rotate((players[i].speed * Math.cos(0.00628 * time.getMilliseconds())) * (Math.PI / 180));
+
+		
+		ctx.fillStyle = "rgba(0, 0, 255, 0.1)";
+		ctx.fillRect(0, 0, 3, 3);
+		ctx.fillRect(-(imgWidth / 2), -(imgHeight), imgWidth, imgHeight);
+
+		
+		let headWidth = 30;
+		let headHeight = 30;
+		let headPosX = -(headWidth / 2);
+		let headPoxY = -(imgHeight - 20);
+		let bodyWidth = 70;
+		let bodyHeight = 70;
+		let lArmWidth = 50;
+		let lArmHeight = 80;
+		let lWeaponWidth = 80;
+		let lWeaponHeight = 140;
+		
+		
+		//AnchorSpots
+		let bodyPrimX = -30
+		let bodyPrimY = -170
+		let bodyLShoulderX = bodyPrimX + (players[i].bodyData.leftArmAnchorX * bodyWidth);
+		let bodyLShoulderY = bodyPrimY + (players[i].bodyData.leftArmAnchorY * bodyHeight);
+		let lArmShoulderX = bodyLShoulderX - (players[i].lArmData.shoulderAnchorX * lArmWidth);
+		let lArmShoulderY = bodyLShoulderY - (players[i].lArmData.shoulderAnchorY * lArmHeight);
+		let lArmHandX = lArmShoulderX + (players[i].lArmData.handAnchorX * lArmWidth);
+		let lArmHandY = lArmShoulderY + (players[i].lArmData.handAnchorY * lArmHeight);
+		
+		
+		ctx.fillStyle = "rgba(255, 0, 0, 1)";
+		ctx.fillRect(bodyPrimX, bodyPrimY, 5, 5); 
+		
+		
+		//Draw Arm
+		let tmpArr = new Array();
+        tmpArr.push([players[0].lArmData, players[0].lArmData.zindex]);
+        tmpArr.push([players[0].weaponData, players[0].weaponData.zindex]);
+        tmpArr.sort();
+        for(ii = 0; ii < tmpArr.length; ii++){
+            ctx.drawImage(players[i].lArmImg
+						, players[i].lArmData.frame.x
+						, players[i].lArmData.frame.y
+						, players[i].lArmData.frame.w
+						, players[i].lArmData.frame.h
+						, 0  - (players[i].lArmData.shoulderAnchorX * lArmWidth)
+						, 0  - (players[i].lArmData.shoulderAnchorY * lArmHeight) 
+						, lArmWidth
+						, lArmHeight);  
+        }
+
+		ctx.save();
+		ctx.translate(bodyLShoulderX, bodyLShoulderY);
+		/*ctx.drawImage(players[i].lArmImg
+						, 0
+						, 0
+						, players[i].lArmImg.width
+						, players[i].lArmImg.height
+						, 0  - (players[i].lArmData.shoulderAnchorX * lArmWidth)
+						, 0  - (players[i].lArmData.shoulderAnchorY * lArmHeight) 
+						, lArmWidth
+						, lArmHeight);*/
+						ctx.drawImage(players[i].lArmImg
+						, players[i].lArmData.frame.x
+						, players[i].lArmData.frame.y
+						, players[i].lArmData.frame.w
+						, players[i].lArmData.frame.h
+						, 0  - (players[i].lArmData.shoulderAnchorX * lArmWidth)
+						, 0  - (players[i].lArmData.shoulderAnchorY * lArmHeight) 
+						, lArmWidth
+						, lArmHeight);
+		ctx.translate(-lArmShoulderX, -lArmShoulderY);
+		ctx.restore();
+		
+		
+		//Draw Weapon with Hand Angle
+		
+		ctx.save();
+		ctx.translate(lArmHandX ,lArmHandY);		
+		ctx.rotate(players[i].lArmData.handAngle * (Math.PI / 180));				
+		/*ctx.drawImage(players[i].weapon
+						, 0
+						, 0
+						, players[i].weapon.width
+						, players[i].weapon.height
+						, 0 - (players[i].weaponData.handAnchorX * lWeaponWidth)
+						, 0 - (players[i].weaponData.handAnchorY * lWeaponHeight)
+						, lWeaponWidth
+						, lWeaponHeight);*/
+		
+						ctx.drawImage(players[i].weapon
+						, players[i].weaponData.frame.x
+						, players[i].weaponData.frame.y
+						, players[i].weaponData.frame.w
+						, players[i].weaponData.frame.h
+						, 0 - (players[i].weaponData.handAnchorX * lWeaponWidth)
+						, 0 - (players[i].weaponData.handAnchorY * lWeaponHeight)
+						, lWeaponWidth
+						, lWeaponHeight);
+
+		ctx.translate(-lArmHandX ,-lArmHandY);	
+		ctx.restore();
+
+		
+		//Draw Body
+		ctx.save();
+		ctx.translate(bodyPrimX ,bodyPrimY);
+		ctx.drawImage(players[i].bodyImg, 0, 0, players[i].bodyImg.width, players[i].bodyImg.height, 0, 0, bodyWidth, bodyHeight);
+		ctx.translate(-bodyPrimX ,-bodyPrimY);
+		ctx.restore();
+		
+		//ctx.drawImage(players[i].face, 0, 0, players[i].face.width, players[i].face.height, headPosX, headPoxY, headWidth, headHeight);
+		//ctx.drawImage(players[i].head, 0, 0, players[i].head.width, players[i].head.height, headPosX, headPoxY, headWidth, headHeight);
+		
+		//Draw Left Arm (overlap weapon
+		//ctx.drawImage(players[i].lArmImg, 0, 0, players[i].lArmImg.width, players[i].lArmImg.height, 0, 0, 70, 70);
+		
+		
+		//imgObj.src = players[i].lArm.src;
+		
+		//Placehodler Draw weapon first
+		//ctx.drawImage(players[i].weapon, 0, 0, players[i].weapon.width, players[i].weapon.height, 0, 0, 20, 20);
+		
+		
+		
+		ctx.translate(-xPos, -yPos);
+		ctx.restore();
+	}
+
+  //Draw loop
+  window.requestAnimationFrame(draw);
+}
+
+
+
+//PreLoad();
+
+
+
+let GT = setInterval(GameTick, gameTick);
+
+//let drawTick = setInterval(draw, 100);
+  draw();
+
+
+  function UpdateSliders(){
+//Set Slider Values
+$("#slideShoulderAnchorX").val( player1.lArmData.shoulderAnchorX);
+$("#slideShoulderAnchorY").val(player1.lArmData.shoulderAnchorY );
+$("#slidehandAnchorX").val( player1.lArmData.handAnchorX );
+$("#slidehandAnchorY").val(player1.lArmData.handAnchorY);
+$("#slidehandAngle").val(player1.lArmData.handAngle);
+
+$("#slideWeaponhandAnchorX").val(player1.weaponData.handAnchorX);
+$("#slideWeaponhandAnchorY").val(player1.weaponData.handAnchorY);
+$("#slideWeaponhandAngle").val(player1.weaponData.handAngle);
+  }
+
+</script>
+</body>
+</html>

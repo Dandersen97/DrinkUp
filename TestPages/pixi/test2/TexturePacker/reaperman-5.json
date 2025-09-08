@@ -1,0 +1,109 @@
+{"frames": {
+
+"Falling Down/0_Reaper_Man_Falling Down_001.png":
+{
+	"frame": {"x":1,"y":883,"w":450,"h":591},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":247,"y":122,"w":450,"h":591},
+	"sourceSize": {"w":900,"h":900}
+},
+"Falling Down/0_Reaper_Man_Falling Down_002.png":
+{
+	"frame": {"x":594,"y":883,"w":450,"h":593},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":246,"y":121,"w":450,"h":593},
+	"sourceSize": {"w":900,"h":900}
+},
+"Falling Down/0_Reaper_Man_Falling Down_003.png":
+{
+	"frame": {"x":1189,"y":883,"w":450,"h":596},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":244,"y":120,"w":450,"h":596},
+	"sourceSize": {"w":900,"h":900}
+},
+"Idle Blinking/0_Reaper_Man_Idle Blinking_015.png":
+{
+	"frame": {"x":1,"y":440,"w":441,"h":577},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":202,"y":175,"w":441,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"Idle/0_Reaper_Man_Idle_015.png":
+{
+	"frame": {"x":580,"y":440,"w":441,"h":577},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":202,"y":175,"w":441,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"Jump Start/0_Reaper_Man_Jump Start_001.png":
+{
+	"frame": {"x":1159,"y":440,"w":441,"h":578},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":201,"y":168,"w":441,"h":578},
+	"sourceSize": {"w":900,"h":900}
+},
+"Kicking/0_Reaper_Man_Kicking_006.png":
+{
+	"frame": {"x":1,"y":1,"w":437,"h":599},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":182,"y":153,"w":437,"h":599},
+	"sourceSize": {"w":900,"h":900}
+},
+"Kicking/0_Reaper_Man_Kicking_007.png":
+{
+	"frame": {"x":602,"y":1,"w":437,"h":599},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":183,"y":153,"w":437,"h":599},
+	"sourceSize": {"w":900,"h":900}
+},
+"Kicking/0_Reaper_Man_Kicking_009.png":
+{
+	"frame": {"x":1203,"y":1,"w":437,"h":598},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":184,"y":154,"w":437,"h":598},
+	"sourceSize": {"w":900,"h":900}
+},
+"Run Slashing/0_Reaper_Man_Run Slashing_006.png":
+{
+	"frame": {"x":582,"y":1335,"w":625,"h":577},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":219,"y":175,"w":625,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"Slashing/0_Reaper_Man_Slashing_003.png":
+{
+	"frame": {"x":1209,"y":1335,"w":597,"h":577},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":267,"y":175,"w":597,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"Slashing/0_Reaper_Man_Slashing_004.png":
+{
+	"frame": {"x":1,"y":1335,"w":579,"h":568},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":285,"y":185,"w":579,"h":568},
+	"sourceSize": {"w":900,"h":900}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "reaperman-5.png",
+	"format": "RGBA8888",
+	"size": {"w":1807,"h":1913},
+	"scale": "1",
+	"related_multi_packs": [ "reaperman-0.json", "reaperman-1.json", "reaperman-2.json", "reaperman-3.json", "reaperman-4.json", "reaperman-6.json", "reaperman-7.json", "reaperman-8.json", "reaperman-9.json", "reaperman-10.json", "reaperman-11.json", "reaperman-12.json", "reaperman-13.json", "reaperman-14.json", "reaperman-15.json" ],
+	"smartupdate": "$TexturePacker:SmartUpdate:31ab704a0aa42b44c940f27dbccdb55c:b28c189c1fa2d65870dfba7344157855:2e0abe004199e1a9c83d01e360f8e695$"
+}
+}

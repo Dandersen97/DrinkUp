@@ -1,0 +1,44 @@
+{
+   "Tasks":[
+		{
+			"Do":"Without a mirror, with a marker draw a mustache above your lip",
+			"Point":"6",
+			"Drink":[3,3,4,5,4,2,3]
+		},
+		{
+			"Do":"Without a mirror, with a marker draw a unibrow on yourself",
+			"Point":"6",
+			"Drink":[3,3,4,5,4,2,3]
+		},
+		{
+			"Do":"Without a mirror, with a marker draw a beard on your face yourself",
+			"Point":"6",
+			"Drink":[3,3,4,5,4,2,3]
+		},
+		{
+			"Do":"With a marker, let @p draw whatever they want on your forehead",
+			"Point":"7",
+			"Drink":[4,4,5,6,7,6,5,4,4]
+		},
+		{
+			"Do":"With a marker, let @p draw whatever they want on your hand",
+			"Point":"4",
+			"Drink":[3,3,4,5,4,2,3]
+		},
+		{
+			"Do":"With a marker, let @p draw whatever they want on your back",
+			"Point":"2",
+			"Drink":[3,3,4,5,4,2,3]
+		},
+		{
+			"Do":"With a marker, let @p draw whatever they want on your arm",
+			"Point":"3",
+			"Drink":[3,3,4,5,4,2,3]
+		},
+		{
+			"Do":"With a marker, let @p draw whatever they want on your face",
+			"Point":"7",
+			"Drink":[4,4,5,6,7,6,5,4,4]
+		}
+	]
+}

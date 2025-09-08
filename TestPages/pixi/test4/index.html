@@ -1,0 +1,92 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/8.0.0/pixi.min.js"></script>
+  </head>
+  <body>
+    <h1>PIXI Test 4</h1>
+    <button onclick="ToggleAnim()">Toggle</button>
+    <script type="module">
+        // Create the application helper and add its render target to the page
+        const app = new PIXI.Application();
+        await app.init({ width: 640, height: 360, backgroundColor: 0xAAAAAA })
+        document.body.appendChild(app.canvas);
+        
+        console.log("asdf");
+        let isAlien1 = true;
+
+        //const t = await PIXI.Assets.load('/testpages/pixi/test2/reaperman-0.png');
+        //const t2 = await PIXI.Assets.load('/testpages/pixi/test2/reaperman-0.json'); //works
+        //const t2 = await PIXI.Assets.load('/testpages/pixi/test2-0.json'); //works
+
+        //PIXI.Assets.add({ alias: 'tRun', src: '/testpages/pixi/test3-Running.json'});
+        //PIXI.Assets.add({ alias: 'tDie', src: '/testpages/pixi/test3-Dying.json'});
+        console.log("added");
+        //const t2 = await PIXI.Assets.load('/testpages/pixi/test3-Dying.json');
+        const t2 = await PIXI.Assets.load('/testpages/pixi/Heads1.json');
+        
+        //const spritesheet = new PIXI.Spritesheet(Texture.from(atlasData.meta.image),atlasData);
+        
+        console.log(t2);
+        let obj = new PIXI.Graphics()
+  .rect(50, 0, 200, 200)
+  .fill(0xff0000);
+  app.stage.addChild(obj);
+      console.log(t2);
+        //const anim = t2["/testpages/pixi/test5-0.json"].data.animations;
+        //const anim2 = t2["/testpages/pixi/test4-0.json"].data.animations;
+        //console.log(anim);
+        var character = new PIXI.Sprite(t2.textures['baseFace.png']);
+        var faceFeature = new PIXI.Sprite(t2.textures['beard1.png']);
+        //const b = new PIXI.Sprite(t);
+        //app.stage.addChild(b);
+
+        character.width = 200;
+        character.height = 200;
+
+        faceFeature.width = character.width;
+        faceFeature.height = character.height;
+        //character.animationSpeed = 1 / 4;                     // 6 fps
+        character.position.set(50, 0); // almost bottom-left corner of the canvas
+        faceFeature.position.set(50, 0);
+        //character.play();
+        console.log(character);
+        
+    // add it to the stage and render!
+    app.stage.addChild(character);
+    app.stage.addChild(faceFeature);
+        
+    /*  //Back and forth motion
+        let elapsed = 0.0;
+        app.ticker.add((ticker) =>{
+            elapsed += ticker.deltaTime;
+            character.x = 100.0 + Math.cos(elapsed/50.0) * 100;
+            character.y = 100.0;
+        });
+*/
+
+        character.eventMode = 'static';
+        character.cursor = 'pointer';
+        character.on('pointertap', () =>
+        {
+            let tid = "";
+            switch(faceFeature.texture.label){
+              case 'beard1.png':
+                tid = 'ears1.png';
+                break;
+              case 'ears1.png':
+                tid = 'topHat.png';
+                break;
+              case 'topHat.png':
+                tid="";
+                break;
+              default:
+                tid = "beard1.png";
+            }
+ 
+            faceFeature.texture = t2.textures[tid];
+           // character.width = 200;
+            //character.height = 200;
+        });
+      </script>
+  </body>
+</html>

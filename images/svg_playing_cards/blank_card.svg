@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="62mm"
+   height="88mm"
+   viewBox="0 0 62 88"
+   version="1.1"
+   id="svg8"
+>
+  <title
+     id="title3994">Blank Playing Card</title>
+  <defs
+     id="defs2">
+    <pattern
+       y="0"
+       x="0"
+       height="6"
+       width="6"
+       patternUnits="userSpaceOnUse"
+       id="EMFhbasepattern" />
+  </defs>
+
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-209)">
+    <path
+       id="path818"
+       d="M 2.4467028,208.99373 H 59.465795 c 1.310786,0 2.346729,1.05963 2.346729,2.35237 v 83.18037 c 0,1.31393 -1.035943,2.37356 -2.346729,2.37356 H 2.4467028 c -1.2896419,0 -2.34672614,-1.05963 -2.34672614,-2.37356 V 211.3461 c 0,-1.29274 1.05708424,-2.35237 2.34672614,-2.35237 z"
+       style="fill:#ffeedd;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4.19999981;stroke-dasharray:none;stroke-opacity:1"
+ />
+  </g>
+</svg>

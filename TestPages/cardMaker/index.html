@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	
+	<style>
+		.foo{
+			display: none;
+		}
+		.iconify{
+			display:in-line;
+		}
+
+		.cls-1{fill:#2abbbf;stroke:#010101;stroke-miterlimit:10;}
+			.cls-2{fill:#0088ff;stroke:#010101;stroke-miterlimit:10;}
+			.state1{display: none;}
+
+        .sliderGroup{
+            border: 1px solid black;
+        }
+        .cls-3{filter:url(#roughpaper); opacity: 1}
+
+		
+	</style>
+
+	</head>	
+
+
+
+
+
+
+<body id="body">
+	<!-- MAIN BODY DIV -->
+	<canvas id="myCanvas" width='500' height='1000' onclick="draw()" style='border: 1px solid black;' class="cls-3"></canvas>
+    <button onclick="downloadImage()">Download</button>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+    <script src="//unpkg.com/canvas-txt"></script>
+<script>
+const screenWidth = screen.width;
+const canvasWidth = $('#myCanvas').width();
+const canvasHeight = $('#myCanvas').height();
+const canvasCenterX = canvasWidth / 2;
+const canvasCenterY = canvasHeight / 2;
+const cardWidth = canvasWidth / 4;
+const cardHeight = (canvasWidth / 4) * 1.5;
+const cardBase = new Image();
+cardBase.src = '/images/svg_playing_cards/other/blank_card.svg';
+const svgText = new Image();
+svgText.src = '/images/test/text1.svg';
+const { drawText, getTextHeight, splitText } = window.canvasTxt;
+
+const CardData = {
+	"Card":[
+		{"name":"Pass",
+        "desc":"Pass to the left",
+		"src":"/images/icons/abc.svg",
+        "cost":3,
+        "colors":["red","blue","yellow","green"]
+		},
+		{"name":"Pass",
+        "desc":"Pass to the right",
+		"src":"/images/icons/app.svg",
+        "cost":3,
+        "colors":["red","blue","yellow","green"]
+		},
+		{"name":"Pass No Pass",
+        "desc":"Pass to left and no pass back",
+		"src":"/images/icons/baby.svg",
+        "cost":4,
+        "colors":["blue","green"]
+		},
+        {"name":"Pass No Pass",
+        "desc":"Pass to right and no pass back",
+		"src":"/images/icons/baby.svg",
+        "cost":4,
+        "colors":["yellow","red"]
+		},
+		{"name":"Pass Back",
+        "desc":"Pass to who ever just passed to you",
+		"src":"/images/icons/beer.svg",
+        "cost":2,
+        "colors":["red","yellow", "green", "blue"]
+		},
+        {"name":"Older",
+        "desc":"Pass to a player older than you",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["red","yellow"]
+		},
+        {"name":"Younger",
+        "desc":"Pass to a player younger than you",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["green","blue"]
+		},
+        {"name":"Longer",
+        "desc":"Pass to a player with longer hair",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["red","yellow"]
+		},
+        {"name":"Shorter",
+        "desc":"Pass to a player with shorter hair",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["green","blue"]
+		},
+        {"name":"Longer",
+        "desc":"Pass to a player with a longer name",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["green","yellow"]
+		},
+        {"name":"Shorter",
+        "desc":"Pass to a player with a shorter name",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["red","blue"]
+		},
+        {"name":"Less",
+        "desc":"Pass to a player with less cards than you",
+		"src":"/images/icons/beer.svg",
+        "cost":1,
+        "colors":["yellow","blue"]
+		},
+        {"name":"More",
+        "desc":"Pass to a player with more cards than you",
+		"src":"/images/icons/beer.svg",
+        "cost":2,
+        "colors":["red","green"]
+		}
+	]
+}
+
+
+class CardObj{
+  // define a constructor inside class
+  constructor(name, desc, src, cost, colors){
+	this.name = name;
+    this.desc = desc;
+	this.bodyImg = new Image();
+	this.bodyImg.src = src;
+    this.cost = cost;
+    this.colors = colors
+  }
+}
+
+let cardArr = [];
+
+for(i=0; i < CardData.Card.length; i++){
+        let tmpPlayer = new CardObj(CardData.Card[i].name
+                                ,CardData.Card[i].desc
+                                ,CardData.Card[i].src
+                                ,CardData.Card[i].cost
+                                ,CardData.Card[i].colors
+							);
+        cardArr.push(tmpPlayer);
+    }
+
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('<img/>')[0].src = this;
+        // Alternatively you could use:
+        //(new Image()).src = this;
+    });
+}
+
+// Usage:
+
+preload(["/images/svg_playing_cards/other/blank_card.svg", "/images/icons/app.svg"]);
+
+console.log(cardArr);
+
+function draw() {
+    
+    const ctx = document.getElementById("myCanvas").getContext("2d");
+    
+    let cardSum = 0;
+    for(i=0; i < cardArr.length; i++){
+        for(ii=0; ii < cardArr[i].colors.length; ii++){
+            cardSum++;
+        }
+    }
+    ctx.canvas.height = Math.ceil(cardSum / 4) * cardHeight;
+    console.log("CardSum: " + cardSum);
+
+	ctx.imageSmoothingEnabled = false;
+	ctx.imageSmoothingQuality = "low";
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight); // clear canvas
+    let cardCount = 0;
+
+    for(i=0; i < cardArr.length; i++){
+        for(ii=0; ii < cardArr[i].colors.length; ii++){
+            //Draw Image? Jess says image is too much
+            /*
+            ctx.drawImage(cardArr[i].bodyImg
+                        , ((cardCount % 4) * (canvasWidth / 4)) //x
+                        , (Math.floor(cardCount / 4) * ((canvasWidth / 4) * 1.5)) + 30 //y
+                        , 50
+                        , 50);
+            */
+
+
+            //DrawText2
+            /*
+            let svgData = document.getElementById('svg2');
+            console.log(svgData.setAttribute);
+            ctx.drawImage(svgData
+                        , ((cardCount % 4) * (canvasWidth / 4)) //X
+                        , (Math.floor(cardCount / 4) * ((canvasWidth / 4) * 1.5))  //Y
+                        ,  (canvasWidth / 4) //width
+                        ,  ((canvasWidth / 4) * 1.5) //height
+                        );
+            */
+
+            //Draw Text
+            ctx.font = "12px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "left";
+            
+            /*
+            ctx.fillText(cardArr[i].desc
+                        , ((cardCount % 4) * cardWidth) +  (cardWidth * .15) //x
+                        , (Math.floor(cardCount / 4) * (cardWidth * 1.5)) + 75 //y
+                        , (cardWidth * .7)
+                        );
+               */    
+            let fontSize = 24;  
+            if(cardArr[i].desc.length < 20){
+                fontSize = 20;
+            } 
+            else if (cardArr[i].desc.length < 30){
+                fontSize = 16;
+            }
+            else if (cardArr[i].desc.length < 40){
+                fontSize = 14;
+            }
+            else if (cardArr[i].desc.length < 50){
+                fontSize = 12;
+            }
+            console.log("Length/FontSize: " + cardArr[i].desc.length + " / " + fontSize);
+            drawText(ctx, 
+                    cardArr[i].desc, 
+                    {
+                        x: ((cardCount % 4) * cardWidth) +  (cardWidth * .15),
+                        y: (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * .25),
+                        width: (cardWidth * .7),
+                        height: (cardHeight * .6),
+                        fontSize: fontSize,
+                        debug:false
+                    });
+
+
+
+
+            //Draw Banner
+            ctx.fillStyle = cardArr[i].colors[ii];
+            //Top
+            ctx.fillRect(((cardCount % 4) * cardWidth) + (cardWidth * 0.05) //x
+                        , (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.05) //y
+                        , cardWidth - (cardWidth * 0.1)//width
+                        , (cardHeight * 0.15) //height
+                        );
+            //Left side
+            ctx.fillRect(((cardCount % 4) * cardWidth) + (cardWidth * 0.05) //x
+                        , (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.3) //y
+                        , (cardWidth * 0.05) //width
+                        , (cardHeight * 0.65) //height
+            );
+            //Right side
+            ctx.fillRect(((cardCount % 4) * cardWidth) + (cardWidth * 0.90) //x
+                        , (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.3) //y
+                        , (cardWidth * 0.05) //width
+                        , (cardHeight * 0.65) //height
+            );
+
+            //Draw Cost
+            if(cardArr[i].cost == 1){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.5), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+            else if(cardArr[i].cost == 2){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.40), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.60), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+            else if(cardArr[i].cost == 3){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.30), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.50), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.70), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+            else if(cardArr[i].cost == 4){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.27), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.42), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.57), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 4) * cardWidth) + (cardWidth * 0.72), 
+                        (Math.floor(cardCount / 4) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+
+
+            //Draw CardBase
+            ctx.drawImage(cardBase
+                        , ((cardCount % 4) * (canvasWidth / 4)) //X
+                        , (Math.floor(cardCount / 4) * ((canvasWidth / 4) * 1.5))  //Y
+                        ,  cardWidth //width
+                        ,  cardHeight //height
+                        );
+
+            cardCount++;
+        }
+
+        
+    }
+
+    //ctx.save();
+   // let lArmImg = new Image();
+	//lArmImg.src = '/images/svg_playing_cards/other/blank_card.svg'
+        //DrawStatText
+       //ctx.font = "12px Arial";
+       // ctx.fillText("ArmShoulderAnchor: ", 200, 10);
+		//ctx.fillStyle = "rgba(0, 0, 255, 0.1)";
+		//ctx.fillRect(0, 0, 30, 30);
+
+		//ctx.drawImage(lArmImg, 0, 0);
+}
+
+
+  draw();
+
+  function downloadImage() {
+
+// Grab the canvas element
+let canvas = document.getElementById("myCanvas");
+
+/* Create a PNG image of the pixels drawn on the canvas using the toDataURL method. PNG is the preferred format since it is supported by all browsers
+*/
+var dataURL = canvas.toDataURL("image/png");
+
+// Create a dummy link text
+var a = document.createElement('a');
+// Set the link to the image so that when clicked, the image begins downloading
+a.href = dataURL
+// Specify the image filename
+a.download = 'canvas-download.png';
+// Click on the link to set off download
+a.click();
+}
+
+</script>
+</body>
+</html>

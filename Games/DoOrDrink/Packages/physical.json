@@ -1,0 +1,29 @@
+{
+   "Tasks":[
+		{
+			"Do":"Get slapped by the player @d",
+			"Point":"4",
+			"Drink":[2,3,4,4,4,5]
+		},
+		{
+			"Do":"Get slapped by @p",
+			"Point":"4",
+			"Drink":[2,3,4,4,4,5]
+		},
+		{
+			"Do":"Get slapped by @p and @p",
+			"Point":"7",
+			"Drink":[4,4,4,5,5,6,7,8]
+		},
+		{
+			"Do":"Get slapped by @p and the player @d",
+			"Point":"7",
+			"Drink":[4,4,4,5,5,6,7,8]
+		},
+		{
+			"Do":"Do 5 pushups",
+			"Point":"2",
+			"Drink":[2,2,2,3,2,2,2,3]
+		}
+	]
+}

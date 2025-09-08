@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	
+	
+	</head>	
+
+
+
+
+
+
+<body>
+	<!-- MAIN BODY DIV -->
+	<canvas id="myCanvas" width='700' height='800' onclick="Temp()" style='border: 1px solid black;'></canvas>
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+<script>
+window.addEventListener("keydown", (event) => {
+  if (event.isComposing || event.keyCode === 229) {
+	
+    return;
+  }
+  console.log(event.keyCode);
+});
+
+const screenWidth = screen.width;
+const canvasWidth = $('#myCanvas').width();
+const canvasHeight = $('#myCanvas').height();
+const canvasCenterX = canvasWidth / 2;
+const canvasCenterY = canvasHeight / 2;
+const baseTime = 20;
+const gameTick = 10;
+
+
+const SpriteData = {
+	"Arm":[
+		{"Name":"Basic Arm",
+		"src":"arm1.svg",
+		"handAnchorX": 0.50,
+		"handAnchorY": 0.77,
+		"handAngle": 90,
+		"shoulderAnchorX": 0.60,
+		"shoulderAnchorY": 0.15,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Armored Arm",
+		"src":"arm2.svg",
+		"handAnchorX": 0.50,
+		"handAnchorY": 0.77,
+		"handAngle": 90,
+		"shoulderAnchorX": 0.60,
+		"shoulderAnchorY": 0.15,
+		"Effects":[
+			{"id":"defense", "value": 2}
+			]
+		}
+	],
+	"Weapon":[
+		{"Name":"Heavy Blue Sword",
+		"src":"sword2.svg",
+		"handAnchorX": 0.50,
+		"handAnchorY": 0.78,
+		"handAngle": 70,
+		"weight": 10,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Light Blue Sword",
+		"src":"sword2.svg",
+		"handAnchorX": 0.50,
+		"handAnchorY": 0.78,
+		"handAngle": 70,
+		"weight": 10,
+		"Effects":[
+			{"id":"speed", "value": 20},
+			{"id":"attack", "value": 1},
+			]
+		},
+		{"Name":"Rare Blue Sword",
+		"src":"sword2.svg",
+		"handAnchorX": 0.50,
+		"handAnchorY": 0.78,
+		"handAngle": 70,
+		"weight": 1,
+		"Effects":[
+			{"id":"speed", "value": 40},
+			{"id":"attack", "value": 10},
+			]
+		}
+	],
+	"Head":[
+		{"Name":"Heavy Blue Sword",
+		"src":"/images/icons/baby.svg",
+		"handAnchorX": 506,
+		"handAnchorY": 660,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Light Blue Sword",
+		"src":"/images/icons/baby.svg",
+		"handAnchorX": 506,
+		"handAnchorY": 660,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": 20},
+			{"id":"attack", "value": 1},
+			]
+		}
+	],
+	"Body":[
+		{"Name":"Basic Armor",
+		"src":"body1.svg",
+		"leftArmAnchorX": 0.14,
+		"leftArmAnchorY": 0.18,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": -3},
+			{"id":"attack", "value": 4},
+			]
+		},
+		{"Name":"Light Blue Sword",
+		"src":"body1.svg",
+		"leftArmAnchorX": 0.14,
+		"leftArmAnchorY": 0.18,
+		"handAngle": 20,
+		"Effects":[
+			{"id":"speed", "value": 20},
+			{"id":"attack", "value": 1},
+			]
+		}
+	]
+}
+
+// define a class
+class PlayerObj{
+  // define a constructor inside class
+  constructor(face, headIndex, x, y, speed, lArmIndex, weaponIndex, bodyIndex){
+    this.x=x; // attribute x
+    this.y=y; // attribute y
+	this.face= new Image();
+	this.face.src = face;
+	this.head= new Image();
+	this.head.src= SpriteData.Head[headIndex].src;
+	this.baseSpeed= speed;
+	this.speed= 2;
+	this.ppt= 0; //((canvasWidth / (baseTime - (baseTime * (this.speed / 100)))) / 100);
+	this.direction= 1;
+	//Left Arm
+	this.lArmData = SpriteData.Arm[lArmIndex];
+	this.lArmImg = new Image();
+	this.lArmImg.src = SpriteData.Arm[lArmIndex].src;
+	//Weapon
+	this.weaponData = SpriteData.Weapon[weaponIndex];
+	this.weapon = new Image();
+	this.weapon.src = SpriteData.Weapon[weaponIndex].src;
+	//Body
+	this.bodyData = SpriteData.Body[bodyIndex];
+	this.bodyImg = new Image();
+	this.bodyImg.src = SpriteData.Body[bodyIndex].src;
+	
+	//this.body.src = SpriteData.Body[bodyIndex].src;
+	//this.head2 = new Element();
+	//this.head2.data = head;
+  }
+  // method show
+	UpdateStats(){
+		//Add Speed from Equipment
+		let newSpeed = this.baseSpeed;
+		//Check Weapon
+		for(i=0; i < this.weaponData.Effects.length; i++){
+			if(this.weaponData.Effects[i].id == "speed"){
+				newSpeed += this.weaponData.Effects[i].value;
+			}
+		}
+		
+		//Check Arm
+		for(i=0; i < this.lArmData.Effects.length; i++){
+			if(this.lArmData.Effects[i].id == "speed"){
+				newSpeed += this.lArmData.Effects[i].value;
+			}
+		}
+		
+		
+		//Check Body
+		for(i=0; i < this.bodyData.Effects.length; i++){
+			if(this.bodyData.Effects[i].id == "speed"){
+				newSpeed += this.bodyData.Effects[i].value;
+			}
+		}
+		
+		
+		//minimum speed of 1
+		if(newSpeed < 1){
+			newSpeed = 1;
+		}
+		this.speed = newSpeed;
+		this.ppt= ((canvasWidth / (baseTime - (baseTime * (this.speed / 100)))) / 100);
+	}
+}
+// call constructor by class name to create custom object
+let player1 = new PlayerObj("/TestPages/pixi/test1/face0.png", 
+							0, //headIndex
+							30, //X 
+							220, //Y
+							10, //Speed
+							0, //ArmIndex
+							0, //WeaponIndex
+							0 //BodyIndex
+							);
+let player2 = new PlayerObj("/TestPages/pixi/test1/face1.png", 1, 30, 450, 10, 1, 1, 1);
+
+let players = [player1, player2];
+console.log(players);
+
+var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+
+$.get('sword2.svg', function(data) { console.log(data);}, 'text');
+$.get('sword2.svg', function(data) { svg.innerHTML = data;}, 'text');
+svg.setAttribute('viewbox', '0 0 200 204');
+svg.setAttribute('width', '90px');
+svg.setAttribute('height', '90px');
+svg.setAttribute('href', 'sword2.svg');
+
+
+
+document.body.appendChild(svg);
+
+
+
+function imageToSvg(imgP,svgP){
+ var xml = (new XMLSerializer).serializeToString(svgP);
+  
+  imgP.src = 'data:image/svg+xml;charset=utf-8,' + xml;
+
+}
+
+
+
+
+function PreLoad(){
+	imageObj = new Image();
+	
+	for(i=0; i < players.length; i++){
+		imageObj = players[i].bodyImg;
+		imageObj = players[i].lArmImg;
+	}
+}
+
+
+function preload(arrayOfImages) {
+    $(arrayOfImages).each(function(){
+        $('<img/>')[0].src = this;
+        // Alternatively you could use:
+        // (new Image()).src = this;
+    });
+}
+
+// Usage:
+
+preload(["arm1.svg", "arm2.svg"]);
+
+
+
+
+
+
+
+
+
+function Temp(){
+$("#state1").toggleClass();
+	WeightedOdds();
+	let img = $('#img1');
+imageToSvg(document.getElementById("img1"),svg);
+}
+
+
+
+
+
+
+
+function GameTick(){
+	//draw();
+	for(i = 0; i < 2; i++){
+		MovePlayer(i);
+		
+	}
+
+
+	
+}
+
+function MovePlayer(index){
+	let startPos = players[index].x;
+	let endPos = startPos + players[index].ppt;
+	
+	if(endPos >= canvasWidth){
+		players[index].direction = -1;
+		alert("Player " + index + " attacks");
+	}
+	if(endPos <= 0){
+		players[index].direction = 1;
+	}
+			
+	players[index].x += players[index].ppt * players[index].direction;	
+}
+
+
+
+function draw() {
+
+  const ctx = document.getElementById("myCanvas").getContext("2d");
+
+  ctx.globalCompositeOperation = "destination-over";
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight); // clear canvas
+	//console.log(window.requestAnimationFrame());
+
+	
+	for(i=0; i < players.length; i++){
+		
+		const time = new Date();
+		ctx.save();
+		ctx.scale(players[i].direction, 1);
+		let xPos = players[i].x;
+		let yPos = canvasHeight - players[i].y;
+		let imgWidth = 100;
+		let imgHeight = 200;
+		
+		ctx.translate(xPos * players[i].direction, yPos);
+		ctx.fillStyle = "rgba(0, 0, 0, 1)";
+		ctx.font = "12px Arial";
+		ctx.fillText("Speed: " + players[i].speed, 0, 0);
+		
+		
+		ctx.rotate((players[i].speed * Math.cos(0.00628 * time.getMilliseconds())) * (Math.PI / 180));
+
+		
+		ctx.fillStyle = "rgba(0, 0, 255, 0.1)";
+		ctx.fillRect(0, 0, 3, 3);
+		ctx.fillRect(-(imgWidth / 2), -(imgHeight), imgWidth, imgHeight);
+
+		
+		let headWidth = 30;
+		let headHeight = 30;
+		let headPosX = -(headWidth / 2);
+		let headPoxY = -(imgHeight - 20);
+		let bodyWidth = 70;
+		let bodyHeight = 70;
+		let lArmWidth = 50;
+		let lArmHeight = 80;
+		let lWeaponWidth = 80;
+		let lWeaponHeight = 140;
+		
+		
+		//AnchorSpots
+		let bodyPrimX = -30
+		let bodyPrimY = -170
+		let bodyLShoulderX = bodyPrimX + (players[i].bodyData.leftArmAnchorX * bodyWidth);
+		let bodyLShoulderY = bodyPrimY + (players[i].bodyData.leftArmAnchorY * bodyHeight);
+		let lArmShoulderX = bodyLShoulderX - (players[i].lArmData.shoulderAnchorX * lArmWidth);
+		let lArmShoulderY = bodyLShoulderY - (players[i].lArmData.shoulderAnchorY * lArmHeight);
+		let lArmHandX = lArmShoulderX + (players[i].lArmData.handAnchorX * lArmWidth);
+		let lArmHandY = lArmShoulderY + (players[i].lArmData.handAnchorY * lArmHeight);
+		
+		
+		ctx.fillStyle = "rgba(255, 0, 0, 1)";
+		ctx.fillRect(bodyPrimX, bodyPrimY, 5, 5); 
+		
+		
+		//Draw Arm
+		ctx.save();
+		ctx.translate(bodyLShoulderX, bodyLShoulderY);
+		ctx.drawImage(players[i].lArmImg
+						, 0
+						, 0
+						, players[i].lArmImg.width
+						, players[i].lArmImg.height
+						, 0  - (players[i].lArmData.shoulderAnchorX * lArmWidth)
+						, 0  - (players[i].lArmData.shoulderAnchorY * lArmHeight) 
+						, lArmWidth
+						, lArmHeight);
+		ctx.translate(-lArmShoulderX, -lArmShoulderY);
+		ctx.restore();
+		
+		
+		//Draw Weapon with Hand Angle
+		ctx.save();
+		ctx.translate(lArmHandX ,lArmHandY);		
+		ctx.rotate(players[i].lArmData.handAngle * (Math.PI / 180));				
+		ctx.drawImage(players[i].weapon
+						, 0
+						, 0
+						, players[i].weapon.width
+						, players[i].weapon.height
+						, 0 - (players[i].weaponData.handAnchorX * lWeaponWidth)
+						, 0 - (players[i].weaponData.handAnchorY * lWeaponHeight)
+						, lWeaponWidth
+						, lWeaponHeight);
+		ctx.translate(-lArmHandX ,-lArmHandY);	
+		ctx.restore();
+
+		
+		//Draw Body
+		ctx.save();
+		ctx.translate(bodyPrimX ,bodyPrimY);
+		ctx.drawImage(players[i].bodyImg, 0, 0, players[i].bodyImg.width, players[i].bodyImg.height, 0, 0, bodyWidth, bodyHeight);
+		ctx.translate(-bodyPrimX ,-bodyPrimY);
+		ctx.restore();
+		
+		//ctx.drawImage(players[i].face, 0, 0, players[i].face.width, players[i].face.height, headPosX, headPoxY, headWidth, headHeight);
+		//ctx.drawImage(players[i].head, 0, 0, players[i].head.width, players[i].head.height, headPosX, headPoxY, headWidth, headHeight);
+		
+		//Draw Left Arm (overlap weapon
+		//ctx.drawImage(players[i].lArmImg, 0, 0, players[i].lArmImg.width, players[i].lArmImg.height, 0, 0, 70, 70);
+		
+		
+		//imgObj.src = players[i].lArm.src;
+		
+		//Placehodler Draw weapon first
+		//ctx.drawImage(players[i].weapon, 0, 0, players[i].weapon.width, players[i].weapon.height, 0, 0, 20, 20);
+		
+		
+		
+		ctx.translate(-xPos, -yPos);
+		ctx.restore();
+	}
+
+  //Draw loop
+  window.requestAnimationFrame(draw);
+}
+
+
+function WeightedOdds(){
+	let sum = 0;
+	SpriteData.Weapon.forEach(w => {
+		sum += w.weight;
+	})
+	
+	
+	let rnd = Math.floor(Math.random() * (sum + 1));
+	let chkNum = 0;
+	for(i=0; i < SpriteData.Weapon.length; i++){
+		chkNum += SpriteData.Weapon[i].weight;
+		if(rnd <= chkNum){
+			console.log(SpriteData.Weapon[i].Name + " (" + (SpriteData.Weapon[i].weight / sum * 100).toFixed(2) + "%)");
+			break;
+		}
+	}
+}
+
+PreLoad();
+let GT = setInterval(GameTick, gameTick);
+//let drawTick = setInterval(draw, 100);
+  draw();
+
+
+
+
+</script>
+</body>
+</html>

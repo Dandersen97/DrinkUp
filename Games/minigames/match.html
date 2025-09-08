@@ -1,0 +1,221 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Match</title>
+	<!-- Styles -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+	<style>
+		body {
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+		.card-org {
+			display:block;
+			position: relative;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+		}
+		
+		.card-default {
+			transition-duration: 1s;
+    transition-timing-function: ease;
+    transition-delay: 0s;
+    transition-property: transform;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+			border: 1px solid black;
+		}
+		
+		.card-back {
+			
+		}
+		
+		.card-front {
+			transform: rotateY(180deg);	
+		}
+
+		.flippedf {
+			transform: rotateY(0deg);
+		}
+		.flippedb {
+			transform: rotateY(180deg);
+		}
+	</style>
+	
+</head>
+<body>
+	<div id="nav-placeholder"></div>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Match</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+        </div>
+      </div>
+    </nav>
+	<!-- Content -->
+	<div class="container">
+		<div id="GameBoard">
+			<div id="carouselExampleCaptions" class="carousel slide bg-secondary bg-gradient">
+				<div class="carousel-indicators" id="carousel-indicators">
+				  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+				  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+				  <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+				</div>
+				<div class="carousel-inner" id="carousel-options">
+				  <div class="carousel-item active">
+					<img src="/images/Icons/rock.svg" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-md-block">
+					  <h5>ROCK</h5>
+					</div>
+				  </div>
+				  <div class="carousel-item">
+					<img src="/images/Icons/paper.svg" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+					  <h5>Second slide label</h5>
+					  <p>Some representative placeholder content for the second slide.</p>
+					</div>
+				  </div>
+				  <div class="carousel-item">
+					<img src="/images/Icons/scissors.svg" class="d-block w-100" alt="...">
+					<div class="carousel-caption d-none d-md-block">
+					  <h5>Third slide label</h5>
+					  <p>Some representative placeholder content for the third slide.</p>
+					</div>
+				  </div>
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+				  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				  <span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+				  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				  <span class="visually-hidden">Next</span>
+				</button>
+			  </div>
+			<div class="container text-center">
+				<button class="btn btn-lg btn-primary" onclick="FlipSubmit()">SUBMIT</button>
+			</div>
+			<div id="ComputerSelectParent" class="container position-relative card-org">
+				<img id="ComputerSelect" src="/images/Icons/beer.svg" class="w-100 card-default card-front bg-secondary bg-gradient" alt="...">
+				<img id="ComputerSelectQuestion" src="/images/Icons/QuestionMark.svg" class="w-100 card-default card-back" alt="...">
+			</div>
+		</div>
+	</div>
+
+
+
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p>Select and Match the pictures</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+    <script>
+        let gameState = "pending";
+		const urlParams = new URLSearchParams(window.location.search)
+		let options =  (urlParams.get('cardArr'))? urlParams.get('cardArr').split(",") : ['wineGlass4', 'wineBottleAndGlass2', 'wineBottleAndGlasses'];
+		let target = (urlParams.get('target'))? urlParams.get('target') : "safe";
+        let attempts = (urlParams.get('attempts'))? Number(urlParams.get('attempts')) : 1;
+		let selectedId = Math.floor(Math.random() * options.length);
+        
+
+	window.onload = (event) => {
+		$('#ComputerSelect').attr('src', '/images/icons/' + options[selectedId] + '.svg');
+
+		var slides = document.getElementsByClassName("card-front");
+		for (var i = 0; i < slides.length; i++) {
+			slides[i].addEventListener('transitionend', () => {
+				CheckWin();
+			});
+		}
+
+
+		let carouselHTML = "";
+		for(let i = 0; i < options.length; i++){
+			carouselHTML += `<div class="carousel-item ` + ((i == 0) ? "active" : "") + `">
+								<img src="/images/Icons/` + options[i] + `.svg" class="d-block w-100">
+								<div class="carousel-caption d-md-block">
+					  				<h5>` + options[i].toUpperCase() + `</h5>
+								</div>
+				  			</div>`;
+		}
+		$('#carousel-options').html(carouselHTML);
+
+		let carouselIndicatorsHTML = "";
+		for(let i = 0; i < options.length; i++){
+			carouselIndicatorsHTML += `<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="` + i + `" class="` + ((i == 0) ? "active" : "") + `" aria-current="true" aria-label="Slide 1"></button>`;
+			                         //<button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+		}
+		$('#carousel-indicators').html(carouselIndicatorsHTML);
+
+	}
+
+	function FlipSubmit(){
+		let src = $('#ComputerSelectParent');
+		src[0].children[0].classList.toggle('flippedf');	
+		src[0].children[1].classList.toggle('flippedb');
+	}
+	
+	function CheckWin(){
+			//Check for min/max selection combos
+			let tmpSelected = selectedId;
+			if(selectedId == (options.length - 1) && GetActiveId() == 0){
+				tmpSelected = -1;
+			}
+			if(GetActiveId() == (options.length - 1) && selectedId == 0){
+				tmpSelected = options.length;
+			}
+
+
+			//Loose based winning system based on array index value
+            if(tmpSelected !== GetActiveId()){
+				console.log("lose");
+				gameState = "lose";
+			}   
+            if(tmpSelected == GetActiveId()){
+				console.log("win");
+				gameState = "win";
+			}
+
+			if (window.top != window.self && gameState !== 'pending') {
+                window.top.postMessage({"type":"minigame","result":gameState}, '*');
+            
+            } 
+        }
+	
+	function GetActiveId(){
+		let items = $('.carousel-item');
+		for(let i = 0; i < items.length; i++){
+			if($(items[i]).hasClass('active')){
+				return i;
+				break;
+			}
+		}
+	}
+    </script>
+</body>
+</html>

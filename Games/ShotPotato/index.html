@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+		<style>
+			.firebrick {
+				background: #ffc3c3;
+			}
+			.RED ,.red{
+				background: firebrick;
+				fill: firebrick;
+			}
+			.goldenrod{
+				background-color: #ffe7ac;
+			}
+			.YELLOW, .yellow{
+				background-color: goldenrod;
+				fill: goldenrod;
+			}
+			.darkolivegreen{
+				background-color: #d9ff8b;
+			}
+			.GREEN, .green{
+				background-color: darkolivegreen;
+				fill: darkolivegreen
+			}
+			.midnightblue{
+				background-color: #c9c9ff;
+			}
+			.BLUE ,.blue{
+				background-color: midnightblue;
+				fill: midnightblue;
+			}
+			.blob {
+				border-radius: 50%;
+				box-shadow: 0 0 0 0 rgba(0, 0, 0, 1);
+				margin: 10px;
+				height: 20px;
+				width: 20px;
+				transform: scale(1);
+			}
+			.pulse {
+				animation: pulse-black 2s infinite;
+			}
+
+			.pulse-null{
+				transition: none !important;
+			}
+
+			@keyframes pulse-black {
+				0% {
+					transform: scale(0.95);
+					box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.7);
+				}
+				
+				70% {
+					transform: scale(1);
+					box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+				}
+				100% {
+					transform: scale(0.95);
+					box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+				}
+			}
+
+			.card{
+				width: 30vw;
+				height: calc(30vw * 1.5);
+				background-color: antiquewhite;
+			}
+
+			.card_bonus{
+				background-color: khaki;
+			}
+
+			.card_selected{
+				border: 3px solid black;
+			}
+
+			.card_disabled{
+				background-color: grey;
+				filter: grayscale(100%);
+			}
+			
+			
+		</style>
+	</head>	
+
+
+<body>
+	<!-- Navbar -->
+
+	<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+		<div class="container">
+			  <button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+			  <button onclick="NewHand()" class="btn btn-primary">New Game</button>
+		  </div>
+		</div>
+	  </nav>
+	<!-- MAIN BODY DIV -->
+	<div id="CostDisplay">
+		<div class="d-flex">
+			<div class="col-6 d-flex">
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+			</div>
+			<div class="col-6 d-flex">
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+			</div>	
+		</div>
+		<div class="d-flex">
+			<div class="col-6 d-flex">
+				<div class="blob firebrick "></div>
+				<div class="blob firebrick "></div>
+				<div class="blob firebrick "></div>
+				<div class="blob firebrick"></div>
+				<div class="blob firebrick"></div>
+			</div>
+			<div class="col-6 d-flex">
+				<div class="blob goldenrod "></div>
+				<div class="blob goldenrod "></div>
+				<div class="blob goldenrod "></div>
+				<div class="blob goldenrod"></div>
+				<div class="blob goldenrod"></div>
+			</div>
+		</div>
+	</div>	
+
+	<div class="container">
+		<div class="d-flex">
+			<div class="col-12 text-center">
+				<p>You Have <b id="txtCardCount"></b> cards</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="container overflow-scroll no-gutters">
+		<div class="row justify-content-around">
+			<div id="navParadoxButtons" class="col-3 text-center p-0"></div>
+			<h1 class="col-6 text-center" id="cdTitle"></h1>
+			<div id="navPlayButtons" class="col-3 text-center p-0"></div>
+		</div>
+		
+		<h3 id="cdDesc"></h3>
+		<!--<h1 id="cdCost">Card details</h1>-->
+		<h3 id="cdBonus"></h3>
+		
+	</div>
+
+
+	<div class="navbar container fixed-bottom">
+		<div id="cardHand" class="row flex-nowrap overflow-auto"></div>
+
+
+	</div>
+
+	<div class="modal fade" id="ParadoxModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">Paradox</h5>
+				</div>
+				<div class="modal-body p-0" id="ParadoxModalBody">
+					
+				</div>
+				<div class="modal-footer" id="ParadoxModalFooter">
+					<button id="ParadoxModalCloseButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">COMPLETE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="modal fade" id="ParadoxModalDesc" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">Paradox</h5>
+				</div>
+				<div class="modal-body p-0" id="ParadoxModalDescBody">
+					
+				</div>
+				<div class="modal-footer" id="ParadoxModalDescFooter">
+					<button id="ParadoxModalDescCloseButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ParadoxModal">START</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p>All players click the New Hand button are are dealt 7 cards. Each card is given a random cost ranging from 2-4 in the following colors; red, blue, green, yellow. At the top of the screen are 4 collections of these same colors. 
+						In order to play a card, you must have availability in the pool colors. The game ends when the player with the potato is unable to pass to anyone else, that player takes the shot and a new game can begin. (it is recomended when starting a new game that the loser of the previous game is excluded)</p>
+					<p>When playing a card, that cards cost is taken from the pool and that player gives to potato as the card states.</p>
+					<div>
+						<button class="btn btn-secondary btn-lg  dropdown-toggle" type="button"  data-bs-toggle="collapse" data-bs-target="#HowToParadox" aria-controls="HowToParadox" aria-expanded="true" aria-label="Toggle navigation">
+						  PARADOX
+						</button>
+						<div class="navbar-collapse collapse hidden" id="HowToParadox" >
+							<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+							  	<li class="nav-item">
+									<p>If playing a card that would result in passing to yourself (example pass to a younger player but you are the youngest) you can <b>paradox</b> the card.</p>
+									<p>When you paradox a card, you are given a type of task or event that needs to be completed or won. If you successfully complete your paradox card, the card played cost is added to the collection pool as normal and you may pass the potato to whoever desired (unless otherwise stated on the paradox).</p>
+									<p>Should you fail the paradox, the card paradox is discarded, cost is not added, and it is still your turn to attempt to pass. </p>
+									<ul>
+										<li>You CAN paradox multiple times per turn per failure.</li>
+										<li>You CAN also paradox any cards you play that would not have resulted in passing to yourself. (such as to avoid another players bonus)</li>
+										<li>You CANNOT paradox cards you can't afford the cost for</li>
+									</ul>
+							  </li>
+							</ul>
+						</div>
+					</div>
+					
+					<div>
+						<button class="btn btn-secondary btn-lg  dropdown-toggle" type="button"  data-bs-toggle="collapse" data-bs-target="#HowToBonus" aria-controls="HowToBonus" aria-expanded="true" aria-label="Toggle navigation">
+						 BONUS
+						</button>
+							<div class="navbar-collapse collapse hidden" id="HowToBonus" >
+								<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								  <li class="nav-item">
+									<p>Some cards may also have a bonus applied to them. Bonuses give some type of advantange to yourself or disadvantage to others when played.</p>
+									<ul>
+										<li><p>Bonuses always take effect AFTER the card is played.</p></li>
+										<li><p>While never a guarentee, the higher the card cost the more likely it is to have a bonus.</p></li>
+										<li><p>Some bonuses limit what other players can do (such as no passback) but this can be ignored when a card is paradoxed</p></li>
+										<li><p>Some bonuses have lasting effects until your next turn.</p></li>
+									</ul>
+								  </li>
+								</ul>
+							  </div>
+					</div>
+
+					<div>
+						<button class="btn btn-secondary btn-lg  dropdown-toggle" type="button"  data-bs-toggle="collapse" data-bs-target="#HowToTrial" aria-controls="HowToTrial" aria-expanded="true" aria-label="Toggle navigation">
+						 TRIAL
+						</button>
+							<div class="navbar-collapse collapse hidden" id="HowToTrial" >
+								<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+								  <li class="nav-item">
+									<p>Some cards are open to interpretation, opionated, or otherwise debatable. If you feel you should not have been given the potato you can <i>go to trial</i> and state your case for it to be given back.</p>
+									<p>To win an argument, you must get 51% of ALL players (even those who may have lost previous games and are sitting out) to agree the potato was wrongly given. If there is a tie vote you lose.</p>
+									<p>If you win the argument, the potato is given back and it is the other players turn again. The card played is still lost and cost associated with it stays.</p>
+									<p>If you lose the argument, you instantly lose the game, take the shot, and a new game can begin.</p>
+									<ul>
+										<li><p>Optional rule: You lose the argument you take a double shot</p></li>
+										<li><p>Optional rule: Limit 1 trial per player per game</p></li>
+									</ul>
+								  </li>
+								</ul>
+							  </div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Login Modal -->
+	<div id="modalLogin-placeholder"></div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script>
+		var CardData = {
+	"Standard":[
+		{"name":"Basic Potato",
+        "desc":"Pass to the left",
+		"type":"Standard",
+        "src":"/images/test/potato1.svg"
+		},
+		{"name":"Basic Potato",
+        "desc":"Pass to the right",
+		"type":"Standard",
+        "src":"/images/test/potato1.svg"
+		},
+		{"name":"Pass Back",
+        "desc":"Pass to who ever just passed to you",
+		"type":"Standard",
+        "src":"/images/test/potato2.svg"
+		},
+        {"name":"Big Potato",
+        "desc":"Pass to a player older than you",
+		"type":"Standard",
+        "src":"/images/test/potato3.svg"
+		},
+        {"name":"Growing Potato",
+        "desc":"Pass to a player younger than you",
+		"type":"Standard",
+        "src":"/images/test/wateringCan.svg"
+		},
+        {"name":"Big Fry",
+        "desc":"Pass to a player taller than you",
+		"type":"Standard",
+        "src":"/images/test/fries.svg"
+		},
+        {"name":"Small Fry",
+        "desc":"Pass to a player shorter than you",
+		"type":"Standard",
+        "src":"/images/test/small_fries.svg"
+		},
+        {"name":"Moldy Potato",
+        "desc":"Pass to a player with longer hair",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Peeled Potato",
+        "desc":"Pass to a player with shorter hair",
+		"type":"Standard",
+        "src":"/images/test/potato5.svg"
+		},
+        {"name":"Longer",
+        "desc":"Pass to a player with a longer name",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Shorter",
+        "desc":"Pass to a player with a shorter name",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Less",
+        "desc":"Pass to a player with less cards than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"More",
+        "desc":"Pass to a player with more cards than you",
+		"type":"Standard",
+        "src":"/images/test/potatoes_three.svg"
+		},
+        {"name":"Big Pota-toes",
+        "desc":"Pass to a player with a larger shoe size than you",
+		"type":"Standard",
+        "src":"/images/test/potatoes_three.svg"
+		},
+        {"name":"Small Pota-toes",
+        "desc":"Pass to a player with a smaller shoe size than you",
+		"type":"Standard",
+        "src":"/images/test/potatoes_three.svg"
+		},
+        {"name":"Match",
+        "desc":"Pass to a player with the same color eyes",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Mismatch",
+        "desc":"Pass to a player with different color eyes",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Potato Family",
+        "desc":"Pass to a player with more siblings than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Lone Potato",
+        "desc":"Pass to a player with less siblings than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Furry Potato",
+        "desc":"Pass to a player with more pets than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Smart Potato",
+        "desc":"Pass to a player with more years spent at college than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Dumb Potato",
+        "desc":"Pass to a player with less years spent at college than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Fat Potato",
+        "desc":"Pass to a player weighs more than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Skinny Potato",
+        "desc":"Pass to a player who weighs less than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Baked Potato",
+        "desc":"Pass to a player who has done weed/THC",
+		"type":"Standard",
+        "src":"/images/test/baked_potato.svg"
+		},
+        {"name":"Sick Potato",
+        "desc":"Pass to a player drunker than you",
+		"type":"Standard",
+        "src":"/images/test/rottenPotato.svg"
+		},
+        {"name":"It takes 2 to Potato",
+        "desc":"Pass to a player who has had more sexual partners than you",
+		"type":"Standard",
+        "src":"/images/test/potato_two.svg"
+		},
+        {"name":"Sweet Potato",
+        "desc":"Pass to a player nicer than you",
+		"type":"Standard",
+        "src":"/images/test/yam.svg"
+		},
+        {"name":"Brotato",
+        "desc":"Pass to a male player",
+		"type":"Standard",
+        "src":"/images/icons/eggplant.svg"
+		},
+		{"name":"Hoetato",
+        "desc":"Pass to a female player",
+		"type":"Standard",
+        "src":"/images/icons/eggplant.svg"
+		}],
+    "Bonus":[
+			{"name":"Gravy",
+			"desc":"Bonus: Instant win if this is a paradox card",
+			"src":"/images/test/gravy.svg"
+			},
+			{"name":"Butter",
+			"desc":"Bonus: No pass back",
+			"src":"/images/test/butter.svg"
+			},
+			{"name":"Sour Cream",
+			"desc":"Bonus: Draw a card",
+			"func":"AddCard(1)",
+			"src":"/images/test/sourcream.svg"
+			},
+			{"name":"Cheese",
+			"desc":"Bonus: Draw 2 cards",
+			"src":"/images/test/cheese.svg"
+			},
+			{"name":"Salt",
+			"desc":"Bonus: This card has had its cost reduced by 1",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: This card has had its cost reduced by 2",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Play for free",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Play for free* You must squat until your next turn. If any player catches you not squating, the potato is instantly given back to you",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Play for free* You must only whisper until your next turn. If any player catches you not whispering, the potato is instantly given back to you",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Play for free* You must stand on one leg until your next turn. If any player catches you not standing on one leg, the potato is instantly given back to you",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Play for free* You must wave with one hand until your next turn. If any player catches you not waving, the potato is instantly given back to you",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Next player cannot play (or must paradox) a bonus card",
+			"src":"/images/logos/4.svg"
+			},
+			{"name":"Chives",
+			"desc":"Bonus: Next player must paradox a card",
+			"src":"/images/logos/4.svg"
+			}
+		],
+    "Paradox":[
+        {"name":"Paradox",
+        "desc":"Rock, Paper, Scissors with any player. Pass to loser",
+		"type":"irl",
+        "src":"/Games/minigames/rockpaperscissors.html?attempts=1"
+		},
+		{"name":"Paradox",
+        "desc":"Win a game of Chain Reaction within 20 seconds.",
+		"type":"iframe",
+        "src":"/Games/minigames/chainreaction.html?timer=20"
+		},
+		{"name":"Paradox",
+        "desc":"Win a game of Chain Reaction within 40 seconds but no starting letter",
+		"type":"iframe",
+        "src":"/Games/minigames/chainreaction.html?timer=40&hint=0"
+		},
+        {"name":"Paradox",
+        "desc":"Flip and Call a coin correct 2 out of 3 tries. Pass to anyone",
+		"type":"irl",
+        "src":"/Games/minigames/rockpaperscissors.html?cardArr=red_X,red_X,potato1&target=potato1&attempts=1"
+		},        
+        {"name":"Paradox",
+        "desc":"Scratch Off the Potato (single try)",
+		"type":"iframe",
+        "src":"/Games/minigames/scratchoff.html?cardArr=red_X,red_X,potato1&target=potato1&attempts=1"
+		},
+		{"name":"Paradox",
+        "desc":"Scratch Off the Potato (2 tries)",
+		"type":"iframe",
+        "src":"/Games/minigames/scratchoff.html?cardArr=red_X,red_X,potato1&target=potato1&attempts=2"
+		},
+        {"name":"Paradox",
+        "desc":"Match the given picture with the hidden one. 3 pictures, 1 try.",
+		"type":"iframe",
+        "src":"/Games/minigames/match.html?attempts=1"
+		},
+		{"name":"Paradox",
+        "desc":"Match the given picture with the hidden one. 4 pictures, 2 tries",
+		"type":"irl",
+        "src":"/Games/minigames/match.html?cardArr=red_x,safe,beer,match"
+		},
+	]
+};
+
+
+
+		class CardObj{
+			constructor(name, desc, cost, id, bonusType, bonusId, src){
+				this.name = name;
+				this.desc = desc;
+				this.cost = cost.sort();
+				this.id = id;
+				this.bonusType = bonusType
+				this.bonusId = bonusId;
+				this.imgsrc = src;
+				//this.costHTML = this.genCostHTML();
+			}
+
+			get CardHTML(){
+				return this.genHTML();
+			}
+
+			genHTML(){
+				let bonusBorder = (this.bonusId !== null) ? "card_bonus" : "";
+				let disableClass = (CheckCost(this.cost)) ? "" : "card_disabled";
+
+
+				
+				let tmp = 	'<div class="container position-relative card nav-item ' + bonusBorder + "  " + disableClass + '" onclick=\'ViewCard(' + JSON.stringify(this)+ ')\'>' +
+								'<h5>' + this.name + '</h5>' +
+								//'<p class="overflow-scroll">' + this.desc  + '</p>' +
+								'<img src="' + this.imgsrc + '" />' +
+								'<div class="container"><div class="row bottom-0">' +
+									this.genCostHTML() +
+								'</div></div>' +
+							'</div>';
+				return tmp;
+			}
+
+			paramValues(){
+				let tmp = '{"name":"' + this.name + '", "desc":"' + this.desc + '"}'
+				return tmp;
+			}
+
+			get CostHTML(){
+				return this.genCostHTML();
+			}
+
+			genCostHTML(){
+				let costHTML = '<svg viewBox="0 0 ' + 80 + ' 20" xmlns="http://www.w3.org/2000/svg" class="p-0">';				
+				for(let i=0; i < this.cost.length; i++){
+					let costColor = (CheckCost(this.cost)) ? this.cost[i] : "card_disabled";
+					costHTML += '<circle cx="' + ((i * 20) + 10) + '" cy="10" r="10" class="' + this.cost[i] + '" />'
+					//costHTML += '<div class="blob ' + this.cost[i] + '  "></div>'
+				}
+				costHTML += '</svg>'
+				return costHTML;
+			}
+		}
+
+
+
+		let cardArr = [];
+		if (sessionStorage.getItem('playerData2')){
+			console.log("Updating with existing cards");
+			let gameData = JSON.parse(sessionStorage.getItem('playerData2'));			
+			let tmpArr = JSON.parse(gameData.cards);			
+			for(i=0; i < tmpArr.length; i++){
+				let tmpCard = new CardObj(tmpArr[i].name
+									,tmpArr[i].desc
+									,tmpArr[i].cost
+									,tmpArr[i].id
+									,tmpArr[i].bonusType
+									,tmpArr[i].bonusId
+									,tmpArr[i].imgsrc
+								);
+				cardArr.push(tmpCard);
+
+			}
+
+
+			let tmpCostArr = JSON.parse(gameData.cost);
+			let tmpCost = []
+			console.log(tmpCostArr);
+			for(let i = 0; i < tmpCostArr.length; i++){
+				for(let ii = 0; ii < tmpCostArr[i].c; ii++){
+					tmpCost.push((tmpCostArr[i].color).toUpperCase());
+				};
+			}
+			ApplyCost({"cost":tmpCost});
+			UpdateHand();
+
+			
+		}
+		else{
+			console.log("new hand on start");
+			NewHand();
+		}
+		
+		
+		
+		function ToggleModal(mod){
+			$(mod).modal('toggle');
+		}
+
+
+
+		function ViewCard(obj){
+			console.log(obj);
+			$(".card_selected").removeClass("card_selected");
+			$(event.srcElement.closest(".card")).addClass("card_selected");
+			
+			$("#cdTitle").text(obj.name);
+			$("#cdDesc").text(obj.desc);
+			//$("#cdCost").html("Cost: " + obj.costHTML);
+			(obj.bonusId !== null) ? $("#cdBonus").text(CardData.Bonus[obj.bonusId].desc) :  $("#cdBonus").text("");
+
+			//Check if card can be played or paradox
+			
+			//$('.pulse').removeClass('pulse');
+			ClearPulse();
+			if(CheckCost(obj.cost)){
+				DisplayCost(obj.cost);
+				$("#navPlayButtons").html('<button class="btn btn-primary w-100" onclick=\'PlayCard(' + JSON.stringify(obj) + ')\' >PLAY</button>');
+				$("#navParadoxButtons").html('<button class="btn btn-dark w-100" onclick=\'ParadoxCard(' + JSON.stringify(obj) + ')\'>PARADOX</button>');
+			}
+			else{
+				$("#navPlayButtons").html('<button class="btn btn-danger p-0">TOO EXPENSIVE</button>');
+				$("#navParadoxButtons").html('<button class="btn btn-danger p-0">TOO EXPENSIVE</button>');
+			}
+			
+		}
+
+		function NewHand(){
+			cardArr = [];
+			AddCard(7);
+			ResetCost();
+			UpdateHand();
+		}
+		function UpdateHand(){
+			$("#cardHand").empty();
+			for(let i = 0; i < cardArr.length; i++){
+				$("#cardHand").append(cardArr[i].CardHTML);
+			}
+
+			let usedCost = [{"color":"yellow", "c":$('.yellow').length}
+							,{"color":"red", "c":$('.red').length}
+							,{"color":"blue", "c":$('.blue').length}
+							,{"color":"green", "c":$('.green').length}
+						];
+			let storageArr = {"cost": JSON.stringify(usedCost)
+						,"cards": JSON.stringify(cardArr)};
+
+			sessionStorage.setItem('playerData', JSON.stringify(cardArr));
+			sessionStorage.setItem('playerData2', JSON.stringify(storageArr));
+			$('#txtCardCount').text(cardArr.length);
+		}
+		function CheckCost(obj){
+			//Get Cost Variables
+			let cRed = 0;
+			let cBlue = 0;
+			let cYellow = 0;
+			let cGreen = 0;
+			for(let i = 0; i < obj.length; i++){
+				if (obj[i] == "RED"){
+					cRed++;
+				}
+				else if (obj[i] == "BLUE"){
+					cBlue++;
+				}
+				else if (obj[i] == "YELLOW"){
+					cYellow++;
+				}
+				else if (obj[i] == "GREEN"){
+					cGreen++;
+				}
+			}
+
+			//Get Available variables
+			let aRed = $('.firebrick').length;
+			let aBlue = $('.midnightblue').length;
+			let aYellow = $('.goldenrod').length;
+			let aGreen = $('.darkolivegreen').length;
+
+			if( cRed <= aRed &&
+				cBlue <= aBlue &&
+				cYellow <= aYellow &&
+				cGreen <= aGreen
+			){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		function DisplayCost(obj){
+			//Clear current pulsing
+			ClearPulse();
+
+			//Get Cost Variables
+			let cRed = 0;
+			let cBlue = 0;
+			let cYellow = 0;
+			let cGreen = 0;
+			for(let i = 0; i < obj.length; i++){
+				if (obj[i] == "RED"){
+					cRed++;
+				}
+				else if (obj[i] == "BLUE"){
+					cBlue++;
+				}
+				else if (obj[i] == "YELLOW"){
+					cYellow++;
+				}
+				else if (obj[i] == "GREEN"){
+					cGreen++;
+				}
+			}
+
+			$(".firebrick" ).each(function( index ) {
+				if(index < cRed){
+					$(this).addClass('pulse');
+				}
+			});
+			$(".midnightblue" ).each(function( index ) {
+				if(index < cBlue){
+					$(this).addClass('pulse');
+				}
+			});
+			$(".goldenrod" ).each(function( index ) {
+				if(index < cYellow){
+					$(this).addClass('pulse');
+				}
+			});
+			$(".darkolivegreen" ).each(function( index ) {
+				if(index < cGreen){
+					$(this).addClass('pulse');
+				}
+			});
+		}
+		function ClearPulse(){
+			$(".pulse").removeClass('pulse');
+		}
+		function PlayCard(obj){
+			ApplyCost(obj);
+			PlayBonus(obj.bonusId);
+			DiscardCard(obj);
+			UpdateHand();
+
+		}
+		function PlayBonus(bonusId){
+			if(bonusId == 2){AddCard(1)};
+			if(bonusId == 3){AddCard(2)};
+
+		}	
+		function ApplyCost(obj){
+			console.log(obj);
+			//Get Cost Variables
+			let cRed = 0;
+			let cBlue = 0;
+			let cYellow = 0;
+			let cGreen = 0;
+			for(let i = 0; i < obj.cost.length; i++){
+				if (obj.cost[i] == "RED"){
+					cRed++;
+				}
+				else if (obj.cost[i] == "BLUE"){
+					cBlue++;
+				}
+				else if (obj.cost[i] == "YELLOW"){
+					cYellow++;
+				}
+				else if (obj.cost[i] == "GREEN"){
+					cGreen++;
+				}
+			}
+			$(".firebrick" ).each(function( index ) {
+				if(index < cRed){
+					$(this).addClass('red');
+					$(this).removeClass('firebrick pulse');
+				}
+			});
+			$(".midnightblue" ).each(function( index ) {
+				if(index < cBlue){
+					$(this).addClass('blue');
+					$(this).removeClass('midnightblue pulse');
+				}
+			});
+			$(".goldenrod" ).each(function( index ) {
+				if(index < cYellow){
+					$(this).addClass('yellow');
+					$(this).removeClass('goldenrod pulse');
+				}
+			});
+			$(".darkolivegreen" ).each(function( index ) {
+				if(index < cGreen){
+					$(this).addClass('green');
+					$(this).removeClass('darkolivegreen pulse');
+				}
+			});
+		}
+		function AddCard(count){
+			for(let i = 0; i < count; i++){
+				let rnd = Math.floor(Math.random() * CardData.Standard.length);
+				
+				//Create random cost colors
+				let cost = Math.floor(Math.random() * 3) + 2;
+				let totalCost = [];
+				for(let ii = 0; ii < cost; ii++){
+					let rndCol = Math.floor(Math.random() * 4);
+					if(rndCol == 0){
+						totalCost.push("RED");
+					}
+					else if(rndCol == 1){
+						totalCost.push("BLUE");
+					}
+					else if(rndCol == 2){
+						totalCost.push("YELLOW");
+					}
+					else if(rndCol == 3){
+						totalCost.push("GREEN");
+					}
+				}
+
+
+
+				//Apply bonus based on cost
+				let bonusType = null;
+				let bonusId = null;
+				for(let ii = 0; ii < cost; ii++){
+					if(Math.random() < 0.1){ //10% chance for bonus per cost
+						bonusId = Math.floor(Math.random() * CardData.Bonus.length);
+						//Apply cost effect bonuses
+						//Free Cards
+						let freeCardBonusIds = [6, 7, 8, 9, 10]
+						if(freeCardBonusIds.includes(bonusId)){totalCost = []};
+
+						//Reduce cost
+						if(bonusId == 4){totalCost.splice(totalCost.length - 1)};
+						if(bonusId == 5){totalCost.splice(totalCost.length - 2)};
+						break;
+					}
+				}
+				
+				//Create card as object
+				let tmpCard = new CardObj(CardData.Standard[rnd].name
+									,CardData.Standard[rnd].desc
+									,totalCost
+									,rnd
+									,bonusType
+									,bonusId
+									,CardData.Standard[rnd].src
+								);
+				cardArr.push(tmpCard);
+			}
+	}		
+		function DiscardCard(obj){
+			for(i=0; i < cardArr.length; i++){
+				if(obj.name == cardArr[i].name
+					&& obj.desc == cardArr[i].desc
+					&& JSON.stringify(obj.cost) == JSON.stringify(cardArr[i].cost)
+					&& obj.id == cardArr[i].id
+					//&& obj.bonusId == cardArr[i].bonusId
+					){
+					cardArr.splice(i, 1);
+					UpdateHand();
+				}
+			}
+		}	
+		
+		function ParadoxCard(obj){
+			CompleteParadox(obj);	
+		}
+
+		function CompleteParadox(obj){
+			ResetParadoxModal();
+			let paradox = CardData.Paradox[ Math.floor(Math.random() * CardData.Paradox.length)];
+
+			//Debug
+			//paradox = CardData.Paradox[2];
+
+			$('#ParadoxModalDescBody').html('<p>' + paradox.desc + '</p>');
+
+			//Update modals if players want to play in real life instead of automated minigame
+			if(paradox.type == "irl"){		
+				$('#ParadoxModalDescFooter').addClass('justify-content-between');
+				$('#ParadoxModalDescFooter').html(`<button id="ParadoxModalDescIRLButton" type="button" class="btn btn-primary" onclick='ParadoxIRL(` + JSON.stringify(obj) + `)'>PLAY IRL</button>
+													<button id="ParadoxModalDescCloseButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ParadoxModal" onclick='ParadoxIFrame(` + JSON.stringify(obj) + `)'>PLAY MINIGAME</button>`);				
+			}
+			if(paradox.type == "iframe"){		
+				$('#ParadoxModalDescFooter').html(`<button id="ParadoxModalDescCloseButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ParadoxModal" onclick='ParadoxIFrame(` + JSON.stringify(obj) + `)'>PLAY MINIGAME</button>`);				
+			}
+
+			$('#ParadoxModalBody').html('<iframe src="'+ paradox.src + '" title="' + paradox.name + '" style="width:100%; height:75vh;"></iframe>');
+			$("#ParadoxModalDesc").modal('show');	
+		}
+		
+		function ResetParadoxModal(){
+			$('#ParadoxModal').html(
+				`<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content" style="overflow-y: auto">
+						<div class="modal-header">
+							<h5 class="modal-title">Paradox</h5>
+						</div>
+						<div class="modal-body p-0" id="ParadoxModalBody">
+					
+						</div>
+						<div class="modal-footer" id="ParadoxModalFooter">
+							<button id="ParadoxModalCloseButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal">COMPLETE</button>
+						</div>
+					</div>
+				</div>`)
+
+
+			$('#ParadoxModalDesc').html(
+				`<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content" style="overflow-y: auto">
+						<div class="modal-header">
+							<h5 class="modal-title">Paradox</h5>
+						</div>
+						<div class="modal-body p-0" id="ParadoxModalDescBody">
+					
+						</div>
+						<div class="modal-footer" id="ParadoxModalDescFooter">							
+							<button id="ParadoxModalDescCloseButton" type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ParadoxModal">START</button>
+						</div>
+					</div>
+				</div>`)
+			}
+
+		function ParadoxIFrame(obj){
+			console.log("add event listener for message");
+			window.addEventListener("message",(event) => {
+				if(event.data.type == "minigame"){
+						if(event.data.result == "win"){
+							PlayCard(obj);
+							alert("You Won! Card has been played and bonuses (if any) applied. Pass to next player.");
+							//$('#ParadoxModalCloseButton').text("WIN")
+						}
+						if(event.data.result == "lose"){
+							alert("You Lost... Card has been discarded and it is still your turn.");
+							DiscardCard(obj);
+						}
+						UpdateHand();		
+					//window.removeEventListener("message", this)				
+						//$("#ParadoxModal").modal('hide'); 
+					}
+								
+  				}
+  				, { once: true }
+				);
+		}
+
+		function ParadoxIRL(obj){
+			$('#ParadoxModalDescFooter').html(`
+					<button id="ParadoxModalDescIRLButton" type="button" class="btn btn-success btn-lg" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ParadoxModalDesc" onclick='PlayCard(` + JSON.stringify(obj) + `)'>I WON!</button>
+					<button id="ParadoxModalDescCloseButton" type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#ParadoxModalDesc" onclick='DiscardCard(` + JSON.stringify(obj) + `)'>I LOST</button>`);
+		}
+
+		function WindowMessageAddListner(obj){
+			window.addEventListener("message",(event) => {
+				if(event.data.type == "minigame"){
+						if(event.data.result == "win"){
+							PlayCard(obj);
+							alert("You Won! Card has been played and bonuses (if any) applied. Pass to next player.");
+							//$('#ParadoxModalCloseButton').text("WIN")
+						}
+						if(event.data.result == "lose"){
+							alert("You Lost... Card has been discarded and it is still your turn.");
+							DiscardCard(obj);
+						}
+						UpdateHand();		
+					//window.removeEventListener("message", this)				
+						//$("#ParadoxModal").modal('hide'); 
+					}
+								
+  				}
+  				, { once: true }
+				);
+		}
+
+		function ResetCost(){
+			$('#CostDisplay').html(`<div class="d-flex">
+			<div class="col-6 d-flex">
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+				<div class="blob midnightblue"></div>
+			</div>
+			<div class="col-6 d-flex">
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+				<div class="blob darkolivegreen"></div>
+			</div>	
+		</div>
+		<div class="d-flex">
+			<div class="col-6 d-flex">
+				<div class="blob firebrick "></div>
+				<div class="blob firebrick "></div>
+				<div class="blob firebrick "></div>
+				<div class="blob firebrick"></div>
+				<div class="blob firebrick"></div>
+			</div>
+			<div class="col-6 d-flex">
+				<div class="blob goldenrod "></div>
+				<div class="blob goldenrod "></div>
+				<div class="blob goldenrod "></div>
+				<div class="blob goldenrod"></div>
+				<div class="blob goldenrod"></div>
+			</div>
+		</div>`);
+		}
+		console.log(cardArr);
+	</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+{"frames": {
+
+"0_Reaper_Man_Dying_000.png":
+{
+	"frame": {"x":1,"y":1,"w":437,"h":575},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":212,"y":177,"w":437,"h":575},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Dying_001.png":
+{
+	"frame": {"x":1172,"y":443,"w":441,"h":577},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":233,"y":153,"w":441,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Dying_002.png":
+{
+	"frame": {"x":1,"y":879,"w":445,"h":578},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":254,"y":132,"w":445,"h":578},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Dying_008.png":
+{
+	"frame": {"x":1,"y":1326,"w":568,"h":455},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":47,"y":275,"w":568,"h":455},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Dying_009.png":
+{
+	"frame": {"x":1156,"y":1334,"w":583,"h":452},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":39,"y":361,"w":583,"h":452},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Dying_010.png":
+{
+	"frame": {"x":581,"y":885,"w":585,"h":446},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":34,"y":397,"w":585,"h":446},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Running_000.png":
+{
+	"frame": {"x":1163,"y":1,"w":440,"h":576},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":219,"y":176,"w":440,"h":576},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Running_001.png":
+{
+	"frame": {"x":590,"y":443,"w":440,"h":580},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":220,"y":166,"w":440,"h":580},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Running_002.png":
+{
+	"frame": {"x":578,"y":1,"w":437,"h":583},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":206,"y":157,"w":437,"h":583},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Running_003.png":
+{
+	"frame": {"x":1168,"y":886,"w":446,"h":581},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":182,"y":150,"w":446,"h":581},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Running_008.png":
+{
+	"frame": {"x":1,"y":440,"w":437,"h":587},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":207,"y":158,"w":437,"h":587},
+	"sourceSize": {"w":900,"h":900}
+},
+"0_Reaper_Man_Running_010.png":
+{
+	"frame": {"x":571,"y":1333,"w":450,"h":583},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":175,"y":160,"w":450,"h":583},
+	"sourceSize": {"w":900,"h":900}
+}},
+"animations": {
+	"0_Reaper_Man_Dying": ["0_Reaper_Man_Dying_000.png","0_Reaper_Man_Dying_001.png","0_Reaper_Man_Dying_002.png","0_Reaper_Man_Dying_003.png","0_Reaper_Man_Dying_004.png","0_Reaper_Man_Dying_005.png","0_Reaper_Man_Dying_006.png","0_Reaper_Man_Dying_007.png","0_Reaper_Man_Dying_008.png","0_Reaper_Man_Dying_009.png","0_Reaper_Man_Dying_010.png","0_Reaper_Man_Dying_011.png","0_Reaper_Man_Dying_012.png","0_Reaper_Man_Dying_013.png","0_Reaper_Man_Dying_014.png"],
+	"0_Reaper_Man_Running": ["0_Reaper_Man_Running_000.png","0_Reaper_Man_Running_001.png","0_Reaper_Man_Running_002.png","0_Reaper_Man_Running_003.png","0_Reaper_Man_Running_004.png","0_Reaper_Man_Running_005.png","0_Reaper_Man_Running_006.png","0_Reaper_Man_Running_007.png","0_Reaper_Man_Running_008.png","0_Reaper_Man_Running_009.png","0_Reaper_Man_Running_010.png","0_Reaper_Man_Running_011.png"]
+},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "test2-0.png",
+	"format": "RGBA8888",
+	"size": {"w":1750,"h":1787},
+	"scale": "1",
+	"related_multi_packs": [ "test2-1.json" ],
+	"smartupdate": "$TexturePacker:SmartUpdate:4380470146727eea44693be613e23267:45b66a54b278598eec8c2ab810c5670f:5503f26a29b011656d17ec2fe9d0318f$"
+}
+}

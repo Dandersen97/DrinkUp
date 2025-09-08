@@ -1,0 +1,252 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Scratch N' Drink</title>
+	<!-- Styles -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
+	<style>
+		body {
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+		/*
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0px;
+			top: 0px;
+			width: 100vw; /* Full width */
+			/*height: 100vh; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(245,245,245); /* Fallback color */
+		}
+	
+		.modal-vis {
+			display: block;
+		}*/
+	</style>
+	
+</head>
+<body>
+	<div id="nav-placeholder"></div>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Scratch N' Drink</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+			<button onclick="NewCard()" class="btn btn-primary">New Game</button>
+        </div>
+      </div>
+    </nav>
+	<!-- Content -->
+	<div class="modal-vis" style="hidden" id="ModalImageArtist">
+		<div class="container">
+			<div id="GameBoard">
+			</div>
+		</div>
+	</div>
+	<div class="modal" style="hidden" id="ModalHowToPlay">
+		
+	</div>
+
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p><b><u>REQUIRES TOUCH SCREEN DEVICE</u></b></p>
+					<p>Take turns revealing tiles by scratching off the grey with your finger and do what they say. Beware the skull and bones. You have to take the punishment if you reveal that.</p>
+					<p>Punishments can be anything to the imagination of the players and each player can have a different punishment. Popular punishments include taking a shot, getting sharpied or becoming the beer bitch.</p>
+					<h1>Image Key:</h1>
+					<div class="container">
+						<div class="row border panel panel-primary">
+							<div class="col-12">
+								<image class="float-start" src="/images/icons/beer.svg" height="100px" width="100px"></image>
+								<h2 class="h2">Drink 1</h2>
+							</div>
+						</div>
+						<div class="row border panel panel-primary">
+							<div class="col-12">
+								<image class="float-start" src="/images/icons/beer2.svg" height="100px" width="100px"></image>
+								<h2 class="align-middle">Drink 2</h2>
+							</div>
+						</div>
+						<div class="row border panel panel-primary">
+							<div class="col-12">
+								<image class="float-start" src="/images/icons/safe.svg" height="100px" width="100px"></image>
+								<h2 class="h2">Safe (do nothing)</h2>
+							</div>
+						</div>
+						<div class="row border panel panel-primary">
+							<div class="col-12">
+								<image class="float-start" src="/images/icons/repeat.svg" height="100px" width="100px"></image>
+								<h2 class="h2">Go Again</h2>
+							</div>
+						</div>
+						<div class="row border panel panel-primary">
+							<div class="col-12">
+								<image class="float-start" src="/images/icons/crossbones.svg" height="100px" width="100px"></image>
+								<h2 class="h2">Take The Punishment</h2>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Settings</h5>
+				</div>
+				<div class="modal-body">
+		<p>Adjust the number of each type of scratch off.</p>
+		<p><b>Too many options may cause issues with scrolling.</b> Use the purposeful whitespace on the right hand side of the screen to scroll to avoid accidentally scratching off a tile.</p>
+		
+		<label for="sliderbeer" class="form-label">Drink 1: </label><label for="sliderbeer" class="form-label">8</label>
+		<input type="range" class="form-range settingsSlider" id="sliderbeer" min="0" max="10" value="8" oninput='UpdateSliderLabel(event)'>
+		
+		<label for="sliderbeer2" class="form-label">Drink 2: </label><label for="sliderbeer2" class="form-label">4</label>
+		<input type="range" class="form-range settingsSlider" id="sliderbeer2" min="0" max="10" value="4" oninput='UpdateSliderLabel(event)'>
+		
+		<label for="slidersafe" class="form-label">Safe: </label><label for="slidersafe" class="form-label">5</label>
+		<input type="range" class="form-range settingsSlider" id="slidersafe" min="0" max="10" value="5" oninput='UpdateSliderLabel(event)'>
+		
+		<label for="sliderrepeat" class="form-label">Repeat: </label><label for="sliderrepeat" class="form-label">5</label>
+		<input type="range" class="form-range settingsSlider" id="sliderrepeat" min="0" max="10" value="2" oninput='UpdateSliderLabel(event)'>
+		
+		<label for="slidercrossbones" class="form-label">Crossbones: </label><label for="slidercrossbones" class="form-label">1</label>
+		<input type="range" class="form-range settingsSlider" id="slidercrossbones" min="0" max="10" value="1" oninput='UpdateSliderLabel(event)'>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+		
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+	<div id="modalLogin-placeholder"></div>
+	<script>
+	window.onload = (event) => {
+		NewCard();
+	}
+
+	
+	function StartDraw(e){
+		e.preventDefault = true;
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		var drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+	}
+	
+	function StopDraw(e){
+		e.preventDefault = false;
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		drawLine = "";
+	}
+	
+	function Drawing(e){
+		e.preventDefault();
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+		
+		
+		if(svg.children[0].children[0].children.length > 20){
+			drawLine = '<rect width="100%" height="100%" />'
+			drawGroup.innerHTML += drawLine;
+		}
+	}
+	
+	/*
+	svg.addEventListener("touchmove", function (e) {
+		e.preventDefault();
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+		drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+	}, false);
+	*/
+	
+	function ToggleModal(mod){
+		var togMod = document.getElementById(mod);
+		togMod.classList.toggle("modal-vis");
+	}
+		
+	function NewCard(){
+		var options = [];
+		let sliders = document.getElementsByClassName("settingsSlider");
+		for(let s = 0; s < sliders.length; s++){
+			let img = sliders[s].id.replace('slider', '');
+			for(let ss = 0; ss < sliders[s].value; ss++){
+				options.push(img);
+			}
+		}
+		var repeatNum = [];
+		
+		document.getElementById("GameBoard").innerHTML = "";
+		for (let i=1; i <= options.length; i++){
+			var randNum = RandomNum(0, options.length);
+			var stopRepeat = false;
+			
+			while(!stopRepeat){
+				if(!repeatNum.includes(randNum)){
+					document.getElementById("GameBoard").innerHTML += '<svg width="22vw" height="22vw" ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)" ontouchmove="Drawing(event)">' +
+																		'<defs><clipPath id="drawGroup' + i + '"></clipPath></defs><rect x="0" y="0" width="22vw" height="22vw" stroke="black" fill="gray" stroke-width="5" opacity="1" /><image href="../../images/icons/' + options[randNum] + '.svg" height="100%" width="100%" clip-path="url(#drawGroup' + i + ')" />' +
+																		'</svg>';
+
+					
+					//document.getElementById("svg" + i).innerHTML = '<defs><clipPath id="drawGroup' + i + '"></clipPath></defs><rect x="0" y="0" width="22vw" height="22vw" stroke="black" fill="gray" stroke-width="5" opacity="1" /><image href="' + options[randNum] + '.svg" height="100%" width="100%" clip-path="url(#drawGroup' + i + ')" />';
+					
+					
+					repeatNum[i] = randNum;
+					stopRepeat = true;
+				}
+				else {
+					var randNum = RandomNum(0, options.length);
+					stopRepeat = false;
+				}
+			}	
+		}
+		
+	}
+	function RandomNum(min, max) { // min and max included 
+			return Math.floor(Math.random() * (max - min) + min)
+		};
+		
+	function UpdateSliderLabel(e){
+		var sliderVal = e.srcElement.value;
+		e.srcElement.labels[1].innerText = '   ' + sliderVal;
+	}
+	</script>
+</body>
+</html>

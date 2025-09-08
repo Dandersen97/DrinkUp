@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Title</title>
+  <link rel="stylesheet" href>
+</head>
+
+<body>
+<!--
+  <canvas id="c" width="300px" height="300px" style="border: 1px solid black;"  ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)"></canvas>
+  <button onclick="SendData()">UP</button>
+  <h3 ontouchstart="f2()" ontouchend="f3()">MOVE LEFT</h3>
+  -->
+  <textarea></textarea>
+  <button id="ButtonClient" onclick="SendData()">Press OK</button>
+  <script src="https://unpkg.com/colyseus.js@^0.15.0/dist/colyseus.js"></script>
+  <script src="/scripts/joystick.js"></script>
+  <script>
+  
+
+	/*
+title {String} (optional) - The ID of canvas (Default value is 'joystick')
+width {Int} (optional) - The width of canvas, if not specified is setted at width of container object (Default value is the width of container object)
+height {Int} (optional) - The height of canvas, if not specified is setted at height of container object (Default value is the height of container object)
+internalFillColor {String} (optional) - Internal color of Stick (Default value is '#00AA00')
+internalLineWidth {Int} (optional) - Border width of Stick (Default value is 2)
+internalStrokeColor {String}(optional) - Border color of Stick (Default value is '#003300')
+externalLineWidth {Int} (optional) - External reference circonference width (Default value is 2)
+externalStrokeColor {String} (optional) - External reference circonference color (Default value is '#008000')
+autoReturnToCenter {Bool} (optional) - Sets the behavior of the stick, whether or not, it should return to zero position when released (Default value is True and return to zero)
+*/
+		
+    //var client = new Colyseus.Client('ws://192.168.1.28:2567');
+    var client = new Colyseus.Client('ws://68.171.183.131:2567');
+    var rm;
+
+    client.joinOrCreate("my_room", {code: "abcd"})
+
+
+      .then(room => {
+      console.log(room);
+      rm = room;
+      console.log(room.sessionId, "joined", room.name);
+      
+      //room.send("data", {scale:1});
+
+
+      room.onStateChange((state) => {
+      console.log(room.name, "has new state:", state);
+    });
+
+
+    room.onMessage("data", (message) => {
+      console.log(room.sessionId, "received on", room.name, message);
+	  document.dispatchEvent(keyboardEvent);
+	  document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'a'}));
+    });
+
+    room.onError((code, message) => {
+      console.log(room.sessionId, "couldn't join", room.name);
+    });
+
+    room.onLeave((code) => {
+      console.log(room.sessionId, "left", room.name);
+    });
+
+
+
+
+    }).catch(e => {
+      console.log("JOIN ERROR", e);
+    });
+
+
+    function SendData(){
+      rm.send("data", { x: "ok" });
+    }
+
+
+    let interval;
+    var m = false;
+    function f2(){
+      interval = setInterval(() => {
+        SendData();
+      },100)
+    }
+
+    function f3(){
+      clearInterval(interval);
+    }
+
+
+var keyboardEvent = document.createEvent('KeyboardEvent');
+var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? 'initKeyboardEvent' : 'initKeyEvent';
+    
+keyboardEvent[initMethod](
+  'keydown', true, true, window, false, false,false, false, 
+  0x002D, // keyCode: unsigned long - the virtual key code, else 0
+  0, // charCode: unsigned long - the Unicode character associated with the depressed key, else 0
+);
+
+
+
+
+
+   
+
+
+    
+  </script>
+</body>
+
+</html>

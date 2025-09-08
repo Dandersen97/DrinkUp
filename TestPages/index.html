@@ -1,0 +1,22 @@
+<head>
+
+</head>
+<body>
+	<button onclick='CheckLogin("devon","1225")'>CHECK</button>
+	<button onclick='SetLogin("devon","1225")'>SET</button>
+	<button onclick='Logout()'>CLEAR</button>
+	<br />
+	<button onclick='LocalLogin()'>CHECK LOCAL</button>
+	<script src="/scripts/login.js"></script>
+	<script>
+		if(CheckLogin("devon", "1225")){
+			console.log("login successful");
+		}
+		
+		function LocalLogin(){
+			let u = localStorage.getItem("username");
+			let p = localStorage.getItem("pin")
+			CheckLogin(u, p);
+		}
+	</script>
+</body>

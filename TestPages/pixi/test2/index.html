@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.4.0/pixi.min.js"></script>
+    <script>
+        //PIXI.Assets.load(["reaperman-0.json"]);
+        PIXI.Assets.load('reaperman-0.json');
+    </script>
+  </head>
+  <body>
+    <script>
+      // Create the application helper and add its render target to the page
+      let app = new PIXI.Application({ width: 640, height: 360 });
+      document.body.appendChild(app.view);
+
+      // Create the sprite and add it to the stage
+      let sprite = PIXI.Sprite.from('/images/favicon.png');
+      app.stage.addChild(sprite);
+
+      // Add a ticker callback to move the sprite back and forth
+      let elapsed = 0.0;
+      app.ticker.add((delta) => {
+        elapsed += delta;
+        sprite.x = 100.0 + Math.cos(elapsed/50.0) * 100.0;
+      });
+
+
+
+      
+
+
+      //const animations = await PIXI.Assets.load("skeljson");
+
+ const animations = PIXI.Assets.load("reaperman-0.json");
+/*
+const character = PIXI.AnimatedSprite.fromFrames(animations["0_Reaper_Man_Running"]);
+
+    // configure + start animation:
+    character.animationSpeed = 1 / 6;                     // 6 fps
+    character.position.set(150, background.height - 780); // almost bottom-left corner of the canvas
+    character.play();
+
+    // add it to the stage and render!
+    app.stage.addChild(character);
+
+    */
+    </script>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Title</title>
+  <link rel="stylesheet" href>
+</head>
+
+<body>
+  <canvas id="c" width="300px" height="300px" style="border: 1px solid black;"  ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)"></canvas>
+  <button onclick="SendData()">UP</button>
+  <h3 ontouchstart="f2()" ontouchend="f3()">MOVE LEFT</h3>
+  <script src="https://unpkg.com/colyseus.js@^0.15.0/dist/colyseus.js"></script>
+  <script>
+    var client = new Colyseus.Client('ws://192.168.1.48:2567');
+    var rm;
+
+    client.joinOrCreate("my_room", {code: "qwer"})
+
+
+      .then(room => {
+      console.log(room);
+      rm = room;
+      console.log(room.sessionId, "joined", room.name);
+      
+      //room.send("data", {scale:1});
+
+
+      room.onStateChange((state) => {
+      console.log(room.name, "has new state:", state);
+    });
+
+
+    room.onMessage("data", (message) => {
+      console.log(room.sessionId, "received on", room.name, message);
+    });
+
+    room.onError((code, message) => {
+      console.log(room.sessionId, "couldn't join", room.name);
+    });
+
+    room.onLeave((code) => {
+      console.log(room.sessionId, "left", room.name);
+    });
+
+
+
+
+    }).catch(e => {
+      console.log("JOIN ERROR", e);
+    });
+
+
+    function SendData(){
+      rm.send("data", { move: "left" });
+    }
+
+
+    let interval;
+    var m = false;
+    function f2(){
+      interval = setInterval(() => {
+        SendData();
+      },100)
+    }
+
+    function f3(){
+      clearInterval(interval);
+    }
+
+
+
+    const c =  document.getElementById("c");
+        
+        let touching = false;
+        let touchx = 150;
+        let touchy = 150;
+        let baseRadius = 100;
+        var data = {};
+        img = new Image();
+        img.src = '/images/test/joystick-button.svg';
+
+        function draw(){
+            const ctx = document.getElementById("c").getContext("2d");
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.clearRect(0, 0, 300, 300);
+            ctx.beginPath();
+            ctx.closePath();
+            //ctx.save();
+		    //tx.translate(150, 150);
+		    ctx.drawImage(img
+						, 50
+						, 50
+                        , 200, 200
+						);
+            
+            ctx.arc(150,150,baseRadius, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.closePath();
+		    //ctx.translate(-150, -150);
+		    //ctx.restore();
+
+            //ctx.save();
+            //ctx.translate(touchx, touchy);
+            if(touching){
+                ctx.arc(touchx,touchy,30, 0, 2 * Math.PI);
+                ctx.stroke();
+            }
+            //ctx.translate(-touchx, -touchy);
+            //ctx.restore();
+
+
+
+
+
+            window.requestAnimationFrame(draw);
+        }
+
+
+        function Controller(e){
+            console.log(e);
+        }
+
+        function StartDraw(e){
+            touching = true;
+            //console.log('Starting to draw');
+            //console.log(e);
+            //isDrawing = true;
+            e.preventDefault = true;
+            //var offsetX = c.getBoundingClientRect().x;
+            //var offsetY = c.getBoundingClientRect().y;
+        }
+	
+        function StopDraw(e){
+            touching = false;
+            e.preventDefault = false;
+        }
+	
+	    c.addEventListener("touchmove", function (e) {
+            var rect = e.target.getBoundingClientRect();
+            var x = e.touches[0].clientX - rect.left; 
+            var y = e.touches[0].clientY - rect.top; 
+		    e.preventDefault();
+		    //var offsetX = c.getBoundingClientRect().x;
+		    //var offsetY = c.getBoundingClientRect().y;
+            if(x > (150 + baseRadius)){
+                x = 150 + baseRadius;
+            }
+            if(x < (150 - baseRadius)){
+                x = 150 - baseRadius;
+            }
+            if(y > (150 + baseRadius)){
+                y = 150 + baseRadius;
+            }
+            if(y < (150 - baseRadius)){
+                y = 150 - baseRadius;
+            }
+            console.log((x - 150) / baseRadius);
+            touchx = x;
+            touchy = y;
+
+            let x2 = (x - 150) / baseRadius;
+            let y2 = (y - 150) / baseRadius
+            rm.send("data",  {x: x2, y: y2});
+
+	    }, false);
+
+        
+
+        draw();
+
+   
+
+
+    
+  </script>
+</body>
+
+</html>

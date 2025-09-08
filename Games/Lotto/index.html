@@ -1,0 +1,157 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Lotto Ticket PoC</title>
+	<!-- Styles -->
+	<!--<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">-->
+	<style>
+		body {
+			padding-top: 20px;
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+		
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 1%;
+			top: 1%;
+			width: 98%; /* Full width */
+			height: 98%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(245,245,245); /* Fallback color */
+		}
+	
+		.modal-vis {
+			display: block;
+		}
+	</style>
+	<style src="../../css/bootstrap.min.3.4.1.css"></style>
+</head>
+<body>
+	<!-- Content -->
+	<div class="modal-vis" style="hidden" id="ModalImageArtist">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>Lotto Ticket Proof of Concept</h1>
+					<p>Scratch away the grey to see the image underneath!</p>
+				</div>
+			</div>
+			<div class="row">
+				<svg width="30vw" height="30vw" ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)" ontouchmove="Drawing(event)">
+					<defs>
+						<clipPath id="drawGroup1">
+						</clipPath>
+					</defs>
+					<rect x="0" y="0" width="30vw" height="30vw" stroke="black" fill="gray" stroke-width="5" opacity="1" />
+					<image href="beer-svgrepo-com.svg" height="100%" width="100%" clip-path="url(#drawGroup1)" />
+				</svg>
+				<svg width="30vw" height="30vw" ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)" ontouchmove="Drawing(event)">
+					<defs>
+						<clipPath id="drawGroup2">
+						</clipPath>
+					</defs>
+					<rect x="0" y="0" width="30vw" height="30vw" stroke="black" fill="gray" stroke-width="5" opacity="1" />
+					<image href="beer-svgrepo-com.svg" height="100%" width="100%" clip-path="url(#drawGroup2)" />	
+				</svg>
+				<svg width="30vw" height="30vw" ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)" ontouchmove="Drawing(event)">
+					<defs>
+						<clipPath id="drawGroup3">
+						</clipPath>
+					</defs>
+					<rect x="0" y="0" width="30vw" height="30vw" stroke="black" fill="gray" stroke-width="5" opacity="1" />
+					<image href="beer-svgrepo-com.svg" height="100%" width="100%" clip-path="url(#drawGroup3)" />
+				</svg>
+			</div>	
+		</div>
+	</div>
+
+	<script>
+	window.onload = (event) => {
+		ToggleModal("ModalMainMenu");
+		svgRect = svg.getBoundingClientRect()
+		
+	}
+
+	
+	function StartDraw(e){
+		e.preventDefault = true;
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		var drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+	}
+	
+	function StopDraw(e){
+		e.preventDefault = false;
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		drawLine = "";
+	}
+	
+	function Drawing(e){
+		e.preventDefault();
+		var svg = e.srcElement.closest("svg");
+		var drawGroup = svg.children[0].children[0];
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+
+		drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+	}
+	
+	/*
+	svg.addEventListener("touchmove", function (e) {
+		e.preventDefault();
+		var offsetX = svg.getBoundingClientRect().x;
+		var offsetY = svg.getBoundingClientRect().y;
+		drawLine = '<circle cx="' + (e.touches[0].clientX - offsetX) + '" cy="' + (e.touches[0].clientY - offsetY) + '" r="25" />';
+		drawGroup.innerHTML += drawLine;
+	}, false);
+	*/
+	
+	function ToggleModal(mod){
+		var togMod = document.getElementById(mod);
+		togMod.classList.toggle("modal-vis");
+	}
+		
+	function GetImage(){
+		var img = document.getElementById("ImageDraw");	
+		if (window.XMLHttpRequest){
+					xmlhttp = new XMLHttpRequest();
+				}
+				else{
+					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				var phpResult = "";
+				xmlhttp.open("GET", "GetRandomImage.php", false);
+				xmlhttp.send();
+				if(xmlhttp.status === 200){
+					phpResult = xmlhttp.responseText;
+				}		
+		img.innerHTML = phpResult;
+	}
+	
+	function ToggleEasy(e){
+		console.log(e);
+		console.log(e.srcElement.checked);
+		if(e.srcElement.checked){
+			drawGroup.style.stroke="blue";
+		}
+		else{
+			drawGroup.style.stroke="white";
+		}
+	}
+	</script>
+</body>
+</html>

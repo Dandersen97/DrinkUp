@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+		<script src="https://pixijs.download/release/pixi.min.js"></script>
+</head>	
+
+
+<body>
+	<!-- MAIN BODY DIV -->
+<script>
+
+
+
+
+// Create the application helper and add its render target to the page
+let app = new PIXI.Application({ width: 640, height: 360, background: '#1099bb' });
+document.body.appendChild(app.view);
+
+
+let faceOpt = 0;
+const faces = [];
+const swords = [];
+// Add a container to center our sprite stack on the page
+const container = new PIXI.Container();
+container.x = app.screen.width / 2;
+container.y = app.screen.height / 2;
+app.stage.addChild(container);
+
+// Create the 3 sprites, each a child of the last
+const sprites = [];
+let parent = container;
+let gFace = new PIXI.Container();
+
+  let head = PIXI.Sprite.from('head.png');
+  head.anchor.set(0.5);
+  head.scale.set(0.2);
+  parent.addChild(head);
+let swordJson = {"swords": {
+        "basic": {
+            "frame": { "x": 0, "y": 0, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 500
+        },
+        "classic": {
+            "frame": { "x": 32, "y": 0, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 450
+        },
+        "arrow": {
+            "frame": { "x": 64, "y": 0, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 400
+        },
+        "fat": {
+            "frame": { "x": 96, "y": 0, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 360
+        },
+        "dick": {
+            "frame": { "x": 0, "y": 32, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 320
+        },
+        "fat2": {
+            "frame": { "x": 32, "y": 32, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 290
+        },
+        "greenFist": {
+            "frame": { "x": 64, "y": 32, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 260
+        },
+        "dagger": {
+            "frame": { "x": 96, "y": 32, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 240
+        },
+        "longPole": {
+            "frame": { "x": 0, "y": 64, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 220
+        },
+        "doublePole": {
+            "frame": { "x": 32, "y": 64, "w": 32, "h": 32 },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": { "x": 0, "y": 0, "w": 64, "h": 64 },
+            "sourceSize": { "w": 64, "h": 64 },
+            "duration": 200
+        }
+    
+    }};
+//let swordData = JSON.parse();
+	console.log(swordJson);  
+  /*
+	  let face = PIXI.Sprite.from('face1.png');
+	  face.anchor.set(0.5);
+	  face.width = 100;
+	  face.height = 100;
+	  gFace.addChild(face);
+	  parent.addChild(gFace);
+	*/
+//Create face textures
+for(i=0; i < 3; i++){
+	faces.push(PIXI.Texture.from('face' + i + '.png'));
+}
+//Create Sword textures
+const baseTexture = PIXI.Texture.from('WeaponSet1.png');
+let frame = new PIXI.Rectangle(0, 0, 64, 64);
+swords.push(PIXI.Texture.from(baseTexture, frame));
+for(i=0; i < swordJson.swords.length; i++){
+	let frame = new PIXI.Rectangle(swordJson.swords[i].frame.x, swordJson.swords[i].frame.y, swordJson.swords[i].frame.w, swordJson.swords[i].frame.h);
+	swords.push(PIXI.Texture.from(baseTexture, frame));
+}
+console.log(swords);
+var tmpWeapon = new PIXI.Sprite(swords[1]);
+tmpWeapon.position.set(5, 5);
+app.stage.addChild(tmpWeapon);
+
+
+
+
+
+
+var dude = new PIXI.Sprite(faces[0]);
+dude.anchor.set(0.5);
+dude.scale.set(0.2);
+dude.x = 10;
+dude.y = 15;
+
+parent.addChild(dude);
+const yellowStar = PIXI.Texture.from('temp.png');
+
+// Standard Sprite Button
+const starButton1 = new PIXI.Sprite(yellowStar);
+
+starButton1.position.set(0, 0);
+
+starButton1.buttonMode = true;
+starButton1.interactive = true;
+
+starButton1.on('pointerdown', (event) => ChangeFace(parent));
+
+
+function ChangeFace(object) {
+	if(faceOpt < 2){
+		faceOpt += 1;
+	}
+	else{
+		faceOpt = 0;
+	}
+	console.log(faceOpt);
+	dude.texture = faces[faceOpt];
+    
+}
+
+app.stage.addChild(starButton1);
+
+
+//const basicText = new PIXI.Text('Basic text in pixi');
+//basicText.x = 50;
+//basicText.y = 100;
+//app.stage.addChild(basicText);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+parent.x = 200;
+parent.y = 100;
+
+// Set all sprite's properties to the same value, animated over time
+let elapsed = 0.0;
+app.ticker.add((delta) => {
+  elapsed += delta / 60;
+  const amount = Math.sin(elapsed);
+  const scale = 1.0 + 0.25 * amount;
+  const alpha = 0.75 + 0.25 * amount;
+  const angle = 40 * amount;
+  const x = 75 * amount;
+  
+  parent.x = 75 * amount;
+  
+    //parent.x = x;
+
+});
+
+
+
+
+</script>
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+</body>
+</html>

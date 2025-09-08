@@ -1,0 +1,138 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Chain Reaction</title>
+	<!-- Styles -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	
+</head>
+<body>
+	<div id="nav-placeholder"></div>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Chain Reaction</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+        </div>
+      </div>
+    </nav>
+	<!-- Content -->
+	<div class="container">
+		<div id="GameBoard">
+            <div class="row g-3 align-items-center">
+                <h1 id="timer">20</h1>
+            </div>
+            <div class="row g-3 align-items-center">
+                <h1 id="firstWord">FIRST WORD</h1>
+            </div>
+			<div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <input type="text" id="inputText" class="form-control" aria-describedby="passwordHelpInline" placeholder="A">
+                </div>
+            </div>
+            <div class="row g-3 align-items-center">
+                <h1 id="thirdWord">THIRD WORD</h1>
+            </div>
+		</div>
+	</div>
+
+
+
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p>Find the missing word that connects all 3 words together. Example Christmas ____ House. This missing word is Tree for Christmas Tree and Tree House</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+    <script>
+        let gameState = "pending";
+		const urlParams = new URLSearchParams(window.location.search)
+        const options = [
+                  ["Merry","Christmas","Tree","House","Keeping","Up","Town"]
+                , ["House","Party","Animal","Cracker","Jack","Hammer","Head","Wear"]
+            ];
+		//let options =  (urlParams.get('cardArr'))? urlParams.get('cardArr').split(",") : ['wineGlass4', 'wineBottleAndGlass2', 'wineBottleAndGlasses'];
+		//let target = (urlParams.get('target'))? urlParams.get('target') : "safe";
+        let attempts = (urlParams.get('attempts'))? Number(urlParams.get('attempts')) : 1;
+        let timer = (urlParams.get('timer'))? Number(urlParams.get('timer')) : 20;
+        let hint = (urlParams.get('hint'))? Number(urlParams.get('hint')) : 1;
+		let selectedId = Math.floor(Math.random() * options.length);
+        let selectedIdSub = Math.floor((Math.random() * (options[selectedId].length - 2))) + 1;
+        var tmr = setInterval(CheckWin, 1000);
+	window.onload = (event) => {
+        $('#firstWord').text(options[selectedId][(selectedIdSub - 1)])
+        $('#thirdWord').text(options[selectedId][(selectedIdSub + 1)])
+        $('#inputText').val(options[selectedId][selectedIdSub].slice(0, hint));
+        $('#inputText').attr("placeholder", options[selectedId][selectedIdSub].slice(0, hint) + "...");
+
+        $( "#inputText" ).keyup(function() {
+            if (CheckAnswer()) {
+                gameState = "win"
+                window.clearInterval(tmr);
+                CheckWin(); 
+            } 
+        })
+
+	}
+
+
+	
+	function CheckWin(){     
+            $('#timer').text(timer);
+            if(gameState == "pending"){
+                if(timer > 0){
+                    if (CheckAnswer()) {
+                        gameState = "win";
+                        console.log("Player won")
+                        window.clearInterval(tmr);
+                    }     
+                }
+                else{
+                    console.log("player lost");
+                    gameState = "lose";
+                    window.clearInterval(tmr);
+                }
+                timer--;
+            }
+
+            if (window.top != window.self && gameState !== 'pending') {
+                console.log("Post message: " + gameState);
+                window.top.postMessage({"type":"minigame","result":gameState}, '*');
+            } 
+    }
+
+    function CheckAnswer(){
+        var value = $('#inputText').val().toUpperCase();
+        var answer = options[selectedId][selectedIdSub].toUpperCase().trim();
+        var answer2 = (options[selectedId][selectedIdSub].slice(0, hint) + value).toUpperCase().trim();
+        if (value == answer || answer == answer2) {
+            return true;
+        } 
+        else{
+            return false;
+        }
+    }
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+   "Packages":[
+		{
+			"PackageInfo":{
+				"Name":"Default",
+				"FileName":"default.json",
+				"Img":"images/Logos/1.svg",
+				"Desc":"Plain and simple challenges. Nothing in this pack should have any long term consequences. If it were a movie, this would be rated PG."
+			}
+		},
+		{
+			"PackageInfo":{
+				"Name":"Let's Get Physical",
+				"FileName":"physical.json",
+				"Img":"images/Logos/2.svg",
+				"Desc":"A pack that revolves around physical actions that <b>could</b> hurt you. Expect things like doing pushups, pick up a player, to little more sadistic things like getting slapped or pinched."
+			}
+		},
+		{
+			"PackageInfo":{
+				"Name":"Too Much Information",
+				"FileName":"tmi.json",
+				"Img":"images/Logos/2.svg",
+				"Desc":"Learn what you didn't need to know as facts are revealed that were better left unsaid"
+			}
+		},
+		{
+			"PackageInfo":{
+				"Name":"Marksman",
+				"FileName":"sharpie.json",
+				"Img":"images/Logos/2.svg",
+				"Desc":"Things that require a marker, permanent for more fun"
+			}
+		},
+		{
+			"PackageInfo":{
+				"Name":"Act It Out",
+				"FileName":"acting.json",
+				"Img":"images/Logos/2.svg",
+				"Desc":"Charades like things that require you to act or mime activities"
+			}
+		}
+	]
+}

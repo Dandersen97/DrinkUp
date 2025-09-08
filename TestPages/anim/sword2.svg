@@ -1,0 +1,42 @@
+<svg x="0" y="0"  id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.54 236.34">
+	<defs>
+		<style>
+			.cls-1{fill:url(#img1);stroke:#010101;stroke-miterlimit:10;}
+			.cls-2{fill:#0088ff;stroke:#010101;stroke-miterlimit:10;}
+			.cls-3{filter:url(#roughpaper)}
+		</style>
+	
+		<filter id="roughpaper" filterUnits="userSpaceOnUse">
+
+			<feTurbulence type="fractalNoise" baseFrequency='0.04' result='noise' numOctaves="5" />
+
+			<feDiffuseLighting in='noise' lighting-color='#fff' surfaceScale='2'>
+				<feDistantLight azimuth='45' elevation='60' />
+			</feDiffuseLighting>
+			 <feComposite operator="in" in="ripples" in2="SourceGraphic"/>
+    	</filter>
+		<filter id="f1" x="0" y="0">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+		</filter>
+
+		<filter id="f3" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="20" dy="20" />
+      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+
+	<pattern id="img1" patternUnits="userSpaceOnUse" width="100" height="100">
+    <image href="/images/test/paperTexture1.jpg" x="0" y="0" width="100" height="100" />
+  </pattern>
+	</defs>
+
+	
+	
+	<g class="cls-3" id="state1" >
+		<polygon  points="37.58 .78 14.43 28.92 18.03 141.16 59.02 141.07 63.68 30.99 37.58 .78"/>
+		<polygon  points=".76 140.26 71.79 138.79 66.27 152.61 6.77 153.76 .76 140.26"/>
+		<polygon  points="27.02 223.27 38.34 235.58 47.05 225.27 48.95 152.94 26.59 153.37 27.02 223.27"/>
+	</g>
+
+
+</svg>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Do Or Drink</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	
+		<style>
+			:root {
+	--spinSec: 0ms;
+	--spinMax: 0deg;
+}
+
+.flippedf {
+			transform: rotateY(0deg);
+		}
+		.flippedb {
+			transform: rotateY(180deg);
+		}
+.card-org {
+			display:block;
+			position: relative;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+		}
+		
+.startSpin{
+	animation: rotation var(--spinSec) 1 forwards;
+	animation-timing-function: cubic-bezier(0, 0.75, 0.75, 1.0);
+	transform-origin: 50% 50%;
+	}
+@keyframes rotation {
+	from {transform: rotate(0deg);}
+	to   {transform: rotate(var(--spinMax));}
+	}
+
+		</style>
+    </head>
+    <body>
+		<!-- Navbar -->
+		<div id="nav-placeholder"></div>	
+		<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+			<div class="container">
+				<div class="navbar-header">
+					<span class="navbar-brand" style="height: auto;">Do or Drink</span>
+					<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+				</div>
+			</div>
+		</nav>
+		
+		<div id="MainMenu">
+			<button class="btn btn-primary" onclick='PlayGame()'>START GAME</button>
+			<h1>Config:</h1>
+			<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalPlayers">PLAYERS</button>
+			<button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalPackages">PACKAGES</button>
+			<h1>Players</h1>
+			<div id="MainMenuPlayerList" class="container">
+			
+			</div>
+			<ul class="PlayerList"></ul>
+		</div>
+		
+		<div class="modal fade" id="ModalPlayers" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="container">
+						<div class="modal-header">
+							<h5 class="modal-title">Add/Remove Players</h5>
+						</div>
+						<div class="row justify-content-md-center">
+							<div class="col-md-auto">
+								<input id="EnterName" placeholder="Enter Player Name" type="text" class="text-capitalize"></input>
+								<button class="btn btn-primary" onclick='AddPlayer()'>Add Player</button>
+							</div>
+						</div>
+						<div class="row">
+							<div id="ConfigPlayerList" class="container"></div>
+						</div>
+						
+						<div class="modal-footer">
+							<button class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#ModalPlayers">CLOSE</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="ModalPackages" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="container">
+						<div class="modal-header">
+							<h5 class="modal-title">Select Packages</h5>
+						</div>
+						<div class="row modal-body">
+							
+							<div id="PackageSelection" class="container">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#ModalPackages">CLOSE</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="modal fade" id="ModalPackagesMoreInfo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="container">
+						<div class="modal-header">
+							<h5 class="modal-title" id="ModalPackagesMoreInfoName">Select Packages</h5>
+						</div>
+						<div class="row modal-body">
+							<div id="ModalPackagesMoreInfoDesc" class="container">
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-lg btn-primary" data-bs-dismiss="modal" data-bs-target="#ModalPackagesMoreInfo">CLOSE</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">How To Play</h5>
+					</div>
+					<div class="modal-body">
+						<p>Each turn a player will be given a task to complete. They can either do this task and receive full points or drink their way out of it for half points. First to 21 points wins. Player order is randomized each round so there's no advantage, but some luck is involved.</p>
+						<p>There are multiple packages of tasks to select, each with it's own theme. Add/remove packages based on player comfortibilty and/or props available.</p>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="PlayScreen"  class="card-org d-none">
+			<div class="container">
+				<div class="row" id="PlayScreenName">
+					<h1 class="col col-12 text-center" id="PlayerTurn">NAME HERE</h1>
+				</div>
+				
+				<div class="row" id="PlayScreenTask">
+					<h1>Task section. place holder a lot of text for descriptions and just a lot of words.</h1>
+					
+				</div>
+				<div class="row" id="PlayScreenButtons">
+					<div class="col-5 text-center">
+						<button class="btn btn-lg btn-primary w-100" onclick='NextTurn("DO")'>DO</button>
+					</div>
+					<div class="col-2 text-center align-middle pt-2">
+						<h3>OR</h3>
+					</div>
+					<div class="col-5 text-center">
+						<button class="btn btn-lg btn-primary w-100" onclick='NextTurn("DRINK")'>DRINK</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-5 text-center">
+						<p id="PlayScreenDoPoints">X Points</p>
+					</div>
+					<div class="col-2 text-center align-middle pt-2">
+					</div>
+					<div class="col-5 text-center">
+						<p id="PlayScreenDrinkPoints">X Points</p>
+					</div>
+				</div>
+			</div>
+			<div id="ScoreBoard" class="ScoreModal">
+				<h1>SCORE BOARD STATS HERE</h1>
+				
+			</div>
+		</div>	
+		<!--
+		<div id="modalMainMenu" class="modal modal-vis">
+			<div>
+				<h1>Enter Player Names</h1>
+				<input id="EnterName" type="text"></input>
+				<button onclick='AddPlayer()'>Add Player</button>
+				<ul id="PlayerList"></ul>
+				<h4 id="pointDisplay">First to 21 points</h4>
+				<input type="range" min="5" max="50" value="21" id="pointSlider" oninput="UpdateSlider()"></input>
+				
+				<button class="btn btn-primary" onclick='PlayGame()'>PLAY</button>
+			</div>
+			<br>
+			
+			<h1>Select Challenge Packages</h1>
+			<div id="PackageSelection">
+			</div>
+		</div>
+		
+		<div id="modalMiniWheel" class="modal">
+			<svg width="95vw" height="95vw" viewBox="0 0 500 500">
+				<g stroke-width="50%" fill="transparent" id="MisfortuneModalMiniWheel" class="startSpin" onclick='toggleSpin()'></g>
+				<line x1="450" y1="250" x2="500" y2="250" stroke-width="10" stroke="black" />
+			</svg>
+			<button onclick='ToggleModal("modalMiniWheel")' class="btn btn-primary">CLOSE</button>
+		</div>-->
+		<div class="modal fade" id="ModalMiniWheel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+				<div class="modal-content">
+					<div class="container">
+						<div class="modal-header">
+							<h5 class="modal-title">Drink</h5>
+						</div>
+						<div class="row justify-content-md-center">
+							<div class="col-md-auto">
+								<svg viewBox="0 0 500 500">
+				<g stroke-width="50%" fill="transparent" id="MisfortuneModalMiniWheel" class="startSpin" onclick='toggleSpin()'></g>
+				<line x1="450" y1="250" x2="500" y2="250" stroke-width="10" stroke="black" />
+			</svg>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#ModalMiniWheel">CLOSE</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	<div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Settings</h5>
+				</div>
+				<div class="modal-body">
+					<h4 id="pointDisplay">First to 21 points</h4>
+					<input type="range" min="5" max="50" value="21" id="pointSlider" oninput="UpdateSlider()"></input>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>	
+		
+	<div id="modalLogin-placeholder"></div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script src="/scripts/login.js"></script>
+	<script src="/scripts/doordrink.js"></script>
+    </body>
+</html>

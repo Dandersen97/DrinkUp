@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Plinko</title>
+        <!-- Core theme CSS (includes Bootstrap)-->
+
+		<style>
+			.modal {
+				display: none; /* Hidden by default */
+				position: fixed; /* Stay in place */
+				z-index: 1; /* Sit on top */
+				left: 0;
+				top: 0;
+				width: 100vw; /* Full width */
+				height: 100vh; /* Full height */
+				overflow: auto; /* Enable scroll if needed */
+				background-color: rgb(255,255,255); /* Fallback color */
+			}
+	
+			.modal-vis {
+				display: block;
+			}
+		</style>
+    </head>
+    <body>
+
+
+<script src="../../scripts/matter.js"></script>
+<script>
+// module aliases
+var Engine = Matter.Engine,
+    Render = Matter.Render,
+    Runner = Matter.Runner,
+    Bodies = Matter.Bodies,
+    Composite = Matter.Composite;
+
+// create an engine
+var engine = Engine.create();
+engine.world.gravity.y = 2;
+// create a renderer
+var render = Render.create({
+    element: document.body,
+    engine: engine,
+	options: {
+        width: 390,
+        height: 800,
+        pixelRatio: 1,
+        background: '#fafafa',
+        wireframeBackground: '#222',
+        hasBounds: false,
+        enabled: true,
+        wireframes: true,
+        showSleeping: true,
+        showDebug: false,
+        showBroadphase: false,
+        showBounds: false,
+        showVelocity: false,
+        showCollisions: false,
+        showSeparations: false,
+        showAxes: false,
+        showPositions: false,
+        showAngleIndicator: false,
+        showIds: false,
+        showShadows: false,
+        showVertexNumbers: false,
+        showConvexHulls: false,
+        showInternalEdges: false,
+        showMousePosition: false
+    }
+});
+
+// create two boxes and a ground
+//var boxA = Bodies.rectangle(50, 200, 80, 80); //X Y Width Height
+//var circle = Bodies.circle(110, 50, 12, { isStatic: false, mass : 0, density : 1, restitution : 0.5, friction : 1 }); //X Y Width Height
+//var peg = Bodies.circle(70, 150, 5, { isStatic: true }); //X Y radius [options] [max sides]
+
+//column loop
+for(let i= 0; i < 10; i++){
+	//row loop
+	for(let ii=1; ii< 13; ii++){
+		let x = 0;
+		let y = 0;
+		if(ii % 2 == 0){
+			x = (i * 40) + 20
+			y = ii * 50
+		}
+		else{
+			x = (i * 40)
+			y = ii * 50
+		}
+		let peg = Bodies.circle(x, y, 5, { isStatic: true, density : 1, restitution : 1, friction : 0 }); //X Y radius [options] [max sides]
+		Composite.add(engine.world, [peg]);
+	}	
+}
+
+var ground = Bodies.rectangle(40, 700, 810, 10, { isStatic: true, restitution : 5, friction : 5 }); //X Y Width Height
+var leftWall = Bodies.rectangle(0, 400, 8, 800, { isStatic: true });
+var rightWall = Bodies.rectangle(390, 400, 8, 800, { isStatic: true });
+// add all of the bodies to the world
+Composite.add(engine.world, [ground, leftWall, rightWall]);
+
+// run the renderer
+Render.run(render);
+
+// create runner
+var runner = Runner.create();
+
+// run the engine
+Runner.run(runner, engine);
+	
+
+	
+
+
+
+
+
+//Add Listener
+let canvas = document.getElementsByTagName("canvas");
+let c = canvas[0];
+console.log(canvas);
+console.log(c);
+c.addEventListener("click", function(event){
+	console.log(event);
+	AddPlinko(event.x, 10, 12);
+});
+
+
+function AddPlinko(x,y,r) {
+  const options = {
+    isStatic : false,
+    density : 1,
+    restitution : 1,
+    friction : 0
+  }
+  this.fill = "rgb(255, 10, 40)";
+  this.body = Bodies.circle(x,y,r, options);
+  this.r = r;
+  Composite.add(engine.world, this.body);
+}
+</script>
+    </body>
+</html>

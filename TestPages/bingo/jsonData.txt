@@ -1,0 +1,54 @@
+let jsonString = `{
+		"Generic":{
+			"Category":"Generic",
+			"Tasks":[
+				{"Task":"Upgrade your pipe"},
+				{"Task":"Have 150 Gold"},
+				{"Task":"Disarm a trap"},
+				{"Task":"Buy any item worth 100+ gold"},
+				{"Task":"Die and come back to life"},
+				{"Task":"Fail on all rolls of an attack (critical failure)"},
+				{"Task":"Break a breakable weapon"},
+				{"Task":"Have 51+ Luck at anytime"},
+				{"Task":"Hit all 3 enemies at the same time"},
+				{"Task":"End a fight at or below 5 health"},
+				{"Task":"End a fight at full health WITHOUT a level up"},
+				{"Task":"Pass a trap on your first try"},
+				{"Task":"Obtain a Sactum"},
+				{"Task":"Obtain an Artifact"},
+				{"Task":"Obtain a Lore Book"},
+				{"Task":"Use a Godsbeard"},
+				{"Task":"Use a Panax to cure poison"},
+				{"Task":"Use an item to permanently increase any stat"},
+				{"Task":"Use an orb in combat"},
+				{"Task":"Kill a Skeleton"},
+				{"Task":"Kill an enemy with a magic shield of 5 or higher"},
+				{"Task":"Kill a flying or levitating enemy"},
+				{"Task":"Kill an enemy with 120+ health"},
+				{"Task":"Kill 2 of 3 enemies in a fight"},
+				{"Task":"Kill an enemy with 4+ immunities"},
+				{"Task":"Kill an enemy with a weapon not meant for your class"},
+				{"Task":"Kill an enemy on 4 legs"},
+				{"Task":"Kill an enemy with a physical shield of 5 or higher"},
+				{"Task":"Kill an enemy with both magic and physical shields"},
+				{"Task":"Kill an enemy that uses a ranged weapon"},
+				{"Task":"Kill an enemy that killed another player"},
+				{"Task":"Kill an enemy that uses physical attacks"},
+				{"Task":"Kill an enemy that uses magic attacks"}
+			]
+		},
+		"Archer":{
+			"Category":"Archer",
+			"Tasks":[
+				{"Task":"a1"},
+				{"Task":"a2"},
+				{"Task":"a3"},
+				{"Task":"a4"},
+				{"Task":"a5"},
+				{"Task":"a6"},
+				{"Task":"a7"},
+				{"Task":"a8"},
+				{"Task":"a9"}
+			]
+		}
+}`

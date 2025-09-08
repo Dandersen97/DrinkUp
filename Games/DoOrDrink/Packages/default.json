@@ -1,0 +1,174 @@
+{
+   "Tasks":[
+		{
+			"Do":"Mouth fart as loud as possible",
+			"Point":"3",
+			"Drink":[2,3,2,3,4,3,4,2,4]
+		},
+		{
+			"Do":"Stand for the next 2 minutes",
+			"Point":"1",
+			"Drink":[1,2,2,1,1,2,2,1]
+		},
+		{
+			"Do":"Pinch yourself",
+			"Point":"1",
+			"Drink":[1,5,1,1,1,2,2,2,3,2,2,2,1,1]
+		},
+		{
+			"Do":"Hug @p",
+			"Point":"1",
+			"Drink":[1,2,3,4,3,2,1,2,3,4,3,2]
+		},
+		{
+			"Do":"Give a compliment to the player @d",
+			"Point":"1",
+			"Drink":[3,3,4,4,5,5,4,4]
+		},
+		{
+			"Do":"No checking in advance, read aloud the last text you've received",
+			"Point":"2",
+			"Drink":[1,2,2,3,2,2]
+		},
+		{
+			"Do":"No checking in advance, read aloud the last text you've sent",
+			"Point":"2",
+			"Drink":[1,2,2,3,2,2]
+		},
+		{
+			"Do":"Thumb war with @p",
+			"Point":"1",
+			"Drink":[1,1,2,2,1,1,2,2]
+		},
+		{
+			"Do":"Hold hands with the player @d until your next turn",
+			"Point":"1",
+			"Drink":[1,1,2,3,2,1,1,2,3,2]
+		},
+		{
+			"Do":"Slap your own ass",
+			"Point":"1",
+			"Drink":[1,1,2,2,2,4,1,1,2,2,2,4]
+		},
+		{
+			"Do":"Have the player @d sit on your lap until your next turn",
+			"Point":"3",
+			"Drink":[2,2,3,3,2,2,3,3]
+		},
+		{
+			"Do":"Get a wet willy from @p",
+			"Point":"2",
+			"Drink":[1,1,2,3,2,1,1,2,3,2]
+		},
+		{
+			"Do":"Talk with your mouth closed until your next turn",
+			"Point":"1",
+			"Drink":[1,1,2,3,4,3,2,1,1,2,3,4,3,2]
+		},
+		{
+			"Do":"Shout the first swear word that comes to mind",
+			"Point":"2",
+			"Drink":[1,2,3,2,1,2,3,2]
+		},
+		{
+			"Do":"Get up and twerk for 10 seconds",
+			"Point":"2",
+			"Drink":[2,2,2,3,3,4,3,3]
+		},
+		{
+			"Do":"Stare at @p until your next turn (drink when you're ever caught not staring)",
+			"Point":"2",
+			"Drink":[1,1,2,2,1,1,2,2]
+		},
+		{
+			"Do":"Pick your nose until your next turn (drink when you're caught with your finger out your nose)",
+			"Point":"2",
+			"Drink":[1,1,2,2,1,1,2,2]
+		},
+		{
+			"Do":"Get up and hop like a rabbit to the bathroom and back",
+			"Point":"2",
+			"Drink":[1,1,2,2,1,1,2,2]
+		},
+		{
+			"Do":"Have @p open their mouth. Get your nose right up in there and take a deep sniff in",
+			"Point":"4",
+			"Drink":[3,4,3,4,3,5,3,5]
+		},
+		{
+			"Do":"Fart right now. If you can't do it you have to drink",
+			"Point":"5",
+			"Drink":[3,3,3,4,5,3,3,3,4,5]
+		},
+		{
+			"Do":"Until your next turn, consistently flip off every other player when it's their turn (drink when you're ever caught not flipping them off)",
+			"Point":"4",
+			"Drink":[2,3,2,3,2,4,2,4]
+		},
+		{
+			"Do":"Give your best strip tease to @p",
+			"Point":"5",
+			"Drink":[1,2,2,3,3,3,4,4,4,4,5,5,5,5,5]
+		},
+		{
+			"Do":"You can't look at @p until your next turn (drink when your caught looking)",
+			"Point":"1",
+			"Drink":[1,1,2,2,1,1,2,2]
+		},
+		{
+			"Do":"Find someone willing to and swap shirts. You must drink if nobody is willing",
+			"Point":"3",
+			"Drink":[1,1,1,2,5,2,1]
+		},
+		{
+			"Do":"Go someplace private (like the bathroom) and return with your underwear on the outside of your clothes. They must remain this way remainder of the game",
+			"Point":"6",
+			"Drink":[1,2,3,4,4,4,5,6,7,6,5,4,4,4,3,2]
+		},
+		{
+			"Do":"Suck your thumb until your next turn. No, you cannot take your thumb out of your mouth to take a drink (drink if you're ever caught with your thumb out your mouth)",
+			"Point":"4",
+			"Drink":[2,3,4,4,3,2,1]
+		},
+		{
+			"Do":"Keep your eyes closed until your next turn (drink if you're ever caught peeping)",
+			"Point":"2",
+			"Drink":[1,1,2,2,1,1,2,2]
+		},
+		{
+			"Do":"Highfive the player @d",
+			"Point":"1",
+			"Drink":[4,5,6,7,8,7,6,5]
+		},
+		{
+			"Do":"Get up and stand on one leg until your next turn. NO LEANING (drink if you're caught leaning or on both legs)",
+			"Point":"4",
+			"Drink":[2,2,3,2,2,4,2,2,3,2,2,4]
+		},
+		{
+			"Do":"Kiss @p's bare foot",
+			"Point":"4",
+			"Drink":[1,1,2,3,3,4,5,5]
+		},
+		{
+			"Do":"Have @p lift up their arm. Take a deep sniff in their armpit. BONUS: Using a single guess their deodorant corectly and give them a drink",
+			"Point":"4",
+			"Drink":[1,2,1,3,1,4,1,5]
+		},
+		{
+			"Do":"Remove an article of clothing",
+			"Point":"3",
+			"Drink":[4,3,2,1,2,3,4,3,2,1,2,3]
+		},
+		{
+			"Do":"Get up and close your eyes. Let @p move and spin you around the room. Take 3 steps forward without hesitating",
+			"Point":"4",
+			"Drink":[3,3,3,3,4,4,4,5,5]
+		},
+		{
+			"Do":"Do nothing and enjoy this free point or drink... a lot...",
+			"Point":"1",
+			"Drink":[6,7,8,9,10,9,8,7]
+		}
+	]
+}

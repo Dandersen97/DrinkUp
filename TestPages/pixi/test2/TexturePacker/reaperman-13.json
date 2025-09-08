@@ -1,0 +1,109 @@
+{"frames": {
+
+"Hurt/0_Reaper_Man_Hurt_002.png":
+{
+	"frame": {"x":589,"y":590,"w":444,"h":582},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":239,"y":170,"w":444,"h":582},
+	"sourceSize": {"w":900,"h":900}
+},
+"Hurt/0_Reaper_Man_Hurt_003.png":
+{
+	"frame": {"x":1266,"y":1,"w":444,"h":588},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":187,"y":164,"w":444,"h":588},
+	"sourceSize": {"w":900,"h":900}
+},
+"Hurt/0_Reaper_Man_Hurt_008.png":
+{
+	"frame": {"x":1171,"y":1163,"w":457,"h":578},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":135,"y":174,"w":457,"h":578},
+	"sourceSize": {"w":900,"h":900}
+},
+"Idle Blinking/0_Reaper_Man_Idle Blinking_006.png":
+{
+	"frame": {"x":1,"y":1047,"w":439,"h":579},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":205,"y":173,"w":439,"h":579},
+	"sourceSize": {"w":900,"h":900}
+},
+"Idle/0_Reaper_Man_Idle_006.png":
+{
+	"frame": {"x":1,"y":1047,"w":439,"h":579},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":205,"y":173,"w":439,"h":579},
+	"sourceSize": {"w":900,"h":900}
+},
+"Jump Start/0_Reaper_Man_Jump Start_002.png":
+{
+	"frame": {"x":589,"y":1036,"w":444,"h":580},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":190,"y":160,"w":444,"h":580},
+	"sourceSize": {"w":900,"h":900}
+},
+"Run Throwing/0_Reaper_Man_Run Throwing_006.png":
+{
+	"frame": {"x":1,"y":1488,"w":439,"h":577},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":219,"y":175,"w":439,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"Running/0_Reaper_Man_Running_006.png":
+{
+	"frame": {"x":580,"y":1488,"w":439,"h":577},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":219,"y":175,"w":439,"h":577},
+	"sourceSize": {"w":900,"h":900}
+},
+"Slashing in The Air/0_Reaper_Man_Slashing in The Air_010.png":
+{
+	"frame": {"x":1,"y":1,"w":634,"h":587},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":180,"y":126,"w":634,"h":587},
+	"sourceSize": {"w":900,"h":900}
+},
+"Slashing in The Air/0_Reaper_Man_Slashing in The Air_011.png":
+{
+	"frame": {"x":637,"y":1,"w":627,"h":587},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":165,"y":128,"w":627,"h":587},
+	"sourceSize": {"w":900,"h":900}
+},
+"Throwing in The Air/0_Reaper_Man_Throwing in The Air_000.png":
+{
+	"frame": {"x":1,"y":590,"w":455,"h":586},
+	"rotated": true,
+	"trimmed": true,
+	"spriteSourceSize": {"x":149,"y":131,"w":455,"h":586},
+	"sourceSize": {"w":900,"h":900}
+},
+"Throwing/0_Reaper_Man_Throwing_008.png":
+{
+	"frame": {"x":1173,"y":591,"w":459,"h":570},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":282,"y":182,"w":459,"h":570},
+	"sourceSize": {"w":900,"h":900}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.1",
+	"image": "reaperman-13.png",
+	"format": "RGBA8888",
+	"size": {"w":1711,"h":1928},
+	"scale": "1",
+	"related_multi_packs": [ "reaperman-0.json", "reaperman-1.json", "reaperman-2.json", "reaperman-3.json", "reaperman-4.json", "reaperman-5.json", "reaperman-6.json", "reaperman-7.json", "reaperman-8.json", "reaperman-9.json", "reaperman-10.json", "reaperman-11.json", "reaperman-12.json", "reaperman-14.json", "reaperman-15.json" ],
+	"smartupdate": "$TexturePacker:SmartUpdate:31ab704a0aa42b44c940f27dbccdb55c:b28c189c1fa2d65870dfba7344157855:2e0abe004199e1a9c83d01e360f8e695$"
+}
+}

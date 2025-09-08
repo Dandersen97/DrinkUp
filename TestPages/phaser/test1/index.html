@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+		<script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+	</head>	
+
+
+<body>
+	<!-- MAIN BODY DIV -->
+
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script type="text/javascript">
+
+var config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 300 },
+            debug: false
+        }
+    },
+    scene: {
+        preload: preload,
+        create: create,
+        update: update
+    }
+};
+
+var player;
+var stars;
+var bombs;
+var platforms;
+var cursors;
+var score = 0;
+var gameOver = false;
+var scoreText;
+var container;
+var sprite0;
+var sprite1;
+
+var game = new Phaser.Game(config);
+
+function preload ()
+{
+    this.load.image('sky', '/TestPages/phaser3-tutorial-src/assets/sky.png');
+    this.load.image('ground', '/TestPages/phaser3-tutorial-src/assets/platform.png');
+    this.load.image('star', '/images/icons/beer.svg');
+    this.load.image('bomb', '/images/icons/beer.svg');
+    this.load.spritesheet('dude', 'Walk-Anim.png', { frameWidth: 32, frameHeight: 32 });
+    this.load.multiatlas('cityscene', '../reaperman.json', '../');
+}
+
+function create ()
+{
+    //  A simple background for our game
+    this.add.image(400, 300, 'sky');
+
+    //  The platforms group contains the ground and the 2 ledges we can jump on
+    platforms = this.physics.add.staticGroup();
+
+    //  Here we create the ground.
+    //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+    //  Now let's create some ledges
+    platforms.create(600, 400, 'ground');
+    platforms.create(50, 250, 'ground');
+    platforms.create(750, 220, 'ground');
+
+
+
+
+	//  Our container
+    container = this.add.container(100, 100);
+
+    //  Create some sprites - positions are relative to the Container x/y
+    sprite0 = this.add.sprite(-30, -5, 'star');
+	sprite0.displayWidth = 20;
+	sprite0.displayHeight = 20;
+    sprite1 = this.add.sprite(0, 0, 'dude');
+	sprite1.displayWidth = 100;
+	sprite1.displayHeight = 100;
+	
+
+	
+
+
+
+
+	this.physics.world.enableBody(container);
+
+
+    this.capguy = this.add.sprite(0, 400, 'cityscene', 'a.png');
+    this.capguy.setScale(0.5, 0.5);
+    const frameNames = this.anims.generateFrameNames('cityscene', {
+                           start: 1, end: 8, zeroPad: 3,
+                           prefix: '0_Reaper_Man_Running_', suffix: '.png'
+                       });
+                       this.anims.create({ key: 'running', frames: frameNames, frameRate: 10, repeat: -1 });
+    this.capguy.anims.play('running');
+
+
+    // The player and its settings
+    player = this.physics.add.sprite(100, 100, 'dude');
+
+    //  Player physics properties. Give the little guy a slight bounce.
+    player.setBounce(0.2);
+    player.setCollideWorldBounds(true);
+	
+	player.displayWidth = 100;
+	player.displayHeight = 100;
+	
+    //  Our player animations, turning, walking left and walking right.
+    this.anims.create({
+        key: 'left',
+        frames: this.anims.generateFrameNumbers('dude', { start: 24, end: 27 }),
+        frameRate: 5,
+        repeat: -1
+    });
+
+    this.anims.create({
+        key: 'idle',
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frameRate: 4,
+		repeat: -1
+    });
+
+    this.anims.create({
+        key: 'right',
+        frames: this.anims.generateFrameNumbers('dude', { start: 8, end: 11 }),
+        frameRate: 5,
+        repeat: -1
+    });
+	
+
+    //  Input Events
+    cursors = this.input.keyboard.createCursorKeys();
+
+    //  Some stars to collect, 12 in total, evenly spaced 70 pixels apart along the x axis
+    stars = this.physics.add.group({
+        key: 'star',
+        repeat: 11,
+        setXY: { x: 12, y: 0, stepX: 70 }
+    });
+
+    stars.children.iterate(function (child) {
+
+        //  Give each star a slightly different bounce
+        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+
+    });
+
+    bombs = this.physics.add.group();
+
+
+
+sprite1.play('idle', true);
+    //container.add([ sprite1, sprite0 ]);
+	container.add([ sprite1, sprite0 ]);
+
+
+
+
+
+
+
+    //  The score
+    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+    //  Collide the player and the stars with the platforms
+    this.physics.add.collider(player, platforms);
+    this.physics.add.collider(stars, platforms);
+    this.physics.add.collider(bombs, platforms);
+	this.physics.add.collider(container, platforms);
+
+    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+    this.physics.add.overlap(player, stars, collectStar, null, this);
+
+    this.physics.add.collider(player, bombs, hitBomb, null, this);
+}
+
+function update ()
+{
+    if (gameOver)
+    {
+        return;
+    }
+
+    if (cursors.left.isDown)
+    {
+        player.setVelocityX(-160);
+
+        player.anims.play('left', true);
+		sprite1.play('left', true);
+		sprite0.x = -20;
+		sprite0.y = 15;
+		console.log(container);
+		container.x -= 5;
+    }
+    else if (cursors.right.isDown)
+    {
+        player.setVelocityX(160);
+
+        player.anims.play('right', true);
+		sprite1.play('right', true);
+		sprite0.x = 20;
+		container.x += 5;
+    }
+    else
+    {
+        player.setVelocityX(0);
+
+        player.anims.play('idle', true);
+		sprite1.play('idle', true);
+		sprite0.x = -20;
+    }
+
+    if (cursors.up.isDown && player.body.touching.down)
+    {
+        player.setVelocityY(-330);
+    }
+}
+
+function collectStar (player, star)
+{
+    star.disableBody(true, true);
+
+    //  Add and update the score
+    score += 10;
+    scoreText.setText('Score: ' + score);
+
+    if (stars.countActive(true) === 0)
+    {
+        //  A new batch of stars to collect
+        stars.children.iterate(function (child) {
+
+            child.enableBody(true, child.x, 0, true, true);
+
+        });
+
+        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+        var bomb = bombs.create(x, 16, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        bomb.allowGravity = false;
+
+    }
+}
+
+function hitBomb (player, bomb)
+{
+    this.physics.pause();
+
+    player.setTint(0xff0000);
+
+    player.anims.play('turn');
+
+    gameOver = true;
+}
+
+</script>
+</body>
+</html>

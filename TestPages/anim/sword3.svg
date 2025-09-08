@@ -1,0 +1,43 @@
+<svg x="0" y="0"  id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72.54 236.34">
+	<defs>
+		<style>
+			.cls-1{fill:url(#img1);stroke:#010101;stroke-miterlimit:10;}
+			.cls-2{fill:#0088ff;stroke:#010101;stroke-miterlimit:10;}
+			.cls-3{filter:url(#roughpaper); opacity: 1}
+      .half{opacity: .5}
+		</style>
+	
+		<filter id="roughpaper" filterUnits="userSpaceOnUse">
+
+			<feTurbulence type="fractalNoise" baseFrequency='0.04' result='noise' numOctaves="5" />
+
+			<feDiffuseLighting in='noise' lighting-color='#fff' surfaceScale='2'>
+				<feDistantLight azimuth='45' elevation='60' />
+			</feDiffuseLighting>
+			 <feComposite operator="in" in="ripples" in2="SourceGraphic"/>
+    	</filter>
+		<filter id="f1" x="0" y="0">
+			<feGaussianBlur in="SourceGraphic" stdDeviation="15" />
+		</filter>
+
+		<filter id="f3" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="20" dy="20" />
+      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+
+	<pattern id="img1" patternUnits="userSpaceOnUse" width="100" height="100">
+    <image href="/images/test/paperTexture1.jpg" x="0" y="0" width="100" height="100" />
+  </pattern>
+	</defs>
+
+	
+	
+	<g class="cls-3" id="texture" >
+		<image href="WeaponSet1.png" />
+	</g>
+  <g class="half" id="baseImg" >
+		<image href="WeaponSet1.png" />
+	</g>
+
+</svg>

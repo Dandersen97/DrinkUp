@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! - Template</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	
+	<style>
+		.foo{
+			display: none;
+		}
+		.iconify{
+			display:in-line;
+		}
+
+		.cls-1{fill:#2abbbf;stroke:#010101;stroke-miterlimit:10;}
+			.cls-2{fill:#0088ff;stroke:#010101;stroke-miterlimit:10;}
+			.state1{display: none;}
+
+        .sliderGroup{
+            border: 1px solid black;
+        }
+        .cls-3{filter:url(#roughpaper); opacity: 1}
+
+		
+	</style>
+
+	</head>	
+
+
+
+
+
+
+<body id="body">
+	<!-- MAIN BODY DIV -->
+    <button onclick="downloadImage()">Download</button>
+    <button onclick="ChangeSet(-1)">-</button>
+    <button onclick="ChangeSet(1)">+</button>
+    <p>Card Type:</p>
+    <button onclick="ChangeType(-1)">-</button>
+    <button onclick="ChangeType(1)">+</button>
+	<canvas id="myCanvas" width='4000' height='4200' onclick="draw()" style='border: 1px solid black;' class="cls-3"></canvas>
+    
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+    <script src="//unpkg.com/canvas-txt"></script>
+<script>
+const screenWidth = screen.width;
+const canvasWidth = $('#myCanvas').width();
+const canvasHeight = $('#myCanvas').height();
+const canvasCenterX = canvasWidth / 2;
+const canvasCenterY = canvasHeight / 2;
+const cardWidth = canvasWidth / 10;
+const cardHeight = cardWidth * 1.5;
+const cardBase = new Image();
+cardBase.src = '/images/svg_playing_cards/blank_card.svg';
+const svgText = new Image();
+svgText.src = '/images/test/text1.svg';
+const { drawText, getTextHeight, splitText } = window.canvasTxt;
+const ctx = document.getElementById("myCanvas").getContext("2d");
+let activeSet = 0;
+let activeType = 0;
+
+console.log(cardWidth);
+console.log(cardHeight);
+
+
+const CardData = {
+	"Standard":[
+		{"name":"Basic Potato",
+        "desc":"Pass to the left",
+		"type":"Standard",
+        "src":"/images/test/potato1.svg"
+		},
+		{"name":"Basic Potato",
+        "desc":"Pass to the right",
+		"type":"Standard",
+        "src":"/images/test/potato1.svg"
+		},
+		{"name":"Pass Back",
+        "desc":"Pass to who ever just passed to you",
+		"type":"Standard",
+        "src":"/images/test/potato2.svg"
+		},
+        {"name":"Big Potato",
+        "desc":"Pass to a player older than you",
+		"type":"Standard",
+        "src":"/images/test/potato3.svg"
+		},
+        {"name":"Growing Potato",
+        "desc":"Pass to a player younger than you",
+		"type":"Standard",
+        "src":"/images/test/wateringCan.svg"
+		},
+        {"name":"Big Fry",
+        "desc":"Pass to a player taller than you",
+		"type":"Standard",
+        "src":"/images/test/fries.svg"
+		},
+        {"name":"Small Fry",
+        "desc":"Pass to a player shorter than you",
+		"type":"Standard",
+        "src":"/images/test/small_fries.svg"
+		},
+        {"name":"Moldy Potato",
+        "desc":"Pass to a player with longer hair",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Peeled Potato",
+        "desc":"Pass to a player with shorter hair",
+		"type":"Standard",
+        "src":"/images/test/potato5.svg"
+		},
+        {"name":"Longer",
+        "desc":"Pass to a player with a longer name",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Shorter",
+        "desc":"Pass to a player with a shorter name",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Less",
+        "desc":"Pass to a player with less cards than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"More",
+        "desc":"Pass to a player with more cards than you",
+		"type":"Standard",
+        "src":"/images/test/potatoes_three.svg"
+		},
+        {"name":"Big Pota-toes",
+        "desc":"Pass to a player with a larger shoe size than you",
+		"type":"Standard",
+        "src":"/images/test/potatoes_three.svg"
+		},
+        {"name":"Small Pota-toes",
+        "desc":"Pass to a player with a smaller shoe size than you",
+		"type":"Standard",
+        "src":"/images/test/potatoes_three.svg"
+		},
+        {"name":"Match",
+        "desc":"Pass to a player with the same color eyes",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Mismatch",
+        "desc":"Pass to a player with different color eyes",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Potato Family",
+        "desc":"Pass to a player with more siblings than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Lone Potato",
+        "desc":"Pass to a player with less siblings than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Furry Potato",
+        "desc":"Pass to a player with more pets than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Smart Potato",
+        "desc":"Pass to a player with more years spent at college than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Dumb Potato",
+        "desc":"Pass to a player with less years spent at college than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Fat Potato",
+        "desc":"Pass to a player weighs more than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Skinny Potato",
+        "desc":"Pass to a player who weighs less than you",
+		"type":"Standard",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Baked Potato",
+        "desc":"Pass to a player who has done weed/THC",
+		"type":"Standard",
+        "src":"/images/test/baked_potato.svg"
+		},
+        {"name":"Sick Potato",
+        "desc":"Pass to a player drunker than you",
+		"type":"Standard",
+        "src":"/images/test/rottenPotato.svg"
+		},
+        {"name":"It takes 2 to Potato",
+        "desc":"Pass to a player who has had more sexual partners than you",
+		"type":"Standard",
+        "src":"/images/test/potato_two.svg"
+		},
+        {"name":"Sweet Potato",
+        "desc":"Pass to a player nicer than you",
+		"type":"Standard",
+        "src":"/images/test/yam.svg"
+		},
+        {"name":"Purple Potato?",
+        "desc":"Pass to a player of the opposite gender",
+		"type":"Standard",
+        "src":"/images/icons/eggplant.svg"
+		}],
+    "Bonus":[
+        {"name":"Gravy",
+        "desc":"Bonus: Steal a card at random from who you passed to",
+		"type":"Addon",
+        "src":"/images/test/gravy.svg"
+		},
+        {"name":"Butter",
+        "desc":"Bonus: No pass back",
+		"type":"Addon",
+        "src":"/images/test/butter.svg"
+		},
+        {"name":"Sour Cream",
+        "desc":"Instant: Play anytime on another players bonus, cancel that bonus",
+		"type":"Addon",
+        "src":"/images/test/sourcream.svg"
+		},
+        {"name":"Cheese",
+        "desc":"Bonus: Draw a card",
+		"type":"Addon",
+        "src":"/images/test/cheese.svg"
+		},
+        {"name":"Salt",
+        "desc":"Bonus: Discard a card and draw 2 new ones",
+		"type":"Addon",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Chives",
+        "desc":"Bonus: Trade a card with who you passed to",
+		"type":"Addon",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Ketchup",
+        "desc":"Bonus: All other players with more cards than you discard a card",
+		"type":"Addon",
+        "src":"/images/logos/4.svg"
+		},
+        {"name":"Bacon",
+        "desc":"Instant: Remove from play any card on the potato",
+		"type":"Addon",
+        "src":"/images/test/bacon.svg"
+		}],
+    "Paradox":[
+        {"name":"Paradox",
+        "desc":"Rock, Paper, Scissors with any player. Pass to loser",
+		"type":"Paradox",
+        "src":""
+		},
+        {"name":"Paradox",
+        "desc":"Flip and Call a coin correct 2 out of 3 tries. Pass to anyone",
+		"type":"Paradox",
+        "src":""
+		},
+        {"name":"Paradox",
+        "desc":"Correctly guess the color of the top card of the deck. Pass to anyone",
+		"type":"Paradox",
+        "src":""
+		},
+        {"name":"Paradox",
+        "desc":"Correctly guess the color of the top card of the deck. Pass to anyone",
+		"type":"Paradox",
+        "src":""
+		},
+        {"name":"Paradox",
+        "desc":"Have any player write down 1, 2, or 3. With 1 try, correctly guess the number. Pass to that player",
+		"type":"Paradox",
+        "src":""
+		}
+	],
+    "Potato":[
+        {"name":"Basic Spud",
+        "red":7,
+		"green":7,
+        "yellow":7,
+        "blue":7
+		}
+    ]
+}
+
+console.log(CardData);
+class CardObj{
+  // define a constructor inside class
+  constructor(name, desc, cost, colors, type, src){
+	this.name = name;
+    this.desc = desc;
+    this.cost = cost;
+    this.colors = colors;
+    this.type = type;
+    this.img = new Image();
+	this.img.src = src;
+  }
+}
+
+let cardArr = [];
+let bonusCards = [];
+let paradoxCards = [];
+let allCards = [];
+let colorArr = ["firebrick","goldenrod","darkolivegreen","midnightblue"];
+for(i=0; i < CardData.Standard.length; i++){
+    for(ii=0; ii < 4; ii++){ //colors
+        for(iii=0; iii<3; iii++){ //cost
+            let tmpCard = new CardObj(CardData.Standard[i].name
+                                ,CardData.Standard[i].desc
+                                ,iii 
+                                ,colorArr[ii]
+                                ,CardData.Standard[i].type
+                                ,CardData.Standard[i].src
+							);
+        cardArr.push(tmpCard);
+        }
+    }
+}
+allCards.push(cardArr);
+
+for(i=0; i < CardData.Bonus.length; i++){
+    for(ii=0; ii < 4; ii++){ //colors
+            let tmpCard = new CardObj(CardData.Bonus[i].name
+                                ,CardData.Bonus[i].desc
+                                ,iii 
+                                ,colorArr[ii]
+                                ,CardData.Bonus[i].type
+                                ,CardData.Bonus[i].src
+							);
+                            bonusCards.push(tmpCard);
+    }
+}
+allCards.push(bonusCards);
+
+for(i=0; i < CardData.Paradox.length; i++){
+    for(ii=0; ii < 4; ii++){ //colors
+        for(iii=0; iii<2; iii++){ //cost
+            let tmpCard = new CardObj(CardData.Paradox[i].name
+                                ,CardData.Paradox[i].desc
+                                ,iii 
+                                ,"black"
+                                ,CardData.Paradox[i].type
+                                ,CardData.Paradox[i].src
+							);
+                            paradoxCards.push(tmpCard);
+        }
+    }
+}
+allCards.push(paradoxCards);
+
+function ChangeSet(setNum){
+    if(activeSet + setNum >= 0){
+        activeSet = activeSet + setNum;
+    }
+    draw();
+}
+function ChangeType(setNum){
+    if(activeType + setNum >= 0){
+        activeType = activeType + setNum;
+    }
+    draw();
+}
+
+function drawTitle(i){
+    let ni = i - (70 * activeSet);
+
+    ctx.font = "12px Arial";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "left";  
+            let fontSize = 24;  
+            if(allCards[activeType][i].name.length < 30){
+                fontSize = 45;
+            } 
+            else if (allCards[activeType][i].name.length < 33){
+                fontSize = 40;
+            }
+            else if (allCards[activeType][i].name.length < 40){
+                fontSize = 14;
+            }
+            else if (allCards[activeType][i].name.length < 60){
+                fontSize = 12;
+            }
+            else if (allCards[activeType][i].name.length < 110){
+                fontSize = 11;
+            }
+            else if (allCards[activeType][i].name.length < 110){
+                fontSize = 10;
+            }
+            else if (allCards[activeType][i].name.length < 110){
+                fontSize = 10;
+            }
+            //console.log("Length/FontSize: " + cardArr[i].desc.length + " / " + fontSize);
+            drawText(ctx, 
+            allCards[activeType][i].name, 
+                    {
+                        x: ((ni % 10) * cardWidth) +  (cardWidth * .05),
+                        y: (Math.floor(ni / 10) * cardHeight) + (cardHeight * .05),
+                        width: (cardWidth * .9),
+                        height: (cardHeight * .15),
+                        fontSize: fontSize,
+                        debug:false
+                    });
+
+}
+
+function drawDescText(i){
+    let ni = i - (70 * activeSet);
+    //console.log(allCards[activeType][i].desc + ": " + allCards[activeType][i].desc.length)
+    ctx.font = "12px Arial";
+            ctx.fillStyle = "black";
+            ctx.textAlign = "left";  
+            let fontSize = 24;  
+            if(allCards[activeType][i].desc.length <= 50){
+                fontSize = 50;
+            } 
+            else if (allCards[activeType][i].desc.length < 70){
+                fontSize = 48;
+            }
+            else if (allCards[activeType][i].desc.length < 90){
+                fontSize = 45;
+            }
+            else if (allCards[activeType][i].desc.length < 110){
+                fontSize = 40;
+            }
+            else if (allCards[activeType][i].desc.length < 150){
+                fontSize = 35;
+            }
+            else if (allCards[activeType][i].desc.length < 170){
+                fontSize = 30;
+            }
+            else if (allCards[activeType][i].desc.length < 200){
+                fontSize = 20;
+            }
+            //console.log("Length/FontSize: " + cardArr[i].desc.length + " / " + fontSize);
+            drawText(ctx, 
+                    allCards[activeType][i].desc, 
+                    {
+                        x: ((ni % 10) * cardWidth) +  (cardWidth * .15),
+                        y: (Math.floor(ni / 10) * cardHeight) + (cardHeight * .25),
+                        width: (cardWidth * .7),
+                        height: (cardHeight * .6),
+                        fontSize: fontSize,
+                        debug:false
+                    });
+
+}
+
+function draw() {
+    console.log("Drawing Cards " + (activeSet * 70) + " - " + ((activeSet * 70) + 70));
+
+	ctx.imageSmoothingEnabled = false;
+	ctx.imageSmoothingQuality = "low";
+    ctx.globalCompositeOperation = "destination-over";
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight); // clear canvas
+    let cardCount = 0;
+
+    loopStart = activeSet * 70;
+    loopEnd = loopStart + 70;
+
+    for(i=loopStart; i < loopEnd; i++){
+            drawDescText(i);
+            drawTitle(i);
+            ctx.fillStyle = allCards[activeType][i].colors;
+            if(activeType == 1){
+                ctx.fillStyle = "grey";
+            }
+          
+            
+            //Top
+            ctx.fillRect(((cardCount % 10) * cardWidth) + (cardWidth * 0.05) //x
+                        , (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.05) //y
+                        , cardWidth - (cardWidth * 0.1)//width
+                        , (cardHeight * 0.15) //height
+                        );
+            //Left side
+            ctx.fillRect(((cardCount % 10) * cardWidth) + (cardWidth * 0.05) //x
+                        , (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.3) //y
+                        , (cardWidth * 0.05) //width
+                        , (cardHeight * 0.65) //height
+            );
+            //Right side
+            ctx.fillRect(((cardCount % 10) * cardWidth) + (cardWidth * 0.90) //x
+                        , (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.3) //y
+                        , (cardWidth * 0.05) //width
+                        , (cardHeight * 0.65) //height
+            );
+
+            //Draw Cost
+            if(allCards[activeType][i].type == "Standard"){
+            if(allCards[activeType][i].cost == 0){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.5), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+            else if(allCards[activeType][i].cost == 1){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.40), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.60), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+            else if(allCards[activeType][i].cost == 2){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.30), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.50), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.70), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+            else if(allCards[activeType][i].cost == 3){
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.27), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.42), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.57), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(((cardCount % 10) * cardWidth) + (cardWidth * 0.72), 
+                        (Math.floor(cardCount / 10) * cardHeight) + (cardHeight * 0.9), 
+                        (cardWidth * 0.05), 
+                        0, 
+                        2 * Math.PI);
+                ctx.fill();
+            }
+        }
+
+
+
+            //Draw Img
+            ctx.globalAlpha = 0.4;
+            ctx.drawImage(allCards[activeType][i].img
+                        , ((cardCount % 10) * cardWidth ) + (cardWidth * .25)//X
+                        , (Math.floor(cardCount / 10) * cardHeight ) + (cardHeight * .25) //Y
+                        ,  (cardWidth / 2) //width
+                        ,  (cardHeight / 2)//height
+                        );
+            ctx.globalAlpha = 1;
+
+            //Draw CardBase
+            ctx.drawImage(cardBase
+                        , ((cardCount % 10) * cardWidth) //X
+                        , (Math.floor(cardCount / 10) * cardHeight)  //Y
+                        ,  cardWidth //width
+                        ,  cardHeight //height
+                        );
+
+            cardCount++;
+       // }
+
+    //}
+    }
+
+    //ctx.save();
+   // let lArmImg = new Image();
+	//lArmImg.src = '/images/svg_playing_cards/other/blank_card.svg'
+        //DrawStatText
+       //ctx.font = "12px Arial";
+       // ctx.fillText("ArmShoulderAnchor: ", 200, 10);
+		//ctx.fillStyle = "rgba(0, 0, 255, 0.1)";
+		//ctx.fillRect(0, 0, 30, 30);
+
+		//ctx.drawImage(lArmImg, 0, 0);
+}
+
+
+  draw();
+
+  function downloadImage() {
+
+// Grab the canvas element
+let canvas = document.getElementById("myCanvas");
+
+/* Create a PNG image of the pixels drawn on the canvas using the toDataURL method. PNG is the preferred format since it is supported by all browsers
+*/
+var dataURL = canvas.toDataURL("image/png");
+
+// Create a dummy link text
+var a = document.createElement('a');
+// Set the link to the image so that when clicked, the image begins downloading
+a.href = dataURL
+// Specify the image filename
+a.download = 'canvas-download.png';
+// Click on the link to set off download
+a.click();
+}
+
+</script>
+</body>
+</html>

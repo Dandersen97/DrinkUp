@@ -1,0 +1,16 @@
+CREATE OR REPLACE VIEW DRINK_CHART
+as
+select
+d.DrinkID
+,d.DrinkName
+,d.DrinkRecipe
+,d.ABV
+,d.Type
+,(d.abv * 1) as 12oz
+,(d.abv * 1.33) as 16oz
+,(d.abv * .12) as Shot
+,(d.abv * .4) as 5oz
+,(d.abv * 1) as 12oz
+,(d.abv * 1) as 12oz
+
+from Drinks d

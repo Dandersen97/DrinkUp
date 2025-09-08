@@ -1,0 +1,365 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
+    <title>Trivia</title>
+</head>
+
+<body>
+<style>
+body {
+margin: 0px;
+}
+.grid-container {
+display: grid;
+grid-template-columns: 20% 20% 20% 20% 20%;
+grid-template-rows: 10% 18% 18% 18% 18% 18%;
+height: 100vh;
+}
+.grid-item {
+background-color: #0055ff;
+color: yellow;
+border: 1px solid rgba(0, 0, 0, 0.8);
+font-size: 1em;
+text-align: center;
+overflow: hidden auto;
+}
+
+.grid-title {
+background-color: #0055ff;
+color: yellow;
+border: 1px solid rgba(0, 0, 0, 0.8);
+font-size: 50px;
+text-align: center;
+overflow: hidden auto;
+/*word-break: break-all;*/
+word-wrap: break-word;
+align-items: center;
+}
+.grid-title h2{
+margin: 0px;
+}
+.claimed {
+background-color: #022b7e;
+color: #636300;
+}
+/* The Modal (background) */
+.modal {
+display: none; /* Hidden by default */
+position: fixed; /* Stay in place */
+z-index: 1; /* Sit on top */
+left: 0;
+top: 0;
+width: 100%; /* Full width */
+height: 100%; /* Full height */
+overflow: auto; /* Enable scroll if needed */
+background-color: rgb(0,0,0); /* Fallback color */
+background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+width: 100%; /* Could be more or less, depending on screen size */
+height: 100%;
+background-color: #0055ff;
+position: absolute;
+-webkit-backface-visibility: hidden; /* Safari */
+backface-visibility: hidden;
+}
+.modal-content-card {
+text-align: center;
+padding: 10px;
+}
+
+/* If the screen size is 601px wide or more, set the font-size to 80px */
+@media screen and (min-width: 601px) {
+.modal-content-card,  .grid-item{
+font-size: 80px;
+}
+}
+
+/* If the screen size is 600px wide or less, set the font-size to 30px */
+@media screen and (max-width: 600px) {
+.modal-content-card, .grid-item{
+font-size: 30px;
+}
+}
+
+/* The Close Button */
+.close {
+color: #aaa;
+float: right;
+font-size: 28px;
+font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+color: black;
+text-decoration: none;
+cursor: pointer;
+}
+</style>
+<div class="grid-container" id="bingoCard">
+<div class="grid-title" id="grid-item-title1" onclick="ClaimTitleModal(event)"><h2>The Office</h2></div>
+<div class="grid-title" id="grid-item-title2" onclick="ClaimTitleModal(event)"><h2>Monty Python</h2></div>
+<div class="grid-title" id="grid-item-title3" onclick="ClaimTitleModal(event)"><h2>Think About It</h2></div>
+<div class="grid-title" id="grid-item-title4" onclick="ClaimTitleModal(event)"><h2>Long Title Goes Here</h2></div>
+<div class="grid-title" id="grid-item-title5" onclick="ClaimTitleModal(event)"><h2>ABC</h2></div>
+<div class="grid-item" id="grid-item1" onclick="ClaimTitleModal(event)">1</div>
+<div class="grid-item" id="grid-item2" onclick="ClaimTitleModal(event)">1</div>
+<div class="grid-item" id="grid-item3" onclick="ClaimTitleModal(event)">1</div>
+<div class="grid-item" id="grid-item4" onclick="ClaimTitleModal(event)">1</div>
+<div class="grid-item" id="grid-item5" onclick="ClaimTitleModal(event)">1</div>
+<div class="grid-item" id="grid-item6" onclick="ClaimTitleModal(event)">2</div>
+<div class="grid-item" id="grid-item7" onclick="ClaimTitleModal(event)">2</div>
+<div class="grid-item" id="grid-item8" onclick="ClaimTitleModal(event)">2</div>
+<div class="grid-item" id="grid-item9" onclick="ClaimTitleModal(event)">2</div>
+<div class="grid-item" id="grid-item10" onclick="ClaimTitleModal(event)">2</div>
+<div class="grid-item" id="grid-item11" onclick="ClaimTitleModal(event)">3</div>
+<div class="grid-item" id="grid-item12" onclick="ClaimTitleModal(event)">3</div>
+<div class="grid-item" id="grid-item13" onclick="ClaimTitleModal(event)">3</div>
+<div class="grid-item" id="grid-item14" onclick="ClaimTitleModal(event)">3</div>
+<div class="grid-item" id="grid-item15" onclick="ClaimTitleModal(event)">3</div>
+<div class="grid-item" id="grid-item16" onclick="ClaimTitleModal(event)">4</div>
+<div class="grid-item" id="grid-item17" onclick="ClaimTitleModal(event)">4</div>
+<div class="grid-item" id="grid-item18" onclick="ClaimTitleModal(event)">4</div>
+<div class="grid-item" id="grid-item19" onclick="ClaimTitleModal(event)">4</div>
+<div class="grid-item" id="grid-item20" onclick="ClaimTitleModal(event)">4</div>
+<div class="grid-item" id="grid-item21" onclick="ClaimTitleModal(event)">5</div>
+<div class="grid-item" id="grid-item22" onclick="ClaimTitleModal(event)">5</div>
+<div class="grid-item" id="grid-item23" onclick="ClaimTitleModal(event)">5</div>
+<div class="grid-item" id="grid-item24" onclick="ClaimTitleModal(event)">5</div>
+<div class="grid-item" id="grid-item25" onclick="ClaimTitleModal(event)">5</div>
+</div>
+<button onclick="ClearCard();">New Card</button>
+
+<div id="modalClaim" class="modal">
+<!-- Modal content -->
+<div class="innerCard" style="height: 100%; width: 100%; transition: transform 6s; transform-style: preserve-3d; color: yellow;">
+<div class="modal-content">
+<div class="modal-content-card">
+<p>For DRINKPLACEHOLDER Drink(s), answer the following question</p>
+<hr></hr>
+<h1 id="modalQuestionTimer">10</h1>
+<h2 id="modalQuestion">What type of bear is best?</h2>
+</div>
+</div>
+<div class="modal-content" style="transform: rotateY(180deg);">
+<div class="modal-content-card">
+<h2>Answer:</h2>
+<h2 id="modalAnswer">Black Bear</h2>
+<hr></hr>
+<p>If you got the answer right, give DRINKPLACEHOLDER drink(s). If wrong, take DRINKPLACEHOLDER drink(s).</p>
+<h2 onclick="Close(event);" style="color: orange;">Go Back</h2>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+<script id="jsonDataText" type="text" src="jsonData.txt"></script>
+<script>
+var tmpClass = "";
+var jsonString = `{
+"Generic":{
+"Category":"Generic",
+"Tasks":[
+{"Question":"Dummy 0 index placeholder","Answer":"Could - 1 on selection but this works too"},
+{"Question":"What type of bear is best?","Answer":"Black Bear"},
+{"Question":"What is your name?","Answer":"Sir Lancelot of Camelot"},
+{"Question":"What is Jenny's number?","Answer":"867-5309"},
+{"Question":"Question 4","Answer":"No"},
+{"Question":"Question 5","Answer":"No"},
+{"Question":"True or False?","Answer":"False."},
+{"Question":"What is your favorite color?","Answer":"Blue"},
+{"Question":"How many Exes live in Texas?","Answer":"All of them"},
+{"Question":"Question 9","Answer":"No"},
+{"Question":"Question 10","Answer":"No"},
+{"Question":"This question is really hard.","Answer":"That's what she said"},
+{"Question":"What is your quest?","Answer":"To seek the Holy Grail"},
+{"Question":"Why does nobody like you?","Answer":"You're 23"},
+{"Question":"Question 14","Answer":"No"},
+{"Question":"Question 15","Answer":"No"},
+{"Question":"Name the 3 B's","Answer":"Bears, Beats, Battlestar Galatica"},
+{"Question":"What is the common air velocity speed of an unladen swallow?","Answer":"Is that an African or European swallow?"},
+{"Question":"Question 18","Answer":"No"},
+{"Question":"Question 19","Answer":"No"},
+{"Question":"Question 20","Answer":"No"},
+{"Question":"Question 21","Answer":"No"},
+{"Question":"Is that an African or European swallow?","Answer":"I don't know that"},
+{"Question":"Question 23","Answer":"No"},
+{"Question":"Question 24","Answer":"No"},
+{"Question":"Question 25","Answer":"No"}
+]
+}
+}`;
+
+var jsonData = JSON.parse(jsonString);
+
+
+
+function Close(ev){
+var tmpClassItems = document.getElementsByClassName(tmpClass);
+for(var i = 0; i < tmpClassItems.length; i++)
+{
+tmpClassItems[i].classList.remove(tmpClass);
+}
+ev.srcElement.parentElement.parentElement.parentElement.parentElement.style.display = "none";
+
+ResetModal();
+
+};
+
+function ClaimTitleModal(ev){
+console.log(ev);
+tmpClass = ev.srcElement.id;
+ev.srcElement.classList.add("claimed");
+
+console.log(ev.srcElement.id.replace("grid-item", ""));
+
+document.getElementById("modalQuestion").innerHTML = jsonData.Generic.Tasks[parseInt(ev.srcElement.id.replace("grid-item", ""))].Question;
+document.getElementById("modalAnswer").innerHTML = jsonData.Generic.Tasks[parseInt(ev.srcElement.id.replace("grid-item", ""))].Answer;
+var modal = document.getElementById("modalClaim");
+modal.innerHTML = modal.innerHTML.replaceAll("DRINKPLACEHOLDER", ev.srcElement.innerText);
+modal.style = 'left: ' + ev.srcElement.offsetLeft + '; top: ' + ev.srcElement.offsetTop + '; width: ' + ev.srcElement.offsetWidth + '; height: ' + ev.srcElement.offsetHeight + '; display: block;';
+
+setTimeout(() => {  
+modal.style.transition = "width 1s ease, height 1s ease, top 1s ease, left 1s ease, transform 10s";
+modal.style.width = "100vw";
+modal.style.height = "100vh";
+modal.style.top = "0px";
+modal.style.left = "0px";
+}, 50);
+
+let timerCount = 11;
+let timer = setInterval(() => {  
+timerCount -= 1;
+document.getElementById("modalQuestionTimer").innerText = timerCount;
+if(timerCount <= 0){
+window.clearInterval(timer);
+document.getElementById("modalQuestionTimer").innerText = "TIMES UP!";
+let modalAnswer = modal.getElementsByClassName("innerCard");
+modalAnswer[0].style.transform = "rotateY(180deg)";
+}
+}, 1000);
+
+};
+
+function ClaimAch(ev){
+var tmpClassItems = document.getElementsByClassName(tmpClass);
+for(var i = 0; i < tmpClassItems.length; i++)
+{
+tmpClassItems[i].classList.add("claimed");
+localStorage.setItem("bingoCard", document.getElementById("bingoCard").innerHTML);
+}
+
+Close(ev);
+};
+
+function RandomNum(min, max) { // min and max included
+return Math.floor(Math.random() * (max - min) + min)
+};
+
+function checkStorage() {
+let card = localStorage.getItem("bingoCard");
+if (card != "") {
+document.getElementById("bingoCard").innerHTML = card;
+}
+else {
+console.log("missing storage card");
+CreateCard();
+}
+};
+
+function ClearCard(){
+if(confirm("Get a new card?")){
+localStorage.setItem("bingoCard", "");
+location.reload();
+}
+};
+
+function ResetModal(){
+document.getElementById("modalQuestionTimer").innerText = "10";
+let modalAnswer = document.getElementsByClassName("innerCard");
+modalAnswer[0].style.transform = "rotateY(0deg)";
+};
+
+function NewClass(nClass){
+if(confirm("New Class?")){
+localStorage.setItem("bingoCard", "");
+window.location.href = "index.php?class=" + nClass;
+}
+};
+
+
+
+function CreateCard(){
+
+
+
+
+
+//Load Generic Tasks
+var taskCount = jsonData.Generic.Tasks.length;
+var repeatNum = [];
+for (let i=1; i <= 25; i++){
+var randNum = RandomNum(0, taskCount);
+var stopRepeat = false;
+
+while(!stopRepeat){
+if(!repeatNum.includes(randNum)){
+//document.getElementById("grid-item" + i).innerHTML = jsonData.Generic.Tasks[randNum].Task;
+
+repeatNum[i] = randNum;
+stopRepeat = true;
+}
+else {
+var randNum = RandomNum(0, taskCount);
+stopRepeat = false;
+}
+}
+}
+
+
+//Set Storage
+//Prevents accidental refresh from making new card
+localStorage.setItem("bingoCard", document.getElementById("bingoCard").innerHTML);
+};
+
+function resize_to_fit_element(elem){
+let fontSize = window.getComputedStyle(elem).fontSize;
+
+elem.style.fontSize = (parseFloat(fontSize) - 1) + 'px';
+
+if(elem.clientHeight >= elem.parentElement.clientHeight){
+resize_to_fit_element(elem);
+}
+else{
+elem.style.fontSize = (parseFloat(fontSize) - 3) + 'px';
+elem.style.padding = "1vh 0px";
+}
+
+
+}
+
+window.onload = function() {
+//checkCookie();
+checkStorage();
+var titles = document.getElementsByClassName("grid-title");
+for(var i = 0; i < titles.length; i++){
+console.log(titles[i].style.fontSize);
+resize_to_fit_element(titles[i].firstChild);
+};
+
+
+}
+</script>
+</body>
+</html>
