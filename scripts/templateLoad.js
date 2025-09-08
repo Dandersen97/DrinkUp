@@ -710,7 +710,7 @@ $(document).ready(function(){
 	$.each(GameData.Games, function(i, item) {
         $('#GameRow').append(`
                 <div class="card2" onclick="SetActive(` + i + `)" >
-                    <img src="` + GameData.Games[i].GameInfo.Img + `" style="float: left; transform-box: fill-box; transform-origin: center; " >
+                    <img src={{site.base_url}}"` + GameData.Games[i].GameInfo.Img + `" style="float: left; transform-box: fill-box; transform-origin: center; " >
                 </div>`); 
     });
 
