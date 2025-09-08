@@ -1,0 +1,303 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Memory</title>
+	<!-- Styles -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    
+	<style>
+		body {
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+		.card-org {
+			display:block;
+			width: 22vw;
+			height: 22vw;
+			position: relative;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+		}
+		
+		.card-default {
+			transition: 1s;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 22vw;
+			height: 22vw;
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+			border: 1px solid black;
+		}
+		
+		.card-back {
+			
+		}
+		
+		.card-front {
+			transform: rotateY(180deg);
+			background-color: blue;	
+		}
+		
+		#GameBoard {
+			display: flex;
+			flex-wrap: wrap;
+		}
+		
+		.match {
+			background-color: green;
+			filter: opacity(50%);
+		}
+
+		.flippedf {
+			transform: rotateY(0deg);
+		}
+		.flippedb {
+			transform: rotateY(180deg);
+		}
+	</style>
+</head>
+<body>
+	<!-- Fixed navbar -->
+	<div id="nav-placeholder"></div>
+	<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+        <div class="navbar-header">
+			<span class="navbar-brand" style="height: auto;">Memory</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+			<button class="btn btn-primary navbar-btn" onclick="NewCard()">New Game</button>
+        </div>
+      </div>
+    </nav>
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p>Take turns flipping tiles. Tap 2 different tiles to flip them over. If they match give that drink and go again, if they differ take the drink and next players turn. (sometimes there are more than 1 matching pair)</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Settings</h5>
+				</div>
+				<div class="modal-body">
+					<p>Currently no settings. Sorry.</p>
+					<p>Future placeholder to adjust number of tiles.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Content -->
+	<div>
+		<div class="container">
+			<br />
+			<div id="GameBoard"></div>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="/scripts/templateLoad.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+	<div id="modalLogin-placeholder"></div>
+	<script>
+	var FlipCount = 0;
+	var jsonString = `{
+							"Options":[
+								{"img":"3drinks.svg","drink":3},
+								{"img":"beer.svg","drink":1},
+								{"img":"beer2.svg","drink":2},
+								{"img":"beer2pack.svg","drink":2},
+								{"img":"beer3.svg","drink":1},
+								{"img":"beerBarrel.svg","drink":2},
+								{"img":"beerGlassAndPitcher.svg","drink":2},
+								{"img":"beerStein.svg","drink":1},
+								{"img":"bottle3pack.svg","drink":3},
+								{"img":"bottle3pack2.svg","drink":3},
+								{"img":"bottle3pack3.svg","drink":3},
+								{"img":"bottle3pack4.svg","drink":3},
+								{"img":"martiniGlass.svg","drink":1},
+								{"img":"martiniGlasses.svg","drink":2},
+								{"img":"partyChampagne.svg","drink":1},
+								{"img":"pinkMargarita.svg","drink":1},
+								{"img":"plasticCups.svg","drink":2},
+								{"img":"tropicalDrink.svg","drink":1},
+								{"img":"tropicalDrink2.svg","drink":1},
+								{"img":"tropicalDrink3.svg","drink":1},
+								{"img":"WhiskeyAndGlasses.svg","drink":3},
+								{"img":"whiskeyGlass.svg","drink":1},
+								{"img":"wineBottle.svg","drink":1},
+								{"img":"wineBottleAndGlass.svg","drink":2},
+								{"img":"wineBottleAndGlass2.svg","drink":2},
+								{"img":"wineBottleAndGlasses.svg","drink":3},
+								{"img":"wineGlass.svg","drink":1},
+								{"img":"wineGlass2.svg","drink":1}
+							]
+						}`;
+		var jsonData = JSON.parse(jsonString);
+	
+	
+	window.onload = (event) => {
+		NewCard();
+		
+		
+	}
+
+	function AddCardListeners(){
+		var slides = document.getElementsByClassName("card-front");
+		for (var i = 0; i < slides.length; i++) {
+			slides[i].addEventListener('transitionend', () => {
+				if (FlipCount >= 2){
+					FlipCheck();
+					FlipCount = 0;
+				}
+			});
+		}
+	}
+
+	function FlipCard(e){
+		FlipCount += 1;
+		let src = e.srcElement.closest(".card-org");
+		src.children[0].classList.add('flippedf');	
+		src.children[1].classList.add('flippedb');
+
+		
+		
+	}
+	
+	function FlipCheck(){
+		//let cards = document.getElementsByClassName("flippedf");
+		//let cards = document.getElementsByClassName(':not(.Match)');
+		let cards = document.querySelectorAll('.flippedf :not(.Match)');
+			let img1 = cards[0].href.baseVal.replace('../../images/Icons/', '');
+			let img2 = cards[1].href.baseVal.replace('../../images/Icons/', '');
+			let drinkAmt = 0;
+			for (let i = 0; i < jsonData.Options.length; i++) {
+				if(jsonData.Options[i].img == img1){
+					drinkAmt = jsonData.Options[i].drink;
+				}
+			}
+			if (img1 == img2){
+				//let drinkAmt = GetDrinkVal(img1, img2)
+				alert('MATCH! - Give ' + drinkAmt + ' drinks');
+				cards[0].closest(".card-org").classList.add('Match');
+				cards[1].closest(".card-org").classList.add('Match');
+				cards[0].classList.add('Match');
+				cards[1].classList.add('Match');
+				cards[0].closest(".card-org").removeAttribute("onclick");
+				cards[1].closest(".card-org").removeAttribute("onclick");
+			}
+			else{
+				//let drinkAmt = GetDrinkVal(img1, img2)
+				cards[0].closest(".card-org").classList.add('MisMatch');
+				cards[1].closest(".card-org").classList.add('MisMatch');
+
+				FlipBack(drinkAmt);
+			}
+	}
+	
+	function GetDrinkVal(opt1, opt2){
+		let val1 = 0;
+		for (let i = 0; i < jsonData.Options.length; i++) {
+			if(jsonData.Options[i].img == opt1){
+				val1 = jsonData.Options[i].drink
+			}
+		}
+		
+		let val2 = 0;
+		for (let i = 0; i < jsonData.Options.length; i++) {
+			if(jsonData.Options[i].img == opt2){
+				val2 = jsonData.Options[i].drink
+			}
+		}
+	
+		if (val1 >= val2){
+			return val1
+		}
+		else{
+			return val2
+		}
+	
+		
+	}
+	
+	function FlipBack(drinkAmt){
+		alert('Mismatch - Take ' + drinkAmt + ' drinks');
+		wait(500);
+		const boxes = document.querySelectorAll('.MisMatch');
+		boxes.forEach(box => {
+			box.classList.remove('MisMatch');
+			box.children[0].classList.remove('flippedf');
+			box.children[1].classList.remove('flippedb');
+		});
+	}
+		
+	function NewCard(){
+		const options = [];
+		var repeatNum = [];
+		for (var c=0; c <= 11; c++){
+			let rn = RandomNum(0, jsonData.Options.length)
+			options.push(jsonData.Options[rn].img);
+			options.push(jsonData.Options[rn].img);
+		}
+		
+		document.getElementById("GameBoard").innerHTML = "";
+		for (let i=1; i <= options.length; i++){
+			var randNum = RandomNum(0, options.length);
+			var stopRepeat = false;
+			
+			while(!stopRepeat){
+				if(!repeatNum.includes(randNum)){
+
+					document.getElementById("GameBoard").innerHTML += 	'<div class="card-org col-sm-3" onclick="FlipCard(event)">' +
+																		'<svg class="card-front card-default"><image href="../../images/Icons/' + options[randNum] + '" height="100%" width="100%" /></svg>' +
+																		'<svg class="card-back card-default"><image href="QuestionMark.svg" height="100%" width="100%" /></svg>' +
+																		'</div>';
+
+					repeatNum[i] = randNum;
+					stopRepeat = true;
+				}
+				else {
+					var randNum = RandomNum(0, options.length);
+					stopRepeat = false;
+				}
+			}	
+		}
+		
+		AddCardListeners()
+	}
+	function RandomNum(min, max) { // min and max included 
+		return Math.floor(Math.random() * (max - min) + min)
+	};
+	
+	function wait(ms){
+   var start = new Date().getTime();
+   var end = start;
+   while(end < start + ms) {
+     end = new Date().getTime();
+  }
+}
+	</script>
+</body>
+</html>
