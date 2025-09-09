@@ -409,8 +409,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Drinking Levels",
-				 "Link":"/games/DrinkingLevels/",
-				 "Img":"/images/Logos/drinking_levels.svg",
+				 "Link":"games/DrinkingLevels/",
+				 "Img":"images/Logos/drinking_levels.svg",
 				 "Desc":"<p>Ever feel like your drinks should matter for something? Really enjoy RPG games? Turn those drinks into XP! In this \"game\" you create a profile (you can create multiple profiles for multiple events) and whenever you finish a drink, submit that drink and get XP for it by ABV. So your 5% ABV beer gives you 5xp, that 18% ABV shot of rum gives 18xp. Like mixers? We (will) have an easy calculator to determin ABV</p> <br> <p>This game is in beta status. The core features are done but still needs more content. Bugs and glitches are less likely but can occur, please report any if found. I can't fix what I don't know is broke.</p>",
 				 "Active":true
 			 }
@@ -418,8 +418,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Wheel of Misfortune",
-				 "Link":"/games/wheelofmisfortune/",
-				 "Img":"/images/Logos/wheel_of_misfortune.svg",
+				 "Link":"games/wheelofmisfortune/",
+				 "Img":"images/Logos/wheel_of_misfortune.svg",
 				 "Desc":"<p>A fun beginning of the night game. As its name suggests, you spin a wheel and enjoy the misfortune. You may have to drink, give a drink, take a dare, the possibilities are near endless as you can use our defaults or (eventually) enter your own wheel challenges.<br><br>Now with 50+ options!</p>",
 				 "Active":true
 			 }
@@ -427,8 +427,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Drunk Artist",
-				 "Link":"/games/drunkartist/",
-				 "Img":"/images/Logos/drunk_artist.svg",
+				 "Link":"games/drunkartist/",
+				 "Img":"images/Logos/drunk_artist.svg",
 				 "Desc":"<p>Ever wonder if you have a hidden talent that only comes out when drunk? Well find out if it is art here! 1 person is given an image and must tell all other players how to draw it. Catch is the artists can't see their art, they must remember what they drew and where. Drinking comes into play when guessing their art. Always fun to compare art to eachother and the original piece.</p>",
 				 "Active":true
 			 }
@@ -436,8 +436,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"DrinkUp TV",
-				 "Link":"/tv/",
-				 "Img":"/images/Logos/tv.svg",
+				 "Link":"tv/",
+				 "Img":"images/Logos/tv.svg",
 				 "Desc":"<p>Secondary hub for multiplayer DrinkUp games. A host on the tv and all other players join on their own phone. Similiar to how the Jackbox Party Pack games work.</p>",
 				 "Active":true
 			 }
@@ -445,8 +445,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Memory",
-				 "Link":"/games/memory/",
-				 "Img":"/images/Logos/memory.svg",
+				 "Link":"games/memory/",
+				 "Img":"images/Logos/memory.svg",
 				 "Desc":"<p>Just like the childrens game but with alcohol. A grid is layed before you of facedown cards. You must pick 2 cards and if they match remove them from the game and give a the drink the match says, and go again. If they differ, take the drink, turn them back face down, and it's the next players turn to pick. Sometimes there's multiple matches for a set of cards.</p>",
 				 "Active":true
 			 }
@@ -454,8 +454,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Memory2",
-				 "Link":"/games/memory2/",
-				 "Img":"/images/Logos/memory2.svg",
+				 "Link":"games/memory2/",
+				 "Img":"images/Logos/memory2.svg",
 				 "Desc":"<p>An alternate form of Memory. 12 cards will be shown to you. You have 5 seconds to memorize them before being flipped over. Then, the center large card will be revealed. It is your job to flip over the matching tile.</p>",
 				 "Active":true
 			 }
@@ -463,8 +463,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Scratch N Drink",
-				 "Link":"/games/scratchndrink/",
-				 "Img":"/images/Logos/scratch_n_drink.svg",
+				 "Link":"games/scratchndrink/",
+				 "Img":"images/Logos/scratch_n_drink.svg",
 				 "Desc":"<p>Best played with 2-3 people and a shot. A grid of covered tiles is layed before you, each player takes a turn and scratches off a tile to reveal what is underneath. Based upon the revealed tile, that player may have to drink 1, 2, go again, or be safe (do nothing). BUT, theres the crossbones. The player that reveals that has to take the shot and a new game can be started with a new shot. When playing with more than 2 people it is recomended to incease the crossbone count so when one player scratches it off the others can keep going on the same game.</p>",
 				 "Active":true
 			 }
@@ -472,8 +472,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Campfire Stories",
-				 "Link":"/games/CampfireStories/",
-				 "Img":"/images/Logos/campfire_stories.svg",
+				 "Link":"games/CampfireStories/",
+				 "Img":"images/Logos/campfire_stories.svg",
 				 "Desc":"<p>Inspired by Comedy Central's Drunk History, you're given a random topic and a few key facts. Your job is to tell the history of this event. For Example, you may have</p><p>Tell the history of the First Person in Space</p><ul><li>Yuri Gagarin was the first person is space</li><li>Occured April 12, 1961</li><li>Rocket was called Vostok 1</li><li>Mission successful after an 89 minute run</li></ul><p>You fill in the rest from there, probably very innacurate. (Don't forget the intro) \"Hello, I'm Hugh Jass and today we'll be discussing the first person in space. Yuri Gagarin was born in 1947 to Phil and Mary Gagarin somewhere in Sweden (not true). As a young boy Yuri was fasinated with space (possibly true) and would grow up to be the first person in space (true)...\" Let your imagination run free, nobody is fact checking you on this. This game is best played later in the night when more people are already drunk. Not recomended to play with actual historians.</p>",
 				 "Active":false
 			 }
@@ -481,8 +481,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Do or Drink / Kwitter",
-				 "Link":"/games/doordrink/",
-				 "Img":"/images/Logos/5.svg",
+				 "Link":"games/doordrink/",
+				 "Img":"images/Logos/5.svg",
 				 "Desc":"<p>A simple game for anytime in the party. Similiar to truth or dare but just dares. When it's your turn you'll be given a task. You can choose to do this task or not do it and take the drink punishment. In general, the more embarassing or risky of task the higher the drink punishment is. For example you can 1. Turn your shirt inside out the rest of the night or 2. Take 1 drink. This isn't very bad hence a low punishment. Likewise your task could be 1. Let the person to your right sharpie whatever they want to your face or 2. Take 5 drinks. This could be very severe, especially if there is trust issues, hence a larger punishment. But don't assume easy equals safe, if a task is so simple and easy you may have to drink much more because it's just so easy. Like Say the word 'cheese' or take 10 drinks. There is an optional point system to play with to determine a winner and losers.</p>",
 				 "Active":true
 			 }
@@ -490,8 +490,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Shot Roulette",
-				 "Link":"/games/ShotRoulette/",
-				 "Img":"/images/Logos/shot_roulette.svg",
+				 "Link":"games/ShotRoulette/",
+				 "Img":"images/Logos/shot_roulette.svg",
 				 "Desc":"<p>We recomend the use of a <b><u>TOY</u></b> gun but if you don't have one you can simply put the phone to your head and tap the gun to shoot. The rules are simple, if you get shot take a shot. Custom settings allow to change your six shooter to any number to increase/decrease shot chances. Optional rule to increase bullet count after each round or shot. Optional complicated rules include once per game, pass your turn to another player, place bets if people get shot, add/remove a bullet for a single turn, and more ridiculous things.</p><br><p>This game is not reccomended for light weights and should be paced slowly. You can easily end up taking 5+ shots in mere minutes. For slower, safer fun you can make your own drink rules such as take a drink when shot.</p>",
 				 "Active":false
 			 }
@@ -710,7 +710,7 @@ $(document).ready(function(){
 	$.each(GameData.Games, function(i, item) {
         $('#GameRow').append(`
                 <div class="card2" onclick="SetActive(` + i + `)" >
-                    <img src={{site.base_url}}"` + GameData.Games[i].GameInfo.Img + `" style="float: left; transform-box: fill-box; transform-origin: center; " >
+                    <img src=` + GameData.Games[i].GameInfo.Img + ` style="float: left; transform-box: fill-box; transform-origin: center; " >
                 </div>`); 
     });
 
