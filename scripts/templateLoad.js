@@ -2,8 +2,8 @@ let navbarData = `<div id="page-content-wrapper">
                     <nav class="navbar navbar-expand-lg bg-light">
 					    <div class="container-fluid">
 							<a class="navbar-brand" href="#" id="UsernameNavbar">
-								<img src="/images/avatars/man1.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
-								USERNAME
+								<img src="images/Logos/1.svg" alt="" width="30" height="24" class="d-inline-block align-text-top">
+								DrinkUp!
 							</a>
 							<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 								<span class="navbar-toggler-icon"></span>
@@ -411,8 +411,8 @@ const GameData = {
 				 "Name":"Drinking Levels",
 				 "Link":"games/DrinkingLevels/",
 				 "Img":"images/Logos/drinking_levels.svg",
-				 "Desc":"<p>Ever feel like your drinks should matter for something? Really enjoy RPG games? Turn those drinks into XP! In this \"game\" you create a profile (you can create multiple profiles for multiple events) and whenever you finish a drink, submit that drink and get XP for it by ABV. So your 5% ABV beer gives you 5xp, that 18% ABV shot of rum gives 18xp. Like mixers? We (will) have an easy calculator to determin ABV</p> <br> <p>This game is in beta status. The core features are done but still needs more content. Bugs and glitches are less likely but can occur, please report any if found. I can't fix what I don't know is broke.</p>",
-				 "Active":true
+				 "Desc":"<p>Unfortunately this game is no longer supported due to addition cost of features unavailable in the free tier of hosting</p><p>Ever feel like your drinks should matter for something? Really enjoy RPG games? Turn those drinks into XP! In this \"game\" you create a profile (you can create multiple profiles for multiple events) and whenever you finish a drink, submit that drink and get XP for it by ABV. So your 5% ABV beer gives you 5xp, that 18% ABV shot of rum gives 18xp. Like mixers? We (will) have an easy calculator to determin ABV</p> <br> <p>This game is in beta status. The core features are done but still needs more content. Bugs and glitches are less likely but can occur, please report any if found. I can't fix what I don't know is broke.</p>",
+				 "Active":false
 			 }
 		 },
 		 {
@@ -499,8 +499,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Jeoparty",
-				 "Link":"/games/Jeoparty",
-				 "Img":"/images/Logos/jeoparty.svg",
+				 "Link":"games/Jeoparty",
+				 "Img":"images/Logos/jeoparty.svg",
 				 "Desc":"<p>Drinking and trivia just go hand in hand. Just like the game show it's named after you'll be playing jeopardy for drinks. There's multiple categories with the questions getting harder the more they're worth. Rather than first to answer, when it's your turn you pick your question. If you get it right, you give out that many drinks and go again, you get it wrong you take them and your turn is over.</p>",
 				 "Active":true
 			 }
@@ -508,8 +508,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Shot Potato",
-				 "Link":"/games/ShotPotato/",
-				 "Img":"/images/logos/shot_potato.svg",
+				 "Link":"games/ShotPotato/",
+				 "Img":"images/logos/shot_potato.svg",
 				 "Desc":"<p>A card game that revolves around not taking a shot. Play cards with random costs/actions to pass the potato (shot) to someone else. First player with the potato and unable to pass takes the shot.</p>",
 				 "Active":true
 			 }
@@ -517,8 +517,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Nario Party",
-				 "Link":"/games/NarioParty/",
-				 "Img":"/images/Logos/9.svg",
+				 "Link":"games/NarioParty/",
+				 "Img":"images/Logos/9.svg",
 				 "Desc":"<p>A jumble of all games provided. Basically every players turn is a turn off another game. Your turn may be Wheel of Misfortune but the next player does Shot Roulette, the next does Do or Drink, etc...</p>",
 				 "Active":false
 			 }
@@ -526,8 +526,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Smarty Pants",
-				 "Link":"/games/SmartyPants/",
-				 "Img":"/images/Logos/1.svg",
+				 "Link":"games/SmartyPants/",
+				 "Img":"images/Logos/1.svg",
 				 "Desc":"<p>One person asks a trivia style question. If anyone else can answer it the asker drinks and goes again. If nobody knows everyone else drinks and the next person becomes the asker. After the answer is said, people can challenge with a fact check and lookup the answer. If the answer is different than the asker then the asker takes a shot for being wrong. If the answer was right, the challenger takes the shot. Personal and opinion style questions are prohibitted. That means no questions like \"what's my favorite color?\" or \"who is the best actor?\".</p>",
 				 "Active":false
 			 }
@@ -535,8 +535,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"In Between",
-				 "Link":"/games/InBetween/",
-				 "Img":"/images/Logos/2.svg",
+				 "Link":"games/InBetween/",
+				 "Img":"images/Logos/2.svg",
 				 "Desc":"<p>Recomended to play with actual deck of cards but available here if you don't have one. 2 cards are played. For each player they must determine if the next card will be higher, lower, or between. If correct they choose someone else to drink. If wrong, they drink.</p>",
 				 "Active":false
 			 }
@@ -544,8 +544,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"High Low Smoke Fire",
-				 "Link":"/games/HighLowSmokeFire/",
-				 "Img":"/images/Logos/3.svg",
+				 "Link":"games/HighLowSmokeFire/",
+				 "Img":"images/Logos/3.svg",
 				 "Desc":"<p>Recomended to play with actual deck of cards but available here if you don't have one. Flip a card face up. The player must choose if the next card will be higher or lower and smoke (black) or fire (red). The player drinks for every wrong option and must get 3 perfect in a row for the next players turn. This means if the face up card is the 5 of hearts and the player says high smoke. The next card flipped is the 9 of diamonds. This is higher, but is a fire (red) so the player drinks 1 and goes again.</p>",
 				 "Active":false
 			 }
@@ -553,8 +553,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Quarters",
-				 "Link":"/games/Quarters/",
-				 "Img":"/images/Logos/5.svg",
+				 "Link":"games/Quarters/",
+				 "Img":"images/Logos/5.svg",
 				 "Desc":"<p>Some type of pokemon go or golf with friends style power bar way of tossing a quarter or ball into a cup?</p>",
 				 "Active":false
 			 }
@@ -562,8 +562,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"AORB",
-				 "Link":"/games/AorB/",
-				 "Img":"/images/Logos/6.svg",
+				 "Link":"games/AorB/",
+				 "Img":"images/Logos/6.svg",
 				 "Desc":"<p>You are presented with a question or statement and 2 options. You have to decide if it's A or B and as always, losers drink. An example would be \"This celebrity has \"suck it!\" tattooed on their lip. A: Kesha or B: Justin Beiber?\"</p>",
 				 "Active":false
 			 }
@@ -571,8 +571,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"A Dozen Seconds",
-				 "Link":"/games/ADozenSeconds",
-				 "Img":"/images/Logos/7.svg",
+				 "Link":"games/ADozenSeconds",
+				 "Img":"images/Logos/7.svg",
 				 "Desc":"<p>Similiar to \"Do or Drink\" but it's no longer an option. You're given a task and a punishment. You have 12 seconds to finish this task, if you fail or take too long you have to take your punishment. If you refuse to do a task it's triple punishment. So just grow a pair, don't think, and do the damn task. This game is designed to make you look like a fool so just embrace it and have fun.</p>",
 				 "Active":false
 			 }
@@ -580,8 +580,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Drink Lotto",
-				 "Link":"/games/lotto/",
-				 "Img":"/images/Logos/2.svg",
+				 "Link":"games/lotto/",
+				 "Img":"images/Logos/2.svg",
 				 "Desc":"<p>Different types of scratch off loto tickets. Currently undecided play style. Thinking theres different tickets with different odds. You first drink to buy the ticket, scratch, and depending upon scratches give drinks. So a 1 drink buy ticket may have rewards of give 1-5 drinks. A 2 drink buy ticket may have rewards of give 2-8 drinks. A 5 drink ticket may have rewards of give a shot. And of course tickets can reward nothing so drink and buy again. 3x3 grid, scratch off 3 and drink based on combo? 3 rows of 3, scratch all but need 3 of a kind of some type otherwise drink?</p>",
 				 "Active":false
 			 }
@@ -589,8 +589,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"D&D (Drinking and Dragons)",
-				 "Link":"/games/DrinkingAndDragons/",
-				 "Img":"/images/Logos/3.svg",
+				 "Link":"games/DrinkingAndDragons/",
+				 "Img":"images/Logos/3.svg",
 				 "Desc":"<p>An RPG choose your own adventure style game. A simple 2 option format to explore and drink to fight and survive. An example would be \"You approach the river and find the bridge broken. Do you A: Swim Across or B: Look for another path. If you swim across you may get something like \"The current is very strong, do you A: Drink 4 and make it across or B: Drink 0 but take 3 damag?\" OR if you chose to look for another path you could get \"While walking a bear attacks, do you A: Drink 3 and deal 3 damage or B: Drink 5 and deal 5 damage?\" Ideally every player would participate on their own device. For now, one player hosts and everyone drinks as a team. Drink sizes increase for players. So if 2 people are playing it may be \"Drink 5 for 3 damage\" but if 5 people are playing it may be \"Drink 10 for 3 damage\"</p>",
 				 "Active":false
 			 }
@@ -598,8 +598,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Drinko Plinko",
-				 "Link":"/games/plinko/",
-				 "Img":"/images/Logos/4.svg",
+				 "Link":"games/plinko/",
+				 "Img":"images/Logos/4.svg",
 				 "Desc":"<p>For the indecisive people. Load a list of items and drop a plinko down to choose. Can load up with a menu of drink options or other standard tasks like take 1, 2, 3 drinks, etc.</p>",
 				 "Active":false
 			 }
@@ -607,8 +607,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Um, Actually",
-				 "Link":"/games/UmActually/",
-				 "Img":"/images/Logos/5.svg",
+				 "Link":"games/UmActually/",
+				 "Img":"images/Logos/5.svg",
 				 "Desc":"<p>You are given a bad piece of information and must correct it, starting your answer with um, actually. If another player gives a bad answer, you can also um actually their um actually. Multiple answers can be accepted. For example, 2 - 2 = 4. You can say um actually, 2 + 2 = 4, or 2 * 2 = 4 or 2squared = 4, or 6 - 2 = 4. All would be acceptable. If you can say an accurate um actually give a drink. If you can't come up with anything without repeating another player, take a drink.</p>",
 				 "Active":false
 			 }
@@ -616,8 +616,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Chances",
-				 "Link":"/games/Chances/",
-				 "Img":"/images/Logos/1.svg",
+				 "Link":"games/Chances/",
+				 "Img":"images/Logos/1.svg",
 				 "Desc":"<p>A create your own type of Wheel of Misfortune game. After each spin, the spinner gets to choose of 3 random options that can increase, decrease, add, or remove the chances of landing on certain spins.</p>",
 				 "Active":false
 			 }
@@ -625,8 +625,8 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Rules",
-				 "Link":"/games/Rules/",
-				 "Img":"/images/Logos/8.svg",
+				 "Link":"games/Rules/",
+				 "Img":"images/Logos/8.svg",
 				 "Desc":"<p>Not a game but a collection of common rules you can reference as a Karen. For example, \"Any spilt drink party foul results in a shot taken by the spiller\" or \"There can only be one Question Master at a time, a new question master removes the old one\". Remember, house rules ALWAYS override any of these rules when stated in advance. And a house rule made AFTER an event does not apply to that event. That means should a 2nd person become question master and everyone complains there can only be 1, from that point on there can only be 1 but until then there are 2. Once a 3rd person gets question master, it will remove that from both old masters.</p>",
 				 "Active":false
 			 }
@@ -638,10 +638,10 @@ $(function(){
 	//Add navbar
 	$("body").prepend(navbarData);
 	//Add Modals
-	$("body").append(modalLoginData);
-	$("body").append(modalAddDrink);
-	$("body").append(modalNewProfile);
-	$("body").append(modalProfile);
+	//$("body").append(modalLoginData);
+	//$("body").append(modalAddDrink);
+	//$("body").append(modalNewProfile);
+	//$("body").append(modalProfile);
 	$("body").append(ModalSpinner);
 	$("body").append(ModalGameSelect);
 	$('head').append(`<style>
