@@ -463,7 +463,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Scratch N Drink",
-				 "Link":"games/scratchndrink/",
+				 "Link":"Games/ScratchNDrink/",
 				 "Img":"images/Logos/scratch_n_drink.svg",
 				 "Desc":"<p>Best played with 2-3 people and a shot. A grid of covered tiles is layed before you, each player takes a turn and scratches off a tile to reveal what is underneath. Based upon the revealed tile, that player may have to drink 1, 2, go again, or be safe (do nothing). BUT, theres the crossbones. The player that reveals that has to take the shot and a new game can be started with a new shot. When playing with more than 2 people it is recomended to incease the crossbone count so when one player scratches it off the others can keep going on the same game.</p>",
 				 "Active":true
