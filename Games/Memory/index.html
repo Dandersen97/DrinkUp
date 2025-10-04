@@ -193,9 +193,9 @@
 		//let cards = document.getElementsByClassName("flippedf");
 		//let cards = document.getElementsByClassName(':not(.Match)');
 		let cards = document.querySelectorAll('.flippedf :not(.Match)');
-			let img1 = cards[0].href.baseVal.replace('../../images/Icons/', '');
-			let img2 = cards[1].href.baseVal.replace('../../images/Icons/', '');
-			let drinkAmt = 0;
+			let img1 = cards[0].href.baseVal.replace('images/Icons/', '');
+			let img2 = cards[1].href.baseVal.replace('images/Icons/', '');
+			let drinkAmt = 1;
 			for (let i = 0; i < jsonData.Options.length; i++) {
 				if(jsonData.Options[i].img == img1){
 					drinkAmt = jsonData.Options[i].drink;
