@@ -445,7 +445,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Memory",
-				 "Link":"Games/memory/",
+				 "Link":"Games/Memory/",
 				 "Img":"images/Logos/memory.svg",
 				 "Desc":"<p>Just like the childrens game but with alcohol. A grid is layed before you of facedown cards. You must pick 2 cards and if they match remove them from the game and give a the drink the match says, and go again. If they differ, take the drink, turn them back face down, and it's the next players turn to pick. Sometimes there's multiple matches for a set of cards.</p>",
 				 "Active":true
@@ -454,7 +454,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Memory2",
-				 "Link":"Games/memory2/",
+				 "Link":"Games/Memory2/",
 				 "Img":"images/Logos/memory2.svg",
 				 "Desc":"<p>An alternate form of Memory. 12 cards will be shown to you. You have 5 seconds to memorize them before being flipped over. Then, the center large card will be revealed. It is your job to flip over the matching tile.</p>",
 				 "Active":true
