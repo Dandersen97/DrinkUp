@@ -418,7 +418,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Wheel of Misfortune",
-				 "Link":"games/wheelofmisfortune/",
+				 "Link":"Games/WheelOfMisfortune/",
 				 "Img":"images/Logos/wheel_of_misfortune.svg",
 				 "Desc":"<p>A fun beginning of the night game. As its name suggests, you spin a wheel and enjoy the misfortune. You may have to drink, give a drink, take a dare, the possibilities are near endless as you can use our defaults or (eventually) enter your own wheel challenges.<br><br>Now with 50+ options!</p>",
 				 "Active":true
@@ -509,7 +509,7 @@ const GameData = {
 			 "GameInfo":{
 				 "Name":"Shot Potato",
 				 "Link":"games/ShotPotato/",
-				 "Img":"images/logos/shot_potato.svg",
+				 "Img":"images/Logos/shot_potato.svg",
 				 "Desc":"<p>A card game that revolves around not taking a shot. Play cards with random costs/actions to pass the potato (shot) to someone else. First player with the potato and unable to pass takes the shot.</p>",
 				 "Active":true
 			 }
