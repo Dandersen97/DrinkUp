@@ -113,11 +113,11 @@
 	<script src="scripts/templateLoad.js"></script>
 	<!--<script src="/scripts/login.js"></script>-->
 <script>
-	var jsonData = JSON.parse(GetFile("GameInformation.json"));
+
 
 	
 	
-	var gameCount = jsonData.Games.length;
+	var gameCount = GameData.Games.length;
 	var gameSelection = document.getElementById("GameSelection");
 	var gameSelectionHtml = '<div class="row">';
 	console.log(gameCount);
@@ -125,10 +125,10 @@
 	for (let i=1; i <= gameCount; i++){
 		gameSelectionHtml += '<div class="col-xl-4 col-xl-6 col-lg-6 col-md-3 col-sm-4 col-6 " onclick=\'SetActive("' + (i-1) + '")\' style="border: 1px solid black;">' +
 								//'<svg style="width: 100%;">' +
-									'<image class="w-lg-50" src="' + jsonData.Games[i-1].GameInfo.Img + '" style="float: left; transform-box: fill-box; transform-origin: center; ' + DrawDisabled(jsonData.Games[i-1].GameInfo.Active) + '";></image>' +
+									'<image class="w-lg-50" src="' + GameData.Games[i-1].GameInfo.Img + '" style="float: left; transform-box: fill-box; transform-origin: center; ' + DrawDisabled(GameData.Games[i-1].GameInfo.Active) + '";></image>' +
 								//'</svg>' +
 								
-								'<div class="d-lg-block d-sm-none d-none">' + '<h3>' + jsonData.Games[i-1].GameInfo.Name + '</h3><p>' + jsonData.Games[i-1].GameInfo.Desc + '</p></div>' +
+								'<div class="d-lg-block d-sm-none d-none">' + '<h3>' + GameData.Games[i-1].GameInfo.Name + '</h3><p>' + GameData.Games[i-1].GameInfo.Desc + '</p></div>' +
 							'</div>';
 		if(i % 3 == 0){
 			//gameSelectionHtml += '</div><div class="row">';
@@ -153,21 +153,7 @@
 	}
 	
 	
-	function GetFile(url){	
-		if (window.XMLHttpRequest){
-					xmlhttp = new XMLHttpRequest();
-				}
-				else{
-					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				var res = "";
-				xmlhttp.open("GET", url, false);
-				xmlhttp.send();
-				if(xmlhttp.status === 200){
-					res = xmlhttp.responseText;
-				}		
-		return res;
-	}
+	
 	
 	function ToggleModal(mod){
 		$(mod).modal('show');
@@ -185,11 +171,11 @@
 		var section = document.getElementById("ModalMoreInfoSection");
 		var logo = document.getElementById("ModalMoreInfoLogo");
 		var playButton = document.getElementById("PlayButton");
-		header.innerHTML = jsonData.Games[jsonID].GameInfo.Name;
-		section.innerHTML = jsonData.Games[jsonID].GameInfo.Desc;
-		logo.src = jsonData.Games[jsonID].GameInfo.Img;
+		header.innerHTML = GameData.Games[jsonID].GameInfo.Name;
+		section.innerHTML = GameData.Games[jsonID].GameInfo.Desc;
+		logo.src = GameData.Games[jsonID].GameInfo.Img;
 		//playButton.setAttribute('onclick', 'PlayGame("' + jsonID + '")');
-		playButton.setAttribute('href', jsonData.Games[jsonID].GameInfo.Link);
+		playButton.setAttribute('href', GameData.Games[jsonID].GameInfo.Link);
 		console.log(playButton);
 		ToggleModal("#ModalMoreInfo")
 	};
