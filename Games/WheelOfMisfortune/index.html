@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+		<base href="/DrinkUp/"/>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <title>Wheel Of Misfortune</title>
@@ -118,14 +119,15 @@
 	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="/scripts/templateLoad.js"></script>
+	<script src="scripts/templateLoad.js"></script>
+	<script src="GameData/spins.js"></script>
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
 	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
 	<div id="modalLogin-placeholder"></div>
 <script>
-	var optionsString = GetFile("spins.json");
-	const jsonAllOptions = JSON.parse(optionsString);
-	var ActiveOptions = JSON.parse(optionsString);
+	//var optionsString = GetFile("spins.json");
+	const jsonAllOptions = spinData; // Options;JSON.parse(optionsString);
+	var ActiveOptions = spinData; //JSON.parse(optionsString);
 
 	function toggleSpin(){
 		var spinner = document.getElementById("tire");
@@ -182,7 +184,7 @@
 			//svg.innerHTML += '<path d="M ' + startPoint + ' L ' + fPoint + ' Q ' + qArc + ' ' + qPoint + ' L ' + startPoint + '" fill="blue" stroke="blue" stroke-width="1"/>'; //curved arc
 			spinner.innerHTML += '<g transform="translate(' + radius + ',' + radius + ') rotate(' + rotate + ')">' + 
 							'<path d="M ' + startPoint + ' L ' + fPoint + ' L ' + qPoint + ' L ' + startPoint + '" fill="' + ActiveOptions.Options[i].Color + '" stroke="black" stroke-width="1" />' +							
-							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="/images/Icons/' + ActiveOptions.Options[i].Icon + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(95deg);"></image>' +
+							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="images/Icons/' + ActiveOptions.Options[i].Icon + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(95deg);"></image>' +
 							//'<circle cx="' + imgX + '" cy="' + imgY + '" r="5" fill="red"/>' +
 							'</g>'; //straight line
 			
@@ -220,7 +222,7 @@
 		//navigator.vibrate(100);
 		document.getElementById("MisfortuneModalTitle").innerHTML = ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].ID;
 		document.getElementById("MisfortuneModalDesc").innerHTML = ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].Desc;
-		document.getElementById("MisfortuneModalImg").src = '/images/Icons//' + ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].Icon + '.svg';
+		document.getElementById("MisfortuneModalImg").src = 'images/Icons//' + ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].Icon + '.svg';
 		
 		
 		//console.log(ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel);
@@ -267,7 +269,7 @@
 			//svg.innerHTML += '<path d="M ' + startPoint + ' L ' + fPoint + ' Q ' + qArc + ' ' + qPoint + ' L ' + startPoint + '" fill="blue" stroke="blue" stroke-width="1"/>'; //curved arc
 			document.getElementById("MisfortuneModalMiniWheel").innerHTML += '<g transform="translate(' + radius + ',' + radius + ') rotate(' + rotate + ')">' + 
 							'<path d="M ' + startPoint + ' L ' + fPoint + ' L ' + qPoint + ' L ' + startPoint + '" fill="' + "#86e98f" + '" stroke="black" stroke-width="1" />' +							
-							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="/images/numbers/' + ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel[i] + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(108deg);"></image>' +
+							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="images/numbers/' + ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel[i] + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(108deg);"></image>' +
 							//'<circle cx="' + imgX + '" cy="' + imgY + '" r="5" fill="red"/>' +
 							'</g>'; //straight line
 			
@@ -342,21 +344,7 @@ window.onload = function() {
 		navbar.classList.toggle("collapse");
 	}
 	*/
-	function GetFile(url){	
-		if (window.XMLHttpRequest){
-					xmlhttp = new XMLHttpRequest();
-				}
-				else{
-					xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-				}
-				var res = "";
-				xmlhttp.open("GET", url, false);
-				xmlhttp.send();
-				if(xmlhttp.status === 200){
-					res = xmlhttp.responseText;
-				}		
-		return res;
-	}
+	
 </script>
     </body>
 </html>
