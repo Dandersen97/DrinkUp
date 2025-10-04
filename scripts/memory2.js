@@ -193,8 +193,8 @@ var GameRule = 0;
 		inner += '<div class="row g-0">';
 		for(var c=0; c < cCount; c++){
 			inner += `<div class="col col-` + cCol + ` card-org card-small card-flippable" id="card` + c + `">
-				<img class="w-100 card-front card-default" src="images/icons/beer.svg" />
-				<img class="w-100 card-back card-default" src="images/icons/QuestionMark.svg" />
+				<img class="w-100 card-front card-default" src="images/Icons/beer.svg" />
+				<img class="w-100 card-back card-default" src="images/Icons/QuestionMark.svg" />
 			</div>`;
 		}
 		inner += '</div>';
@@ -203,23 +203,23 @@ var GameRule = 0;
 		inner += '<div class="row g-0"><div class="col col-' + cCol + '" >';
 		for(var c=cCount * 1; c < (cCount * 2) - 2; c++){
 			inner += `<div class="position-relative card-org card-small card-flippable" id="card` + c + `">
-						<img class="w-100 card-front card-default" src="images/icons/beer.svg" />
-						<img class="w-100 card-back card-default" src="images/icons/QuestionMark.svg" />
+						<img class="w-100 card-front card-default" src="images/Icons/beer.svg" />
+						<img class="w-100 card-back card-default" src="images/Icons/QuestionMark.svg" />
 					</div>`;
 		}
 		inner += '</div>'
 		//Center Image
 		inner += `<div class="col col-` + cColPrim + `" >
 					<div class="position-relative card-org card-large" id="cardPrimary">
-						<img class="w-100 card-front card-default" src="images/icons/WhiskeyAndGlasses.svg" />
-						<img class="w-100 card-back card-default" src="images/icons/QuestionMarkStart.svg"" />
+						<img class="w-100 card-front card-default" src="images/Icons/WhiskeyAndGlasses.svg" />
+						<img class="w-100 card-back card-default" src="images/Icons/QuestionMarkStart.svg"" />
 					</div>
 				</div>`;
 		inner += '<div class="col col-' + cCol + '" >';
 		for(var c=(cCount * 2) - 2; c < (cCount * 3) - 4; c++){
 			inner += `<div class="position-relative card-org card-small card-flippable" id="card` + c + `">
-						<img class="w-100 card-front card-default" src="images/icons/beer.svg" />
-						<img class="w-100 card-back card-default" src="images/icons/QuestionMark.svg" />
+						<img class="w-100 card-front card-default" src="images/Icons/beer.svg" />
+						<img class="w-100 card-back card-default" src="images/Icons/QuestionMark.svg" />
 					</div>`;
 		}
 		inner += '</div></div>';
@@ -228,8 +228,8 @@ var GameRule = 0;
 		inner += '<div class="row g-0">';
 		for(var c=(cCount * 3) - 4; c < ((cCount * 3) - 4) + cCount; c++){
 			inner += `<div class="col col-` + cCol + ` card-org card-small card-flippable" id="card` + c + `">
-				<img class="w-100 card-front card-default" src="images/icons/beer.svg" />
-				<img class="w-100 card-back card-default" src="images/icons/QuestionMark.svg" />
+				<img class="w-100 card-front card-default" src="images/Icons/beer.svg" />
+				<img class="w-100 card-back card-default" src="images/Icons/QuestionMark.svg" />
 			</div>`;
 		}
 		inner += '</div>';
