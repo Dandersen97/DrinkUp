@@ -427,7 +427,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Drunk Artist",
-				 "Link":"games/drunkartist/",
+				 "Link":"Games/drunkartist/",
 				 "Img":"images/Logos/drunk_artist.svg",
 				 "Desc":"<p>Ever wonder if you have a hidden talent that only comes out when drunk? Well find out if it is art here! 1 person is given an image and must tell all other players how to draw it. Catch is the artists can't see their art, they must remember what they drew and where. Drinking comes into play when guessing their art. Always fun to compare art to eachother and the original piece.</p>",
 				 "Active":true
@@ -445,7 +445,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Memory",
-				 "Link":"games/memory/",
+				 "Link":"Games/memory/",
 				 "Img":"images/Logos/memory.svg",
 				 "Desc":"<p>Just like the childrens game but with alcohol. A grid is layed before you of facedown cards. You must pick 2 cards and if they match remove them from the game and give a the drink the match says, and go again. If they differ, take the drink, turn them back face down, and it's the next players turn to pick. Sometimes there's multiple matches for a set of cards.</p>",
 				 "Active":true
@@ -454,7 +454,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Memory2",
-				 "Link":"games/memory2/",
+				 "Link":"Games/memory2/",
 				 "Img":"images/Logos/memory2.svg",
 				 "Desc":"<p>An alternate form of Memory. 12 cards will be shown to you. You have 5 seconds to memorize them before being flipped over. Then, the center large card will be revealed. It is your job to flip over the matching tile.</p>",
 				 "Active":true
