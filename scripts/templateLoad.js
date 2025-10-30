@@ -427,7 +427,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Drunk Artist",
-				 "Link":"Games/drunkartist/",
+				 "Link":"Games/DrunkArtist/",
 				 "Img":"images/Logos/drunk_artist.svg",
 				 "Desc":"<p>Ever wonder if you have a hidden talent that only comes out when drunk? Well find out if it is art here! 1 person is given an image and must tell all other players how to draw it. Catch is the artists can't see their art, they must remember what they drew and where. Drinking comes into play when guessing their art. Always fun to compare art to eachother and the original piece.</p>",
 				 "Active":true
@@ -502,13 +502,13 @@ const GameData = {
 				 "Link":"games/Jeoparty",
 				 "Img":"images/Logos/jeoparty.svg",
 				 "Desc":"<p>Drinking and trivia just go hand in hand. Just like the game show it's named after you'll be playing jeopardy for drinks. There's multiple categories with the questions getting harder the more they're worth. Rather than first to answer, when it's your turn you pick your question. If you get it right, you give out that many drinks and go again, you get it wrong you take them and your turn is over.</p>",
-				 "Active":true
+				 "Active":false
 			 }
 		 },
 		 {
 			 "GameInfo":{
 				 "Name":"Shot Potato",
-				 "Link":"games/ShotPotato/",
+				 "Link":"Games/ShotPotato/",
 				 "Img":"images/Logos/shot_potato.svg",
 				 "Desc":"<p>A card game that revolves around not taking a shot. Play cards with random costs/actions to pass the potato (shot) to someone else. First player with the potato and unable to pass takes the shot.</p>",
 				 "Active":true
