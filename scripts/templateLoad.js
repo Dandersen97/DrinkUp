@@ -439,7 +439,7 @@ const GameData = {
 				 "Link":"tv/",
 				 "Img":"images/Logos/tv.svg",
 				 "Desc":"<p>Secondary hub for multiplayer DrinkUp games. A host on the tv and all other players join on their own phone. Similiar to how the Jackbox Party Pack games work.</p>",
-				 "Active":true
+				 "Active":false
 			 }
 		 },
 		 {
@@ -484,7 +484,7 @@ const GameData = {
 				 "Link":"games/doordrink/",
 				 "Img":"images/Logos/5.svg",
 				 "Desc":"<p>A simple game for anytime in the party. Similiar to truth or dare but just dares. When it's your turn you'll be given a task. You can choose to do this task or not do it and take the drink punishment. In general, the more embarassing or risky of task the higher the drink punishment is. For example you can 1. Turn your shirt inside out the rest of the night or 2. Take 1 drink. This isn't very bad hence a low punishment. Likewise your task could be 1. Let the person to your right sharpie whatever they want to your face or 2. Take 5 drinks. This could be very severe, especially if there is trust issues, hence a larger punishment. But don't assume easy equals safe, if a task is so simple and easy you may have to drink much more because it's just so easy. Like Say the word 'cheese' or take 10 drinks. There is an optional point system to play with to determine a winner and losers.</p>",
-				 "Active":true
+				 "Active":false
 			 }
 		 },
 		 {
