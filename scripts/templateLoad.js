@@ -42,6 +42,42 @@ let navbarData = `<div id="page-content-wrapper">
 					</nav>
             </div>`;
 
+
+
+let modalLoginData = `<div class="modal fade" id="ModalLogin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel">Welcome to DrinkUp!</h5>
+				</div>
+				<div class="modal-body">
+					<div class="text-center m-auto" style="max-width: 330px;">
+						<div class="row">
+							<img class="col-xl-4 col-xl-6 col-lg-6 col-md-3 col-sm-4 col-6 mx-auto" src="images/Avatars/Halloween 2021.svg" alt="" width="20%">
+						</div>
+						<div class="row">
+							<h1 class="h3 mb-3 fw-normal">CURRENTLY UNDER HEAVY UPDATES - MANY FEATURES DO NOT WORK</h1>
+							<p class="h3 mb-3 fw-normal">By accessing this site you acknowledge you are of the legal drinking age.</p>
+							<p class="h3 mb-3 fw-normal">DrinkUp is a social collection of games, primarily focused on the consuption of alcohol. Participation is soley voluntarily. We are not responsible for your actions and it is the players choice in how to play these games.</p>
+						</div>
+
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Contine to Games</button>
+				</div>
+			</div>
+		</div>
+	</div>`;
+
+
+
+
+
+
+
+			/*
 let modalLoginData = `<div class="modal fade" id="ModalLogin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 			<div class="modal-content">
@@ -82,7 +118,7 @@ let modalLoginData = `<div class="modal fade" id="ModalLogin" data-bs-backdrop="
 			</div>
 		</div>
 	</div>`;
-
+*/
 
 let modalAddDrink = `<div class="modal fade" id="ModalAddDrink" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -638,7 +674,7 @@ $(function(){
 	//Add navbar
 	$("body").prepend(navbarData);
 	//Add Modals
-	//$("body").append(modalLoginData);
+	$("body").append(modalLoginData);
 	//$("body").append(modalAddDrink);
 	//$("body").append(modalNewProfile);
 	//$("body").append(modalProfile);

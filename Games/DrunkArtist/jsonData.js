@@ -44,7 +44,7 @@ let jsonData = {
 	{"img":"old-gun.svg"},
 	{"img":"palm-island.svg"},
 	{"img":"pumkin.svg"},
-	{"img":"peanutbutter-jar"},
+	{"img":"peanutbutter-jar.svg"},
 	{"img":"racing-flag.svg"},
 	{"img":"rocket.svg"},
 	{"img":"santa-claus.svg"},
