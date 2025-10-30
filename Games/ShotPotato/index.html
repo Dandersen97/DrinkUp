@@ -322,7 +322,7 @@
         {"name":"Moldy Potato",
         "desc":"Pass to a player with longer hair",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Peeled Potato",
         "desc":"Pass to a player with shorter hair",
@@ -332,17 +332,17 @@
         {"name":"Longer",
         "desc":"Pass to a player with a longer name",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Shorter",
         "desc":"Pass to a player with a shorter name",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Less",
         "desc":"Pass to a player with less cards than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"More",
         "desc":"Pass to a player with more cards than you",
@@ -362,47 +362,47 @@
         {"name":"Match",
         "desc":"Pass to a player with the same color eyes",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Mismatch",
         "desc":"Pass to a player with different color eyes",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Potato Family",
         "desc":"Pass to a player with more siblings than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Lone Potato",
         "desc":"Pass to a player with less siblings than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Furry Potato",
         "desc":"Pass to a player with more pets than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Smart Potato",
         "desc":"Pass to a player with more years spent at college than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Dumb Potato",
         "desc":"Pass to a player with less years spent at college than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Fat Potato",
         "desc":"Pass to a player weighs more than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Skinny Potato",
         "desc":"Pass to a player who weighs less than you",
 		"type":"Standard",
-        "src":"images/logos/4.svg"
+        "src":"images/Logos/4.svg"
 		},
         {"name":"Baked Potato",
         "desc":"Pass to a player who has done weed/THC",
@@ -454,39 +454,39 @@
 			},
 			{"name":"Salt",
 			"desc":"Bonus: This card has had its cost reduced by 1",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: This card has had its cost reduced by 2",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Play for free",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Play for free* You must squat until your next turn. If any player catches you not squating, the potato is instantly given back to you",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Play for free* You must only whisper until your next turn. If any player catches you not whispering, the potato is instantly given back to you",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Play for free* You must stand on one leg until your next turn. If any player catches you not standing on one leg, the potato is instantly given back to you",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Play for free* You must wave with one hand until your next turn. If any player catches you not waving, the potato is instantly given back to you",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Next player cannot play (or must paradox) a bonus card",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			},
 			{"name":"Chives",
 			"desc":"Bonus: Next player must paradox a card",
-			"src":"images/logos/4.svg"
+			"src":"images/Logos/4.svg"
 			}
 		],
     "Paradox":[
@@ -962,14 +962,15 @@
 		function ParadoxIFrame(obj){
 			console.log("add event listener for message");
 			window.addEventListener("message",(event) => {
+				console.log(event);
 				if(event.data.type == "minigame"){
 						if(event.data.result == "win"){
 							PlayCard(obj);
-							alert("You Won! Card has been played and bonuses (if any) applied. Pass to next player.");
+							alert("1 You Won! Card has been played and bonuses (if any) applied. Pass to next player.");
 							//$('#ParadoxModalCloseButton').text("WIN")
 						}
 						if(event.data.result == "lose"){
-							alert("You Lost... Card has been discarded and it is still your turn.");
+							alert("1 You Lost... Card has been discarded and it is still your turn.");
 							DiscardCard(obj);
 						}
 						UpdateHand();		
@@ -990,14 +991,15 @@
 
 		function WindowMessageAddListner(obj){
 			window.addEventListener("message",(event) => {
+				console.log(event);
 				if(event.data.type == "minigame"){
 						if(event.data.result == "win"){
 							PlayCard(obj);
-							alert("You Won! Card has been played and bonuses (if any) applied. Pass to next player.");
+							alert("2 You Won! Card has been played and bonuses (if any) applied. Pass to next player.");
 							//$('#ParadoxModalCloseButton').text("WIN")
 						}
 						if(event.data.result == "lose"){
-							alert("You Lost... Card has been discarded and it is still your turn.");
+							alert("2 You Lost... Card has been discarded and it is still your turn.");
 							DiscardCard(obj);
 						}
 						UpdateHand();		
