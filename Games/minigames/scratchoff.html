@@ -1,5 +1,6 @@
 <html>
 <head>
+	<base href="/DrinkUp/"/>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -134,7 +135,7 @@
 			while(!stopRepeat){
 				if(!repeatNum.includes(randNum)){
 					document.getElementById("GameBoard").innerHTML += '<div class="col-12 text-center"><svg class="scratcher-default scratcher ' + options[randNum] + '" width="30vh" height="30vh">' +
-																		'<defs><clipPath id="drawGroup' + i + '"></clipPath></defs><rect x="0" y="0" width="30vh" height="30vh" stroke="black" fill="gray" stroke-width="5" opacity="1" /><image href="/images/icons/' + options[randNum] + '.svg" height="100%" width="100%" clip-path="url(#drawGroup' + i + ')" />' +
+																		'<defs><clipPath id="drawGroup' + i + '"></clipPath></defs><rect x="0" y="0" width="30vh" height="30vh" stroke="black" fill="gray" stroke-width="5" opacity="1" /><image href="images/Icons/' + options[randNum] + '.svg" height="100%" width="100%" clip-path="url(#drawGroup' + i + ')" />' +
 																		'</svg></div>';
 
 					
