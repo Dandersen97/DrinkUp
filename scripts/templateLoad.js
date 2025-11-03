@@ -65,7 +65,7 @@ let modalLoginData = `<div class="modal fade" id="ModalLogin" data-bs-backdrop="
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Contine to Games</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="sessionStorage.setItem('bypassLogin', true);">Contine to Games</button>
 				</div>
 			</div>
 		</div>
@@ -535,7 +535,7 @@ const GameData = {
 		 {
 			 "GameInfo":{
 				 "Name":"Jeoparty",
-				 "Link":"games/Jeoparty",
+				 "Link":"Games/Jeoparty",
 				 "Img":"images/Logos/jeoparty.svg",
 				 "Desc":"<p>Drinking and trivia just go hand in hand. Just like the game show it's named after you'll be playing jeopardy for drinks. There's multiple categories with the questions getting harder the more they're worth. Rather than first to answer, when it's your turn you pick your question. If you get it right, you give out that many drinks and go again, you get it wrong you take them and your turn is over.</p>",
 				 "Active":false
@@ -674,7 +674,7 @@ $(function(){
 	//Add navbar
 	$("body").prepend(navbarData);
 	//Add Modals
-	$("body").append(modalLoginData);
+	CheckLogin();
 	//$("body").append(modalAddDrink);
 	//$("body").append(modalNewProfile);
 	//$("body").append(modalProfile);
@@ -735,12 +735,12 @@ $(function(){
 
 $(document).ready(function(){
 	//if sessions variable available check
-	if (localStorage.getItem("userId") != null) {
-		Login(localStorage.getItem("userId"));
-	}
-	else{
-		$("#ModalLogin").modal('show');
-	}
+	//if (localStorage.getItem("userId") != null) {
+	//	Login(localStorage.getItem("userId"));
+	//}
+	//else{
+	//	$("#ModalLogin").modal('show');
+	//}
 
 
 	$.each(GameData.Games, function(i, item) {
@@ -1464,3 +1464,16 @@ function SetActive(c)
 	//$('.container2').animate({scrollLeft: $( ".container2 .card2:nth-child(" + (c + 1)+")" ).position().left}, 500);
 	//$( ".container2").scrollLeft($( ".container2 .card2:nth-child(" + (c + 1)+")" ).position().left)
 	};
+
+function CheckLogin() {
+var bypassLogin = sessionStorage.getItem("bypassLogin");;
+
+console.log(bypassLogin);
+if (!bypassLogin) {
+$("body").append(modalLoginData);
+$("#ModalLogin").modal('show');
+}
+else{
+	sessionStorage.setItem("bypassLogin", false);
+}
+};

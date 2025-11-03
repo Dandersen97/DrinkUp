@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Sheets Data Fetch</title>
+    <style>
+        table {
+            width: 50%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align:center;">Google Sheets Data</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>City</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+const spreadsheetId = '1XuTHPwEa_sAn6lv6J86q22HTjS53T8VbK2Pd3_FcwXU';
+
+// Replace with your API Key
+
+
+// Construct the URL for Google Sheets API v4
+const url =`https://sheets.googleapis.com/v4/spreadsheets/1XuTHPwEa_sAn6lv6J86q22HTjS53T8VbK2Pd3_FcwXU?fields=sheets.properties.title`;
+
+async function fetchGoogleSheetData() {
+    try {
+        // Fetch data from Google Sheets API
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        // Extract rows from the data
+        const rows = data.values;
+
+        // Get the table body element
+        const tableBody = document.querySelector('#data-table tbody');
+
+        // Loop through the rows (starting from row 1 to skip headers)
+        for (let i = 1; i < rows.length; i++) {
+            const row = document.createElement('tr');
+            
+            // Loop through each cell in the row and create a table cell for each
+            rows[i].forEach(cell => {
+                const cellElement = document.createElement('td');
+                cellElement.textContent = cell;
+                row.appendChild(cellElement);
+            });
+            
+            // Append the row to the table
+            tableBody.appendChild(row);
+        }
+    } catch (error) {
+        console.error('Error fetching Google Sheets data:', error);
+    }
+}
+
+// Call the function to fetch and display data
+document.addEventListener('DOMContentLoaded', fetchGoogleSheetData);
+
+
+    </script>
+</body>
+</html>
