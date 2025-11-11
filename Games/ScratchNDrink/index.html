@@ -190,13 +190,10 @@
 		var offsetX = svg.getBoundingClientRect().x;
 		var offsetY = svg.getBoundingClientRect().y;
 
-		console.log(e);
-		var imgSrc = e.target.parentElement.children[2].href.baseValue;
-		console.log(imgSrc.replace("/images/Icons/", ""));
-		console.log(drawGroup.children.length);
+		let imgSrc = e.target.parentElement.children[2].href.baseVal;
 		if (drawGroup.children.length == 0){
-			options.splice(options.indexOf("beer"), 1);
-			console.log(options);
+			console.log(e);
+			options.splice(options.indexOf(imgSrc.substring(13).replace(".svg", "")), 1);
 			UpdatePercent();
 		}
 
@@ -245,7 +242,7 @@
 	}
 		
 	function NewCard(){
-		
+		options = [];
 		let sliders = document.getElementsByClassName("settingsSlider");
 		for(let s = 0; s < sliders.length; s++){
 			let img = sliders[s].id.replace('slider', '');
@@ -279,7 +276,7 @@
 				}
 			}	
 		}
-		
+		UpdatePercent();
 	}
 	function RandomNum(min, max) { // min and max included 
 			return Math.floor(Math.random() * (max - min) + min)
@@ -291,26 +288,28 @@
 	}
 	function UpdatePercent(){
 		const counts = groupAndCount(options);
-		console.log(counts["beer"]);
-		console.log(options.length);
-		$("#perc-beer").text(Math.trunc(counts["beer"] / options.length * 100) + "%");
-		$("#perc-beer2").text(Math.trunc(counts["beer2"] / options.length * 100) + "%");
-		$("#perc-safe").text(Math.trunc(counts["safe"] / options.length * 100) + "%");
-		$("#perc-repeat").text(Math.trunc(counts["repeat"] / options.length * 100) + "%");
-		$("#perc-crossbones").text(Math.trunc(counts["crossbones"] / options.length * 100) + "%");
+		$("#perc-beer").text(nanToZero(Math.trunc(counts["beer"] / options.length * 100)) + "%");
+		$("#perc-beer2").text(nanToZero(Math.trunc(counts["beer2"] / options.length * 100)) + "%");
+		$("#perc-safe").text(nanToZero(Math.trunc(counts["safe"] / options.length * 100)) + "%");
+		$("#perc-repeat").text(nanToZero(Math.trunc(counts["repeat"] / options.length * 100)) + "%");
+		$("#perc-crossbones").text(nanToZero(Math.trunc(counts["crossbones"] / options.length * 100)) + "%");
 	}
 
 	function groupAndCount(arr) {
       if (!Array.isArray(arr)) {
         throw new TypeError("Input must be an array.");
-    }
+    	}
 
-    return arr.reduce((acc, value) => {
-        const key = String(value);
-        acc[key] = (acc[key] || 0) + 1;
-        return acc;
-    }, Object.create(null));
-}
+		return arr.reduce((acc, value) => {
+			const key = String(value);
+			acc[key] = (acc[key] || 0) + 1;
+			return acc;
+		}, Object.create(null));
+	}
+	
+	function nanToZero(value) {
+		return isNaN(value) ? 0 : value;
+	}
 	</script>
 </body>
 </html>
