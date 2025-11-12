@@ -49,7 +49,8 @@
 	<!-- Content -->
 	<div class="container">
 		<div id="GameStats">
-			
+			<div class="text-center" id="perc-crossbones">Chance of Death: 100%</div>
+			<!--
 				<table style="table-layout:fixed; width:100%">
 					<tr width="100%">
 						<td>
@@ -74,7 +75,7 @@
 						</td>
 					</tr>
 				</table>
-				
+			-->
 			</div>
 		</div>
 		<div id="GameBoard">
@@ -192,7 +193,6 @@
 
 		let imgSrc = e.target.parentElement.children[2].href.baseVal;
 		if (drawGroup.children.length == 0){
-			console.log(e);
 			options.splice(options.indexOf(imgSrc.substring(13).replace(".svg", "")), 1);
 			UpdatePercent();
 		}
@@ -292,7 +292,7 @@
 		$("#perc-beer2").text(nanToZero(Math.trunc(counts["beer2"] / options.length * 100)) + "%");
 		$("#perc-safe").text(nanToZero(Math.trunc(counts["safe"] / options.length * 100)) + "%");
 		$("#perc-repeat").text(nanToZero(Math.trunc(counts["repeat"] / options.length * 100)) + "%");
-		$("#perc-crossbones").text(nanToZero(Math.trunc(counts["crossbones"] / options.length * 100)) + "%");
+		$("#perc-crossbones").text("Chance of Death: " + nanToZero(Math.trunc(counts["crossbones"] / options.length * 100)) + "%");
 	}
 
 	function groupAndCount(arr) {
