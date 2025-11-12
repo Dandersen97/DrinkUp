@@ -16,7 +16,7 @@
 		},
 		{
 			"ID":"Thumb Master",
-			"Desc":"Whenever you put your thumb on a table, the last person to also put their thumb down drinks. (this can be a permanent effect until the next thumb master is spun or a single occurance right now)",
+			"Desc":"Whenever you put your thumb on a table, the last person to also put their thumb down drinks. (this is a single use occurance, doesn't have to be right now)",
 			"Icon":"thumbs-up",
 			"Color":"#01ac53",
 			"MiniWheel":[]
@@ -65,7 +65,7 @@
 		},
 		{
 			"ID":"This or That",
-			"Desc":"Present 2 options for people to vote upon. All vote together and minority drinks",
+			"Desc":"Present 2 options for people to vote upon. All vote together and minority drinks. In a tie, everyone drinks",
 			"Icon":"opposite",
 			"Color":"#ef9292",
 			"MiniWheel":[]
@@ -79,7 +79,7 @@
 		},
 		{
 			"ID":"Repeat",
-			"Desc":"Do whatever the player just before you did",
+			"Desc":"Do the same spin as the player just before you did",
 			"Icon":"repeat2",
 			"Color":"#9fb0f3",
 			"MiniWheel":[]
@@ -170,7 +170,7 @@
 		},
 		{
 			"ID":"Burn Up",
-			"Desc":"All smokers drink. Doesn't matter what is smoked, just smokers drink",
+			"Desc":"All smokers (and vapers) drink. Doesn't matter what is smoked, just smokers drink",
 			"Icon":"cigarette",
 			"Color":"#f5ca9d",
 			"MiniWheel":[]
@@ -191,7 +191,7 @@
 		},
 		{
 			"ID":"Couples Retreat",
-			"Desc":"All couples cross arms and drink together",
+			"Desc":"All couples cross arms with your significant other and drink together. If your significant other is not present, drink 2. 1 for them and 1 for you",
 			"Icon":"couple",
 			"Color":"#9ee6d1",
 			"MiniWheel":[]
@@ -240,7 +240,7 @@
 		},
 		{
 			"ID":"Return To Sender",
-			"Desc":"All players, if you drank the last turn, give a drink",
+			"Desc":"All players, if you drank the last turn, give that many drinks",
 			"Icon":"return-to-sender",
 			"Color":"#ffe58f",
 			"MiniWheel":[]
@@ -345,7 +345,7 @@
 		},
 		{
 			"ID":"Speak Easy",
-			"Desc":"Take a drink for each of your tongues (languages you speak)",
+			"Desc":"Take a drink for each language you speak",
 			"Icon":"talking",
 			"Color":"#fbff8c",
 			"MiniWheel":[]
