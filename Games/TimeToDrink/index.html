@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<base href="/DrinkUp/"/>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Wheel Of Misfortune</title>
+		<!--<link href="../../css/bootstrap.min.3.4.1.css" rel="stylesheet">-->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    </head>
+<body>
+<style>
+:root {
+	--spinSec: 0ms;
+	--spinMax: 0deg;
+
+	--minSec: 0ms;
+	--minDeg: 0deg;
+}
+
+.startSpin{
+	animation: rotation var(--spinSec) 1 forwards;
+	animation-timing-function: cubic-bezier(0, 0.75, 0.75, 1.0);
+	transform-origin: 50% 50%;
+	}
+.startSpinMin{
+	animation: minRotation var(--minSec) 1 forwards;
+	animation-timing-function: cubic-bezier(0, 0.75, 0.75, 1.0);
+	transform-origin: 50% 50%;
+	}
+@keyframes rotation {
+	from {transform: rotate(0deg)}
+	to   {transform: rotate(var(--spinMax));}
+	}
+@keyframes minRotation {
+	from {transform: rotate(0deg)}
+	to   {transform: rotate(var(--minDeg));}
+	}
+.postSpin{
+	transform: rotate(var(--spinMax));
+	transform-origin: 50% 50%;
+}
+.postSpinMin{
+	transform: rotate(var(--minDeg));
+	transform-origin: 50% 50%;
+}
+
+	.setting-option{
+		background-color: rgba(145,145,145, 0.2);
+	}
+	
+	.setting-option p{
+		display: inline-block;
+		margin: 10px 10px;
+	}
+	
+	.setting-option button{
+		display: inline-block;
+	}
+	
+
+</style>
+	<!-- Fixed navbar -->
+	<div id="nav-placeholder"></div>
+	
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Time to Drink</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+        </div>
+      </div>
+    </nav>
+		
+	<div>
+		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height:100%;" viewBox="0 0 500 500" >
+			<g stroke-width="50%" fill="transparent" id="tire" onclick='toggleSpin()' onanimationend='GetColor(event)'></g>
+		</svg>
+	</div>
+	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p>Tap the wheel to start spinning, then either do the challenge or drink and next players turn.</p>
+					<p>The drink amount is determined by 2 factors, a little bit of luck for what number the hour hand lands on. Plus a little bit of regret for not doing the challenge earlier.</p>
+					<p>For each time you pass on the challenge it increases its base drink amount by 1. Pass too many times and we change the rules up a little bit</p>
+					<p>Each time you do the challenge you get a perk and are given 2 new options to replace the challenge with.</p>
+					<br>
+					<p>Everyones group has different levels of courage, embarassment, pride, and fucks given. There are lots of config options in settings to tailor the game for your best experience.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="settingsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Settings</h5>
+				</div>
+				<div class="modal-body">
+					<p>Add or Remove options for the wheel to land on. Make things more or less common to happen.</p>
+					<div id="activeSegments">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="MisfortuneModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen">
+			<div class="modal-content">
+
+				<div class="modal-content" style="overflow-y: auto;">
+					<img id="MisfortuneModalImg"  style="width: 100%;" />
+					<span></span>
+					<h1 id="MisfortuneModalTitle">Test 1</h1>
+					
+					<h3 id="MisfortuneModalDesc"></h3>
+					<h3 id="MisfortuneModalDrink"></h3>
+					<button id="ModalPass" data-bs-dismiss="modal"  class="btn btn-lg btn-primary">Drink</button>
+					<h3>OR</h3>
+					<button data-bs-dismiss="modal"  class="btn btn-lg btn-primary">Do The Challenge</button>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="scripts/templateLoad.js"></script>
+	<script src="GameData/spins.js"></script>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!--<script src="../../scripts/bootstrap.min.js"></script> -->
+	<div id="modalLogin-placeholder"></div>
+<script>
+	spinData = {
+    "InnerWheel":[
+		{"ID": 1,
+		 "Icon":"1",
+		 "Color":"#66ff66"
+		},
+		{"ID": 2,
+		 "Icon":"2",
+		 "Color":"#88ff88"
+		},
+		{"ID": 3,
+		 "Icon":"3",
+		 "Color":"#fff757"
+		},
+		{"ID": 4,
+		 "Icon":"4",
+		 "Color":"#ff9900"
+		}
+	],
+	"Options":[
+		{
+			"ID":"Under Where?",
+			"Desc":"Go someplace private (like the bathroom) and return with your underwear on the outside of your clothes. They must remain this way remainder of the game",
+			"Icon":"abc",
+			"Color":"#63b5ff",
+			"Level":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Baby",
+			"Desc":"Suck your thumb until your next turn. No, you cannot take your thumb out of your mouth to take a drink (drink if you're ever caught with your thumb out your mouth)",
+			"Icon":"baby",
+			"Color":"#9744e6",
+			"Level":1,
+			"MiniWheel":[]
+		},
+	{
+			"ID":"Snake Eyes",
+			"Desc":"Keep your eyes closed until your next turn (drink if you're ever caught peeping)",
+			"Icon":"snake",
+			"Color":"#66bb98",
+			"Level":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Pffffft",
+			"Desc":"Mouth fart as loud as possible",
+			"Icon":"beer",
+			"Color":"#97dc11",
+			"Level":1,
+			"MiniWheel":[]
+		},
+	{
+			"ID":"Bottle",
+			"Desc":"Get up and stand on one leg until your next turn. NO LEANING (drink each time you're caught leaning or on both legs)",
+			"Icon":"bottle",
+			"Color":"#611598",
+			"Level":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Bacon",
+			"Desc":"Do the Bacon! (basically just hump the floor like youre a sizzling piece of bacon in a frying pan)",
+			"Icon":"bacon",
+			"Color":"#9fdce2",
+			"Level":1,
+			"MiniWheel":[]
+		},
+	{
+			"ID":"Butter",
+			"Desc":"Slap your own ass. Hard.",
+			"Icon":"butter",
+			"Color":"#abb298",
+			"Level":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Can Do",
+			"Desc":"Get a wet willy from @p",
+			"Icon":"can",
+			"Color":"#a712e6",
+			"Level":1,
+			"MiniWheel":[]
+		},
+	{
+			"ID":"Couples",
+			"Desc":"Kiss on the mouth another player (with consent)",
+			"Icon":"couple",
+			"Color":"#63babc",
+			"Level":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Annowing",
+			"Desc":"Get up and twerk for a solid 15 seconds",
+			"Icon":"eyeroll",
+			"Color":"#123ce6",
+			"Level":1,
+			"MiniWheel":[]
+		},
+	{
+			"ID":"Dice",
+			"Desc":"Pick your nose until your next turn (drink each time you're caught with your finger out your nose)",
+			"Icon":"dice",
+			"Color":"#123abc",
+			"Level":1,
+			"MiniWheel":[]
+		},
+		{
+			"ID":"Crossbones",
+			"Desc":"Get up and hop like a rabbit to the bathroom and back",
+			"Icon":"crossbones",
+			"Color":"#0a0b0c",
+			"Level":1,
+			"MiniWheel":[]
+		}]};
+	console.log(spinData);
+		//var optionsString = GetFile("spins.json");
+	const jsonAllOptions = spinData; // Options;JSON.parse(optionsString);
+	var ActiveOptions = spinData; //JSON.parse(optionsString);
+	var minFin = false;
+	var hourFin = false;
+	var hourIndex = 0;
+	var minIndex = 0;
+
+	function toggleSpin(){
+		minFin = false;
+		hourFin = false;
+
+		var spinner = document.getElementById("hourHand");
+		spinner.classList.add("startSpin");
+		spinner.classList.remove("postSpin");
+		
+		var spinner2 = document.getElementById("minuteHand");
+		spinner2.classList.add("startSpinMin");
+		spinner2.classList.remove("postSpin");
+		
+		
+		var spinPower = Math.trunc((Math.random() * 720) + 720);
+		var spinSec = spinPower * 5;
+		
+		var minPower = Math.trunc((Math.random() * 720) + 720);
+		var minSec = minPower * 5;
+
+
+		var r = document.querySelector(':root');
+		r.style.setProperty('--spinMax', (spinPower * -1) + 'deg');
+		r.style.setProperty('--spinSec', spinSec + 'ms');
+		r.style.setProperty('--minDeg', (minPower * 1) + 'deg');
+		r.style.setProperty('--minSec', minSec + 'ms');
+		
+		//spinner.style= 'transform: rotate(' + spinPower + 'deg); transform-origin: 50% 50%;';
+	}
+
+	
+	function UpdateSlice(){
+		UpdateAllOptions();
+		var count = 12;
+		var spinner = document.getElementById("tire");
+		//var orgCount = spinner.getElementsByTagName("path").length;
+		var newCount = 12;//orgCount + count;
+		spinner.innerHTML = "";
+		
+
+
+		
+		
+		var radius = 250;
+		var iradius = 100;
+		var startPoint = iradius + ' 0'; //translate(50,50)
+		var fPointX = radius;
+		var fPointY = 0;
+		var fPoint = fPointX + ' ' + fPointY; //very first point always radius,0
+		
+		
+		var qPointX = Math.ceil(radius * Math.sin(360/newCount * Math.PI / 180.0));
+		var qPointY = (radius * Math.cos(360/newCount * Math.PI / 180.0));
+		var qPointX2 = Math.ceil((radius * .8) * Math.sin(360/newCount * Math.PI / 180.0));
+		var qPointY2 = Math.ceil((radius * .8) * Math.cos(360/newCount * Math.PI / 180.0));
+		var qPoint = qPointY + ' ' + qPointX;
+
+		var iPointX = (iradius * Math.sin(360/newCount * Math.PI / 180.0));
+		var iPointY = (iradius * Math.cos(360/newCount * Math.PI / 180.0));
+		var iPoint = iPointY + ' ' + iPointX;
+		
+		var qArcX = qPointX;
+		var qArcY = fPointY;
+		var qArc = qArcX + ' ' + qArcY;
+	
+
+
+		var segWidth = Math.sqrt(Math.pow(qPointY2 - (radius * .8) ,2) + Math.pow(qPointX2 - fPointY ,2))
+
+		for(var i = 0; i < newCount; i++){
+			var rotate = ((360/newCount) * i) - 90;
+			
+			var imgSize = segWidth / 1.7;
+			var imgX = (qPointY - ((qPointY2 - (radius * .8)) / 2)) - (imgSize / 2);
+			var imgY = (qPointX - ((qPointX2 - fPointY) / 2)) - (imgSize / 2);
+			//svg.innerHTML += '<path d="M ' + startPoint + ' L ' + fPoint + ' Q ' + qArc + ' ' + qPoint + ' L ' + startPoint + '" fill="blue" stroke="blue" stroke-width="1"/>'; //curved arc
+			spinner.innerHTML += '<g transform="translate(' + radius + ',' + radius + ') rotate(' + rotate + ')">' + 
+							'<path d="M ' + startPoint + 'L ' + radius +' 0 A ' + radius + ' ' + radius + ' ' + ' 0 0 1 ' + qPoint + 
+							' L ' + iPoint + 
+							' A ' + iradius + " " + iradius + ' 0 0 0 ' + startPoint + 
+							'" fill="' + ActiveOptions.Options[i].Color + '" stroke="black" stroke-width="1" />' +							
+							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="images/Icons/' + ActiveOptions.Options[i].Icon + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(' + -rotate + 'deg);"></image>' +
+							'<image x="' + ((imgX - 60) - (imgSize /2)) + '" y="' + ((imgY - 0) - (imgSize /2)) + '" width="' + (imgSize / 1.5) + 'px" height="' + (imgSize / 1.5) + 'px" xlink:href="images/Numbers/' + ActiveOptions.Options[i].Level + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(' + -rotate + 'deg);"></image>' +
+							//'<circle cx="' + imgX + '" cy="' + imgY + '" r="5" fill="red"/>' +
+							'</g>'; //straight line
+		}
+
+	for(var i = 0; i < spinData.InnerWheel.length; i++){
+			var rotate = ((360/spinData.InnerWheel.length) * i) - 90;
+			var iPointX = (iradius * Math.sin(360/spinData.InnerWheel.length * Math.PI / 180.0));
+		    var iPointY = (iradius * Math.cos(360/spinData.InnerWheel.length * Math.PI / 180.0));
+		    var iPoint = iPointY + ' ' + iPointX;
+		
+			var imgSize = segWidth / 2;
+			var imgX = 45; //(iPointY - ((qPointY2 - (iradius * .8)) / 2)) - (imgSize / 2);
+			var imgY = 45; //(iPointX - ((qPointX2 - fPointY) / 2)) - (imgSize / 2);
+			//svg.innerHTML += '<path d="M ' + startPoint + ' L ' + fPoint + ' Q ' + qArc + ' ' + qPoint + ' L ' + startPoint + '" fill="blue" stroke="blue" stroke-width="1"/>'; //curved arc
+			spinner.innerHTML += '<g transform="translate(' + radius + ',' + radius + ') rotate(' + rotate + ')">' + 
+							'<path d="M ' + '0 0 ' + 'L ' + iradius + ' 0 A ' + iradius + ' ' + iradius + ' ' + ' 0 0 1 ' + iPoint + 
+							' L ' + ' 0 0 ' + 
+							//' A ' + iradius + " " + iradius + ' 0 0 0 ' + '0 0' + 
+							'" fill="' + spinData.InnerWheel[i].Color + '" stroke="black" stroke-width="1" />' +							
+							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="images/Numbers/' + spinData.InnerWheel[i].Icon + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(' + -rotate + 'deg);"></image>' +
+							//'<circle cx="' + imgX + '" cy="' + imgY + '" r="5" fill="red"/>' +
+							'</g>'; //straight line
+	}
+
+	spinner.innerHTML += '<g id="hourHand" onanimationend="GetColor(event)">' + 
+							'<path d="M ' + '250 250 ' + 'L ' + (240) + ' 180 ' +
+							' L ' + (250) + ' 170 ' +
+							' L ' + (260) + ' 180 ' +
+							' L ' + ' 250 250 ' + 
+							//' A ' + iradius + " " + iradius + ' 0 0 0 ' + '0 0' + 
+							'" fill="' + '#000' + '" stroke="black" stroke-width="4" />' +
+							'</g>'; //straight line
+
+	spinner.innerHTML += '<g id="minuteHand" onanimationend="GetColor(event)">' + 
+							'<path d="M ' + '250 250 ' + 'L ' +  240 + ' 75 ' +
+							' L ' + 250 + ' 65 ' +
+							' L ' + 260 + ' 75 ' +
+							' L ' + ' 250 250 ' + 
+							//' A ' + iradius + " " + iradius + ' 0 0 0 ' + '0 0' + 
+							'" fill="' + '#000' + '" stroke="black" stroke-width="4" />' +
+							'</g>'; //straight line
+	}
+	
+	function Spin(){
+		/*
+		var spinner = document.getElementById("tire");
+		spinner.classList.toggle("tire");
+		var spinPower = Math.trunc((Math.random() * 720) + 720);
+		var spinSec = spinPower * 5;
+
+		var r = document.querySelector(':root');
+		r.style.setProperty('--spinMax', spinPower + 'deg');
+		r.style.setProperty('--spinSec', spinSec + 'ms');
+		
+		setTimeout(spinSec);
+		
+		spinner.classList.toggle("tire");
+		spinner.style= 'transform: rotate(' + spinPower + 'deg); transform-origin: 50% 50%;';
+		*/
+	}
+	
+	function GetColor(ev){
+		//console.log(ev);
+		
+		var spinner = ev.srcElement;
+		
+
+		if(ev.srcElement.classList.contains("startSpin")){
+			spinner.classList.add("postSpin");
+			spinner.classList.remove("startSpin");
+			hourFin = true;
+
+			var spinVal = parseInt(getComputedStyle(spinner).getPropertyValue('--spinMax'));
+			var orgCount = 4; //spinner.getElementsByTagName("path").length;
+			var diff = 360 / orgCount;	
+			var spinRemainer = (spinVal / 360) - Math.floor((spinVal / 360));
+			hourIndex = Math.ceil(((spinRemainer * 360)) / diff) - 1;
+			console.log("Hour: " + hourIndex);
+		};
+		if(ev.srcElement.classList.contains("startSpinMin")){
+			spinner.classList.add("postSpinMin");
+			spinner.classList.remove("startSpinMin");
+			minFin = true;
+
+			var spinVal = parseInt(getComputedStyle(spinner).getPropertyValue('--minDeg'));
+			var orgCount = 12; //spinner.getElementsByTagName("path").length;
+			var diff = 360 / orgCount;	
+			var spinRemainer = (spinVal / 360) - Math.floor((spinVal / 360));
+			minIndex = Math.ceil(((spinRemainer * 360) / diff) ) - 1;
+			console.log("Minute: " + minIndex);
+		};
+
+		if(minFin && hourFin){
+			var maxLevel = 3;
+			var drinkCount = ActiveOptions.InnerWheel[hourIndex].ID  +  ActiveOptions.Options[minIndex].Level;
+			if (ActiveOptions.Options[minIndex].Level < maxLevel) {
+				document.getElementById("MisfortuneModalTitle").innerHTML = ActiveOptions.Options[minIndex].ID;
+				document.getElementById("MisfortuneModalDesc").innerHTML = ActiveOptions.Options[minIndex].Desc;
+				document.getElementById("MisfortuneModalDrink").innerHTML = 'Drink ' + drinkCount + ' and pass (Spin ' + ActiveOptions.InnerWheel[hourIndex].ID + ' + Level ' + ActiveOptions.Options[minIndex].Level + ')';
+				document.getElementById("ModalPass").outerHTML = document.getElementById("ModalPass").outerHTML;
+				document.getElementById("ModalPass").addEventListener('click',function (){Pass(minIndex);});
+				document.getElementById("MisfortuneModalImg").src = 'images/Icons//' + ActiveOptions.Options[minIndex].Icon + '.svg';
+			}
+			else if (ActiveOptions.Options[minIndex].Level == maxLevel){
+				document.getElementById("MisfortuneModalTitle").innerHTML = ActiveOptions.Options[minIndex].ID;
+				document.getElementById("MisfortuneModalDesc").innerHTML = ActiveOptions.Options[minIndex].Desc;
+				document.getElementById("MisfortuneModalDrink").innerHTML = 'Drink ' + drinkCount + ' and pass (Spin ' + ActiveOptions.InnerWheel[hourIndex].ID + ' + Level ' + ActiveOptions.Options[minIndex].Level + ')';
+				document.getElementById("ModalPass").outerHTML = document.getElementById("ModalPass").outerHTML;
+				document.getElementById("ModalPass").addEventListener('click',function (){Pass(minIndex);});
+				document.getElementById("MisfortuneModalImg").src = 'images/Icons//' + ActiveOptions.Options[minIndex].Icon + '.svg';
+			}
+			else{
+				document.getElementById("MisfortuneModalTitle").innerHTML = 'Max Level Reached';
+				document.getElementById("MisfortuneModalDesc").innerHTML = 'This challenge is clearly too much for you. Perhaps thats on us for making it too difficult or on you all for being too cowardly. You have 2 options now. Any player can do the challenge now and be allowed to skip their next turn. Or each and everyone one of you can all drink the amount together <br><br>' + ActiveOptions.Options[minIndex].Desc;
+				document.getElementById("MisfortuneModalDrink").innerHTML = 'Drink ' + drinkCount + ' and pass (Spin ' + ActiveOptions.InnerWheel[hourIndex].ID + ' + Level ' + ActiveOptions.Options[minIndex].Level + ')';
+				document.getElementById("ModalPass").outerHTML = document.getElementById("ModalPass").outerHTML;
+				document.getElementById("ModalPass").addEventListener('click',function (){Pass(minIndex);});
+				document.getElementById("MisfortuneModalImg").src = 'images/Icons/red_X.svg';
+			}
+		
+		//console.log(ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel);
+		//console.log(ActiveOptions.Options[Math.ceil((spinRemainer * 360) / diff) - 1].MiniWheel.length);
+		
+
+		$("#MisfortuneModal").modal('show');
+		//window.navigator.vibrate(100);
+		
+	}
+	}
+	
+	function ToggleModal(mod){
+		$(mod).modal('toggle');
+		//var togMod = document.getElementById(mod);
+		//togMod.classList.toggle("modal-vis");
+	
+	}
+	
+	function UpdateAllOptions(){
+		//Get Active Options
+		var listbox = document.getElementById("activeSegments");
+		listbox.innerHTML = "";
+		jsonAllOptions.Options.sort(function (a, b) {return a.ID < b.ID ? -1 : a.ID > b.ID ? 1 : 0;});
+		for(var i = 0; i < jsonAllOptions.Options.length; i++){
+			var count = ActiveOptions.Options.filter((obj) => obj.ID === jsonAllOptions.Options[i].ID).length;
+			listbox.innerHTML += '<div class="setting-option">' + 						
+									'<p>' + jsonAllOptions.Options[i].ID + '</p>' +
+									'<button onclick=\'RemoveOption("' + jsonAllOptions.Options[i].ID +  '")\'>-</button>' +
+									'<p>' + count + '</p>' +
+									'<button onclick=\'AddOption("' + jsonAllOptions.Options[i].ID +  '")\'>+</button>' +
+								 '</div>';
+		}
+		
+
+	
+	}
+	
+	function AddOption(option){
+		var idx = ActiveOptions.Options.find(obj => obj.ID === option);
+
+		ActiveOptions.Options.push(idx);
+		UpdateSlice(1);		
+	}
+	
+	function RemoveOption(option){
+		var idx = ActiveOptions.Options.findIndex(obj => obj.ID === option);
+	
+		ActiveOptions.Options.splice(idx, 1);
+		UpdateSlice(-1);
+	}
+	
+	function Pass(ev){
+		console.log(ev);
+		ActiveOptions.Options[ev].Level += 1;
+		UpdateSlice();
+	}
+window.onload = function() {
+		UpdateSlice(ActiveOptions.Options.length);
+	
+	}
+	
+
+
+
+	
+</script>
+    </body>
+</html>
