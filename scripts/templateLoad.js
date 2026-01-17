@@ -53,10 +53,10 @@ let modalLoginData = `<div class="modal fade" id="ModalLogin" data-bs-backdrop="
 				<div class="modal-body">
 					<div class="text-center m-auto" style="max-width: 330px;">
 						<div class="row">
-							<img class="col-xl-4 col-xl-6 col-lg-6 col-md-3 col-sm-4 col-6 mx-auto" src="images/Avatars/Halloween 2021.svg" alt="" width="20%">
+							<img id="modalLoginImg" class="col-xl-4 col-xl-6 col-lg-6 col-md-3 col-sm-4 col-6 mx-auto" src="images/Logos/1.svg" alt="" width="20%">
 						</div>
 						<div class="row">
-							<h1 class="h3 mb-3 fw-normal">CURRENTLY UNDER HEAVY UPDATES - MANY FEATURES DO NOT WORK</h1>
+							<h1 class="h3 mb-3 fw-normal">WIP</h1>
 							<p class="h3 mb-3 fw-normal">By accessing this site you acknowledge you are of the legal drinking age.</p>
 							<p class="h3 mb-3 fw-normal">DrinkUp is a social collection of games, primarily focused on the consuption of alcohol. Participation is soley voluntarily. We are not responsible for your actions and it is the players choice in how to play these games.</p>
 						</div>
@@ -1466,12 +1466,58 @@ function SetActive(c)
 	};
 
 function CheckLogin() {
-var bypassLogin = sessionStorage.getItem("bypassLogin");
+	var bypassLogin = sessionStorage.getItem("bypassLogin");
+    $("body").append(modalLoginData);
+    var holidays = [
+		{
+			startMonth: 12,
+			startDay: 31,
+			endMonth: 12,
+			endDay: 31,
+			logo: "images/Avatars/Default.svg"
+		},
+		{
+			startMonth: 1,
+			startDay: 1,
+			endMonth: 1,
+			endDay: 1,
+			logo: "images/Avatars/Default.svg"
+		},
+		{
+			startMonth: 10,
+			startDay: 25,
+			endMonth: 10,
+			endDay: 31,
+			logo: "images/Avatars/Halloween 2021.svg"
+		},
+		{
+			startMonth: 12,
+			startDay: 20,
+			endMonth: 12,
+			endDay: 27,
+			logo: "images/Avatars/Christmas 2021.svg"
+		},
+	];
+	var curDate = new Date;
 
-console.log(bypassLogin);
-if (!bypassLogin) {
-$("body").append(modalLoginData);
-$("#ModalLogin").modal('show');
-}
+	for (let i = 0; i < holidays.length; i++) {
+		let startDate = new Date(2026,holidays[i].startMonth - 1, holidays[i].startDay);
+		let endDate = new Date(2026, holidays[i].endMonth - 1, holidays[i].endDay).setHours(23, 59, 59, 999);
+
+		console.log(startDate);
+	    console.log(endDate);
+
+		if(curDate >= startDate && curDate <= endDate){
+			$("#modalLoginImg").attr('src', holidays[i].logo);
+		}
+	}
+
+
+	
+	console.log(bypassLogin);
+	if (!bypassLogin) {
+		
+		$("#ModalLogin").modal('show');
+	}
 
 };

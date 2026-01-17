@@ -57,7 +57,7 @@
 	<div>
 		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height:100%;" viewBox="250 0 250 500" >
 			<g stroke-width="50%" fill="transparent" id="tire" class="startSpin" onclick='toggleSpin()' onanimationend='GetColor(event)'></g>
-			<path d="M 500 235 L 490 250 L 500 265" stroke-width="3" stroke="black" />
+			<line x1="450" y1="250" x2="500" y2="250" stroke-width="8" stroke="black" />
 		</svg>
 	</div>
 	<div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -162,7 +162,7 @@
 		
 		
 		var qPointX = Math.ceil(radius * Math.sin(360/newCount * Math.PI / 180.0));
-		var qPointY = (radius * Math.cos(360/newCount * Math.PI / 180.0));
+		var qPointY = Math.ceil(radius * Math.cos(360/newCount * Math.PI / 180.0));
 		var qPointX2 = Math.ceil((radius * .8) * Math.sin(360/newCount * Math.PI / 180.0));
 		var qPointY2 = Math.ceil((radius * .8) * Math.cos(360/newCount * Math.PI / 180.0));
 		var qPoint = qPointY + ' ' + qPointX;
@@ -170,9 +170,9 @@
 		var qArcX = qPointX;
 		var qArcY = fPointY;
 		var qArc = qArcX + ' ' + qArcY;
-	
 
-		console.log(qPointY);
+
+
 		var segWidth = Math.sqrt(Math.pow(qPointY2 - (radius * .8) ,2) + Math.pow(qPointX2 - fPointY ,2))
 
 		for(var i = 0; i < newCount; i++){
@@ -183,7 +183,7 @@
 			var imgY = (qPointX - ((qPointX2 - fPointY) / 2)) - (imgSize / 2);
 			//svg.innerHTML += '<path d="M ' + startPoint + ' L ' + fPoint + ' Q ' + qArc + ' ' + qPoint + ' L ' + startPoint + '" fill="blue" stroke="blue" stroke-width="1"/>'; //curved arc
 			spinner.innerHTML += '<g transform="translate(' + radius + ',' + radius + ') rotate(' + rotate + ')">' + 
-							'<path d="M ' + startPoint + 'L ' + radius +' 0 A ' + radius + ' ' + radius + ' ' + ' 0 0 1 ' + qPointY + ' ' + qPointX + ' L ' + startPoint + '" fill="' + ActiveOptions.Options[i].Color + '" stroke="black" stroke-width="1" />' +							
+							'<path d="M ' + startPoint + ' L ' + fPoint + ' L ' + qPoint + ' L ' + startPoint + '" fill="' + ActiveOptions.Options[i].Color + '" stroke="black" stroke-width="1" />' +							
 							'<image x="' + (imgX - (imgSize /2)) + '" y="' + (imgY - (imgSize /2)) + '" width="' + imgSize + 'px" height="' + imgSize + 'px" xlink:href="images/Icons/' + ActiveOptions.Options[i].Icon + '.svg" style="transform-box: fill-box; transform-origin: center; transform: rotate(95deg);"></image>' +
 							//'<circle cx="' + imgX + '" cy="' + imgY + '" r="5" fill="red"/>' +
 							'</g>'; //straight line
