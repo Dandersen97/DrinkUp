@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Title</title>
+  <link rel="stylesheet" href>
+</head>
+
+<body>
+<!--
+  <canvas id="c" width="300px" height="300px" style="border: 1px solid black;"  ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)"></canvas>
+  <button onclick="SendData()">UP</button>
+  <h3 ontouchstart="f2()" ontouchend="f3()">MOVE LEFT</h3>
+  -->
+  <div id="joyDiv" style="width:350px;height:350px;margin-bottom:20px;"></div>
+  <div id="joy2Div" style="width:350px;height:350px;margin-bottom:20px;"></div>
+  <button id="ButtonClient" onclick="SendData()">Press OK</button>
+  <script src="https://bundle.run/buffer@6.0.3"></script>
+  <script src="https://unpkg.com/colyseus.js@^0.15.0/dist/colyseus.js"></script>
+  <script src="../joystick.js"></script>
+  <script>
+window.Buffer = window.buffer.Buffer;
+		
+    //var client = new Colyseus.Client('ws://192.168.1.28:2567');
+
+
+   
+
+
+    
+  </script>
+</body>
+
+</html>

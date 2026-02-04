@@ -1,0 +1,30 @@
+
+
+
+<script src="https://unpkg.com/@colyseus/sdk@^0.17.0/dist/colyseus.js"></script>
+<script type="module">
+import Colyseus from "@colyseus/sdk";
+ 
+const client = new Colyseus.Client("ws://76.13.102.11:2567");
+ 
+async function main() {
+    const room = await client.joinOrCreate("game_room");
+ 
+    console.log("Joined!", room.sessionId);
+ 
+    // Send a message to the server
+    room.send("move", { direction: "up" });
+ 
+    // Listen for messages from the server
+    room.onMessage("notification", (data) => {
+        console.log("Server says:", data);
+    });
+ 
+    // Handle disconnection
+    room.onLeave((code) => {
+        console.log("Disconnected:", code);
+    });
+}
+ 
+main();
+</script>
