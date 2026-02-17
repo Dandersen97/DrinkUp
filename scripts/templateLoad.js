@@ -1503,10 +1503,6 @@ function CheckLogin() {
 	for (let i = 0; i < holidays.length; i++) {
 		let startDate = new Date(2026,holidays[i].startMonth - 1, holidays[i].startDay);
 		let endDate = new Date(2026, holidays[i].endMonth - 1, holidays[i].endDay).setHours(23, 59, 59, 999);
-
-		console.log(startDate);
-	    console.log(endDate);
-
 		if(curDate >= startDate && curDate <= endDate){
 			$("#modalLoginImg").attr('src', holidays[i].logo);
 		}
@@ -1514,7 +1510,7 @@ function CheckLogin() {
 
 
 	
-	console.log(bypassLogin);
+	//console.log(bypassLogin);
 	if (!bypassLogin) {
 		
 		$("#ModalLogin").modal('show');

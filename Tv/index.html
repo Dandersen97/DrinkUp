@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>DrinkUP! TV - Game Menu</title>
+    </head>
+    <body>
+		<!-- Page content wrapper-->
+		<div id="ModalPlayAsSelection" class="container-fluid">
+			<h3>Lobby Menu</h3>
+			<div>
+				<p>Enter Name and Room Code to join a game (WIP)</p>
+				<label for="name">Name:</label>
+				<input type="text" id="name" name="name" maxlength="10" pattern="[A-Z]*" required oninput="ValidateInput(event)"></br>
+				<label for="roomCode">Room Code:</label>
+				<input type="text" id="roomCode" name="roomCode" maxlength="7" required oninput="ValidateInput(event)"></br>
+				<button class="btn btn-primary btn-secondary" id="ButtonClient" onclick="JoinGame()">JOIN</button>
+				<p>For best experience it is recomended players to join on a mobile device (such as phone or tablet) and host on a desktop (pc/laptop) and stream, HDMI, or otherwise share the host screen on a TV or other large screen for all players to see.</p>
+				<a class="btn btn-secondary" href="host.html">HOST</a>
+				
+				<a class="btn btn-primary btn-secondary" id="ButtonClient2" onclick="DummyCode()">Dummy Test</a>
+			</div>
+			
+		</div>
+<script src="https://unpkg.com/colyseus.js@0.16.22/dist/colyseus.js"></script>
+<script>
+	let userName = "test"
+    let roomName = "abcd";
+    var game = "";
+
+	var client = new Colyseus.Client('ws://localhost:2567'); //76.13.102.11
+    var rm;
+	
+	console.log(client);
+	function ValidateInput(e){
+		//Autocaps
+		var val = e.srcElement.value;
+		if(e.inputType == "insertText"){
+			e.srcElement.value = val.substr(0, val.length - 1) + e.data.toUpperCase();
+		}
+		
+		//Set Player Name
+		if(e.srcElement.id == "name"){
+			console.log("update name");
+			//userName = e.srcElement.value
+		}
+
+
+		//Set Room and Roomcheck
+		if(e.srcElement.id == "roomCode"){
+			console.log("Checking if room exists");
+			//roomName = e.srcElement.value;
+			client.getAvailableRooms("my_room", function(rooms, err) {
+
+  					if (err){ console.error(err)};
+					console.log(rooms);
+					console.log(err);
+  					rooms.forEach(function(room) {
+						console.log(room.roomId);
+						console.log(room.clients);
+						console.log(room.maxClients);
+						console.log(room.metadata);
+					});
+			});
+			console.log(client);
+		}
+	}
+
+
+	function JoinGame(){
+    client.join("my_room", {code: roomName})
+
+
+      .then(room => {
+      console.log(room);
+      rm = room;
+      console.log(room.sessionId, "joined", room.name);
+      
+      //room.send("data", {scale:1});
+
+
+      room.onStateChange((state) => {
+      console.log(room.name, "has new state:", state);
+    });
+
+
+    room.onMessage("data", (message) => {
+      console.log(room.sessionId, "received on", room.name, message);
+    });
+
+    room.onError((code, message) => {
+      console.log(room.sessionId, "couldn't join", room.name);
+    });
+
+    room.onLeave((code) => {
+      console.log(room.sessionId, "left", room.name);
+    });
+
+
+
+
+    }).catch(e => {
+      console.log("JOIN ERROR", e);
+    });
+	}
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  let expires = "expires="+d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let ca = document.cookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+function checkCookie() {
+  let user = getCookie("username");
+  if (user != "") {
+    alert("Welcome again " + user);
+  } else {
+    user = prompt("Please enter your name:", "");
+    if (user != "" && user != null) {
+      setCookie("username", user, 365);
+    }
+  }
+}
+	
+
+	
+	
+</script>
+    </body>
+</html>

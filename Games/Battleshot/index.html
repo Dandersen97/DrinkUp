@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<base href="/DrinkUp/"/>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <title>Battleshot</title>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+	</head>	
+
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+			<span class="navbar-brand" style="height: auto;">Battleshot</span>
+			<button class="btn btn-secondary navbar-btn" data-bs-toggle="modal" data-bs-target="#HowToPlayModal">How To Play</button>
+			<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#NewGameModal">New Game</button>
+        </div>
+      </div>
+    </nav>
+
+	<!-- MAIN BODY DIV -->
+     <div id="RoomCode">Room Code:</div>
+     <button class="btn btn-primary" onclick="UpdatePlayingBoard()">Setup</button>
+    <div class="container">
+        <div id="WaitingMessage"></div>
+        <canvas id="Gameboard" class="border border-dark"></canvas>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-6"><canvas id="Gameboard2"></canvas></div>
+            <div class="col-3"></div>
+        </div>
+        
+    </div>
+    <img id="imgTinyShip" class="float-start d-none" src=''>
+    <img id="imgSmallShip" class="float-start d-none" src=''>
+    <img id="imgMedShip" class="float-start d-none" src=''>
+    <img id="imgLargeShip" class="float-start d-none" src=''>
+
+    <div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">How To Play</h5>
+				</div>
+				<div class="modal-body">
+					<p><b><u>REQUIRES TOUCH SCREEN DEVICE</u></b></p>
+					<p>It's battleship.</p>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="modal fade" id="NewGameModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">NewGame</h5>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+                        <p>Enter a room code or click Start Game to create a new game and share the room code with your opponent.</p>
+                        <label for="RoomCodeInput">Room Code:</label>
+                        <input type="text" id="RoomCodeInput" maxlength="4"></input>
+                    </div>
+					<div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#NewGameRulesModal">Start Game</button></div>
+                            <div class="col">
+                                <button class="btn btn-primary float-end" onclick="JoinGame()">Join Game</button></div>
+                        </div>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="modal fade" id="NewGameRulesModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">Establish Game Rules (placeholder)</h5>
+				</div>
+				<div class="modal-body">
+					<div class="container">
+                        <select onchange="UpdateRules(event)" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+                            <option value="1" selected>Default</option>
+                            <option value="2">Custom</option>
+                            <option value="3">Mini Armada</option>
+                            <option value="4">No Rotation</option>
+                        </select>
+                    </div>
+                    <div class="container" id="GameRules">
+                        <form class="row g-3">
+                            <fieldset id="GameRuleControl" class="form-control" disabled>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12">Grid Size</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="columnCnt" class="form-check-label">Width</label>
+                                            <input id="columnCnt" class="form-check-input" type="number" value="6"></input>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="rowCnt" class="form-check-label">Height</label>
+                                            <input id="rowCnt" class="form-check-input" type="number" value="6"></input>                                       
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        <fieldset id="ShipRuleControl" class="form-control" disabled>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-8">Allow Ships</div>
+                                <div class="col-4">Amount</div>
+                            </div>
+                            <div class="row">
+                            <div class="col-8">
+                                <input id="chkTinyShip" class="form-check-input" type="checkbox" checked="checked"></input>
+                                <label for="chkTinyShip" class="form-check-label">Tiny Ships (1 square)</label>
+                            </div>
+                            <div class="col-4">
+                                <input id="chkTinyShipCount" class="form-control" type="number" value="1"></input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <input id="chkSmallShip" class="form-check-input" type="checkbox" checked="checked"></input>
+                                <label for="chkSmallShip" class="form-check-label">Small Ships (2 squares)</label>
+                            </div>
+                            <div class="col-4">
+                                <input id="chkSmallShipCount" class="form-control" type="number" value="1"></input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <input id="chkMedShip" class="form-check-input" type="checkbox" checked="checked"></input>
+                                <label for="chkMedShip" class="form-check-label">Medium Ships (3 squares)</label>
+                            </div>
+                            <div class="col-4">
+                                <input id="chkMedShipCount" class="form-control" type="number" value="1"></input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <input id="chkLargeShip" class="form-check-input" type="checkbox" checked="checked"></input>
+                                <label for="chkLargeShip" class="form-check-label">Large Ships (6 squares)</label>
+                            </div>
+                            <div class="col-4">
+                                <input id="chkLargeShipCount" class="form-control" type="number" value="1"></input>
+                            </div>
+                        </div>
+                        </fieldset></form>
+                    </div>
+                    <div class="container">
+                        <button onclick="CreateNewGame()" class="btn btn-primary" data-bs-dismiss="modal">Create Game</button>
+                    </div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <div class="modal fade" id="NewGameSetupModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content" style="overflow-y: auto">
+				<div class="modal-header">
+					<h5 class="modal-title">Setup Tiles</h5>
+				</div>
+				<div class="modal-body">
+					<div id="SetupBoard" class="container">
+
+                    </div>
+				</div>
+				<div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="RandomizeBoard()">Randomize</button> 
+					<button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="ReadyUpBtn">READY</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Login Modal -->
+	<div id="modalLogin-placeholder"></div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!--<script src="https://unpkg.com/colyseus.js@0.16.22/dist/colyseus.js"></script>-->
+    <script src="https://unpkg.com/@colyseus/sdk@^0.17.0/dist/colyseus.js"></script>
+	<script src="scripts/templateLoad.js"></script>
+    <script>
+        //const client = new Colyseus.Client("ws://localhost:2567");
+        const client = new Colyseus.Client("ws://76.13.102.11:2567");
+        console.log(client);
+
+        if(sessionStorage.getItem("reconnectionToken")){
+    console.log('reconnect');
+    client.reconnect(sessionStorage.getItem("reconnectionToken")).then(rm => {       
+        console.log("reconnect successfully", rm);
+        sessionStorage.setItem("reconnectionToken", rm.reconnectionToken);
+        RoomCommands(rm);
+        /*
+        room.send("set-board", {"ships":[{"x": 10, "y": 14}, {"x": 1000, "y": 1400}]})
+        */
+    }).catch(e =>{
+        sessionStorage.removeItem("reconnectionToken");
+        console.log("Reconnect error " + e);
+    });
+    
+}
+
+        var sessionId;
+        //var playerId;
+        var opponentId;
+        var selectedTheme = Math.floor(Math.random() * 2);
+        var boardThemes = [
+            {
+                "Name": "Wine",
+                "LargeShip": "images/Icons/wineGlass2.svg",
+                "MedShip" :  "images/Icons/wineBottle.svg",
+                "SmallShip": "images/Icons/wineGlass4.svg",
+                "TinyShip":  "images/Icons/wineGlass.svg"
+            },
+            {
+                "Name": "Beer",
+                "LargeShip": "images/Icons/beerBarrel.svg",
+                "MedShip" :  "images/Icons/beerStein.svg",
+                "SmallShip": "images/Icons/beer.svg",
+                "TinyShip":  "images/Icons/beer3.svg"
+            }
+
+        ];
+        SetImageSrc();
+        
+        var gameRules = {
+            "Ships":{
+                "Tiny":{"allowed": true,
+                        "count":1,
+                        "drinkAmount": 6},
+                "Small":{"allowed": true,
+                        "count":1,
+                        "drinkAmount": 3},
+                "Medium":{"allowed": true,
+                        "count":1,
+                        "drinkAmount": 2},
+                "Large":{"allowed": true,
+                        "count":1,
+                        "drinkAmount": 1},
+            },
+            "allowRotation": true,
+            "drinkWhenHit": true,
+            "drinkWhenSunk": false
+
+        }
+        var isTurn = true;
+        function NewCard(){
+            isTurn = true;
+        }
+        var gridColumns = 6;
+        var gridRows = 6;
+        var stateData;
+        var ships = [];
+        var ready = false;
+
+
+        //SetupBoard();
+        //UpdateBoard();
+
+        function SetupBoard(){
+            if (!ready){
+            let w = stateData.width;
+            let h = stateData.height;
+            $('#SetupBoard').html('');       
+            for(let i = 0; i < h; i++){
+                $('#SetupBoard').append('<div class="row g-0" id="SetupBoardRow' + i +'">');
+                for(let ii = 0; ii < w; ii++){
+                
+                    $('#SetupBoardRow'+i).append('<div class=col-2><div id="Setup' + (((i * w) + ii) + 1) +  '" onclick="StrikeTile(' + i + "," + ii + ')"><image class="float-start" src="' + "images/Icons/repeat.svg" + '" height="100%" width="100%">');
+                }
+            }
+            RandomizeBoard();
+            ready = true; 
+            }
+        }
+
+        function UpdatePreviewBoard(){
+            const canvas = document.getElementById("Gameboard2");
+            const ctx = canvas.getContext("2d");
+            canvas.width = $('#Gameboard2').parent().width();
+            canvas.height = $('#Gameboard2').parent().width();;
+            
+            gridItemWidth = $('#Gameboard2').parent().width() / stateData.width;
+            row = $('#Gameboard2').parent().width() / stateData.width
+
+            for(let i = 0; i < (stateData.width * stateData.height); i++){
+                
+                let y = Math.floor(i / stateData.width) * gridItemWidth;
+                let x = Math.floor(i%stateData.width) * gridItemWidth
+
+                for(let ii = 0; ii < stateData.players.get(sessionId).board.ships2.size; ii++){
+                    let shipValid = stateData.players.get(sessionId).board.ships2.get(ii.toString()).id;
+                    if (shipValid == (i+1)){
+                        //console.log('ShipSquare: ' + shipValid + '/' + (i+1));
+                        if (stateData.players.get(sessionId).board.ships2.get(ii.toString()).hit == 'true'){
+                            ctx.beginPath();
+                            ctx.fillStyle = "red";
+                            ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                            ctx.stroke(); 
+                        }
+                        let image = document.getElementById('img' +  stateData.players.get(sessionId).board.ships2.get(ii.toString()).idText);
+                        ctx.drawImage(image, x, y, gridItemWidth, gridItemWidth)
+                        break;
+                    }
+                    else{
+                        ctx.beginPath();
+                        ctx.fillStyle = "green";
+                        ctx.fillRect(x,y, 10, 10);
+                        ctx.stroke();
+                    }
+                }               
+		    }
+            //$('#gameBoard')
+        }
+
+        function UpdatePlayingBoard(){
+            const canvas = document.getElementById("Gameboard");
+            const ctx = canvas.getContext("2d");
+            canvas.width = $('#Gameboard').parent().width();
+            canvas.height = $('#Gameboard').parent().width();
+            
+            gridItemWidth = $('#Gameboard').parent().width() / stateData.width;
+            row = $('#Gameboard').parent().width() / stateData.width
+
+
+            stateData.players.forEach((value, key) => {
+                if (key != sessionId){
+                    opponentId = key;
+                }
+            })
+
+
+            for(let i = 0; i < (stateData.width * stateData.height); i++){
+                
+                let y = Math.floor(i / stateData.width) * gridItemWidth;
+                let x = Math.floor(i%stateData.width) * gridItemWidth
+
+                for(let ii = 0; ii < stateData.players.get(opponentId).board.ships2.size; ii++){
+                    let shipValid = stateData.players.get(opponentId).board.ships2.get(ii.toString()).id;
+                    if (shipValid == (i+1)){
+                        //console.log('ShipSquare: ' + shipValid + '/' + (i+1));
+                        if (stateData.players.get(opponentId).board.ships2.get(ii.toString()).hit == 'true'){
+                            ctx.beginPath();
+                            ctx.fillStyle = "red";
+                            ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                            ctx.stroke(); 
+                        }
+                        //let image = document.getElementById('img' +  stateData.players.get(opponentId).board.ships2.get(ii.toString()).idText);
+                        //ctx.drawImage(image, x, y, gridItemWidth, gridItemWidth)
+                        break;
+                    }
+                    else{
+                        ctx.beginPath();
+                        ctx.fillStyle = "green";
+                        ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                        ctx.stroke();
+                    }
+                }
+                //ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                
+		    }
+            //$('#gameBoard')
+        }
+
+        function StrikeTile(x, y){
+            if (isTurn == true) {
+                //Send data to server
+                console.log(x + "," + y);
+            }
+            isTurn = false;
+        }
+        
+        function CreateNewGame(){
+            //playerId = "Player1";
+            //var client = new Colyseus.Client('ws://localhost:2567'); //76.13.102.11
+            gridColumns = $('#columnCnt').val();
+            gridRows = $('#rowCnt').val();
+            let requiredShips = [];
+            
+            //Set Large Ships
+            if ($('#chkLargeShip').is(':checked')) {
+                for(let i = 0; i < Number($('#chkLargeShipCount').val()); i++){
+                    requiredShips.push({idText:'LargeShip'});
+                }
+            }
+            //Set Small Ships
+            if ($('#chkMedShip').is(':checked')) {
+                for(let i = 0; i < Number($('#chkMedShipCount').val()); i++){
+                    requiredShips.push({idText:'MedShip'});
+                }
+            }
+            //Set Small Ships
+            if ($('#chkSmallShip').is(':checked')) {
+                for(let i = 0; i < Number($('#chkSmallShipCount').val()); i++){
+                    requiredShips.push({idText:'SmallShip'});
+                }
+            }
+            //Set Tiny Ships
+            if ($('#chkTinyShip').is(':checked')) {
+                for(let i = 0; i < Number($('#chkTinyShipCount').val()); i++){
+                    requiredShips.push({idText:'TinyShip'});
+                }
+            }
+            
+            console.log(requiredShips);
+            client.create("battleship", {width: Number(gridColumns), height: Number(gridRows), requiredShips: requiredShips}).then(room => {
+                console.log("Created successfully", room);
+                sessionStorage.setItem("reconnectionToken", room.reconnectionToken);
+                RoomCommands(room);
+                }).catch(e => {
+                console.error("Create error", e);
+            });
+
+            //$('#NewGameSetupModal').modal('show');
+        }
+
+        function JoinGame(){
+            //playerId = "Player2";
+            client.joinById($('#RoomCodeInput').val(), {/* Options placeholder */}).then(rm => {
+                console.log("Joined Successful");
+                sessionStorage.setItem("reconnectionToken", rm.reconnectionToken);
+                RoomCommands(rm);
+            }).catch(e => {
+                console.error("join error: ", e);
+            })
+
+            //$('#NewGameModal').modal('hide');
+            //$('#NewGameSetupModal').modal('show');
+        }
+
+        function RoomCommands(room){
+            $('#RoomCode').text("Room Code: " + room.roomId);
+            sessionId = room.sessionId;
+            //stateData = room.state;
+            //console.log(room);
+            //console.log(room.state);
+            //SetupBoard(room.state.width, room.state.height);
+
+
+            room.onDrop((code, reason) => {
+                    console.log(`Connection dropped! Code: ${code}, Reason: ${reason}`);
+                    //showReconnectingOverlay();
+            });
+
+            room.onReconnect(() => {
+                console.log("Reconnected successfully!");
+                //hideReconnectingOverlay();
+            });
+
+            room.onStateChange((state) => {
+                stateData = state;
+                console.log(state);
+
+                if(state.players.size < 2){
+                    //Wait for other player
+                    $('#WaitingMessage').html('<p>Waiting for other player...</p>');
+                }
+                else {
+                    if (AllPlayersReady(state.players)){                   
+                        //Setup board and start game
+                        console.log('Start Game!');
+                        stateData = state;
+                        UpdatePreviewBoard();
+                        UpdatePlayingBoard();     
+                    }
+                    else{
+                        console.log('else', state.players.get(room.sessionId));
+                        if (state.players.get(room.sessionId).ready == "false"){
+                           
+                        //Prompt setup modal
+                        SetupBoard();
+                        $('#NewGameSetupModal').modal('show');
+                        }
+                        $('#WaitingMessage').html('<p>Other player setting up ships...</p>');
+                    }
+                }
+                });
+
+            $('#ReadyUpBtn').on('click', function(){
+                console.log(ships);
+                room.send("ready-up", {"ready": "true", "ships":ships});
+            })
+        
+            $('#Gameboard').on('click', function(e){
+                let x = e.offsetX; 
+                let y = e.offsetY;
+                let row = Math.floor(y / gridItemWidth);
+                let column = Math.floor(x / gridItemWidth);
+                let tileId = ((row * stateData.width) + column) + 1;
+                room.send("strike", {opponentId: opponentId, tileId: tileId});
+                console.log('send strike: ' + tileId);
+            })
+        }
+
+        function UpdateRules(e){
+            switch(e.srcElement.value){
+                case "1":
+                    $('#GameRuleControl').prop("disabled", true);
+                break;
+                case "2":
+                    $('#GameRuleControl').removeAttr("disabled");
+                    $('#ShipRuleControl').removeAttr("disabled");
+                break;
+            }
+        }
+
+        function SetRules(template){
+            switch (template){
+                case 1: //default
+                    gameRules = {
+                        "Ships":{
+                            "Tiny":{"allowed": true,
+                                    "count":1,
+                                    "drinkAmount": 6},
+                            "Small":{"allowed": true,
+                                    "count":1,
+                                    "drinkAmount": 3},
+                            "Medium":{"allowed": true,
+                                    "count":1,
+                                    "drinkAmount": 2},
+                            "Large":{"allowed": true,
+                                    "count":1,
+                                    "drinkAmount": 1},
+                        },
+                        "allowRotation": true,
+                        "drinkWhenHit": true,
+                        "drinkWhenSunk": false
+                    }
+                break;
+                case 2:
+                    gameRules = {
+                        "Ships":{
+                            "Tiny":{"allowed": true,
+                                    "count":3,
+                                    "drinkAmount": 6},
+                            "Small":{"allowed": true,
+                                    "count":3,
+                                    "drinkAmount": 3},
+                            "Medium":{"allowed": false,
+                                    "count":0,
+                                    "drinkAmount": 2},
+                            "Large":{"allowed": false,
+                                    "count":0,
+                                    "drinkAmount": 1},
+                        },
+                        "allowRotation": true,
+                        "drinkWhenHit": false,
+                        "drinkWhenSunk": true
+                    }
+                break;
+            }
+
+        }
+        
+        function AllPlayersReady(map) {
+            return Array.from(map.values()).every(value => value.ready == "true");
+        }
+    
+        function RandomizeBoard(){
+            ships = [];
+            for(let i = 0; i < stateData.requiredShips.size; i++){
+                let id = Math.floor(Math.random() * (stateData.width * stateData.height)) + 1;
+                let shipType = stateData.requiredShips.get(i.toString()).idText;
+                let img = '';
+                let placed = false;
+                while (!placed){
+                    if (CheckPlacement(id, shipType)){
+                    switch(shipType){
+                        case "LargeShip":
+                            ships.push({id: id, idText: "LargeShip"});
+                            ships.push({id: (id + (stateData.width)), idText: "LargeShip"});
+                            ships.push({id: (id - (stateData.width)), idText: "LargeShip"});
+                            ships.push({id: (id + 1), idText: "LargeShip"});
+                            ships.push({id: ((id  + 1) + (stateData.width)), idText: "LargeShip"});
+                            ships.push({id: ((id  + 1) - (stateData.width)), idText: "LargeShip"});
+                            img = boardThemes[selectedTheme].LargeShip;
+                            $('#Setup' + (id)).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            $('#Setup' + (id + (stateData.width))).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            $('#Setup' + (id - (stateData.width))).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+
+                            $('#Setup' + (id +1)).html('<img class="float-start" src="' + img +  '" height="100%" width="100%">');
+                            $('#Setup' + ((id  + 1) + (stateData.width))).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            $('#Setup' + ((id  + 1) - (stateData.width))).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            break;
+                        case "MedShip":
+                            ships.push({id: id, idText: "MedShip"});
+                            ships.push({id: (id - stateData.width), idText: "MedShip"});
+                            ships.push({id: (id + stateData.width), idText: "MedShip"});
+                            img = boardThemes[selectedTheme].MedShip;
+
+                            //$('#Setup' + id).load('images/Icons/Subimage/bottle2.svg');
+                            //$('#Setup' + (id - stateData.width)).load('images/Icons/Subimage/bottle2-1.svg');
+                            //$('#Setup' + (id + stateData.width)).load('images/Icons/Subimage/bottle2bottom.svg');
+                            $('#Setup' + (id)).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            $('#Setup' + (id - stateData.width)).html('<img class="float-start" src="' + img +  '" height="100%" width="100%">');
+                            $('#Setup' + (id + stateData.width)).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            break
+                        case "SmallShip":
+                            ships.push({id: id, idText: "SmallShip"});
+                            ships.push({id: (id + 1), idText: "SmallShip"});
+                            img = boardThemes[selectedTheme].SmallShip;
+                            $('#Setup' + id).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            $('#Setup' + (id + 1)).html('<img class="float-start" src="' + img +'" height="100%" width="100%">');
+                            break;
+                        case "TinyShip":
+                            ships.push({id: id, idText: "TinyShip"});
+                            img = boardThemes[selectedTheme].TinyShip;
+                            $('#Setup' + id).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
+                            //$('#Setup' + id).load('images/Icons/Subimage/bottle2.svg');
+                            //$('#Setup' + id).html('<img class="float-start" src="images/Icons/Subimage/bottle2.svg" height="100%" width="100%">');
+                            break;
+                    };
+                    placed = true;
+                } else {
+                    id = Math.floor(Math.random() * (stateData.width * stateData.height)) + 1;
+                    placed = false;
+                }
+                }
+            }
+
+            function CheckPlacement(id, shipType){
+                switch(shipType){
+                    case "LargeShip":
+                        if (
+                            id > stateData.width //not first row
+                         && id < (stateData.width * stateData.height) - stateData.width //not last row
+                         && id % stateData.width != 0 //not last column
+                         && !ships.some(ship => ship.id == id)
+                        ){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                        break;
+                    case "MedShip":
+                        if (
+                            id > stateData.width //not first row
+                         && id < (stateData.width * stateData.height) - stateData.width //not last row
+                         //&& id % stateData.width != 0 //not last column
+                         && !ships.some(ship => ship.id == id)
+                         && !ships.some(ship => ship.id == (id - stateData.width))
+                         && !ships.some(ship => ship.id == (id + stateData.width))
+                        ){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                        break;
+                    case "SmallShip":
+                        if (
+                            //id > stateData.width //not first row
+                         //&& id < (stateData.width * stateData.height) - stateData.width //not last row
+                         id % stateData.width != 0 //not last column
+                         && !ships.some(ship => ship.id == id)
+                         && !ships.some(ship => ship.id == (id + 1))
+                        ){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                        break;
+                    case "TinyShip":
+                        if (
+                            //id > stateData.width //not first row
+                         //&& id < (stateData.width * stateData.height) - stateData.width //not last row
+                         //&& id % stateData.width != 0 //not last column
+                         !ships.some(ship => ship.id == id)
+                        ){
+                            return true;
+                        }
+                        else{
+                            return false;
+                        }
+                        break;
+                };
+            }
+        }
+    
+        function SetImageSrc(){
+            console.log(boardThemes[selectedTheme]);
+            $('#imgTinyShip').attr('src',boardThemes[selectedTheme].TinyShip);
+            $('#imgSmallShip').attr('src',boardThemes[selectedTheme].SmallShip);
+            $('#imgMedShip').attr('src',boardThemes[selectedTheme].MedShip);
+            $('#imgLargeShip').attr('src',boardThemes[selectedTheme].LargeShip);
+        }
+    </script>
+</body>
+</html>

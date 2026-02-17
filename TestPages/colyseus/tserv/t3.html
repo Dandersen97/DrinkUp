@@ -1,37 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-
+<html>
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Title</title>
-  <link rel="stylesheet" href>
+  <meta charset="UTF-8">
+  <title>Colyseus Client Example</title>
+  <!-- Load Colyseus JavaScript SDK from CDN -->
+  <script src="https://unpkg.com/colyseus.js@0.16.22/dist/colyseus.js"></script>
 </head>
-
 <body>
-<!--
-  <canvas id="c" width="300px" height="300px" style="border: 1px solid black;"  ontouchstart="StartDraw(event)" ontouchend="StopDraw(event)"></canvas>
-  <button onclick="SendData()">UP</button>
-  <h3 ontouchstart="f2()" ontouchend="f3()">MOVE LEFT</h3>
-  -->
-  <div id="joyDiv" style="width:350px;height:350px;margin-bottom:20px;"></div>
-  <div id="joy2Div" style="width:350px;height:350px;margin-bottom:20px;"></div>
-  <button id="ButtonClient" onclick="SendData()">Press OK</button>
-  <script src="https://bundle.run/buffer@6.0.3"></script>
-  <script src="https://unpkg.com/colyseus.js@^0.15.0/dist/colyseus.js"></script>
-  <script src="../joystick.js"></script>
+  <h1>Colyseus Client Connection</h1>
+  <label for="name">Name:</label>
+  <input id="name" type="text"></input>
+  <br>
+  <textarea id="msg"></textarea>
+  <br>
+  <button onclick="SendMessage">Send</button>
+  <div id="log"></div>
   <script>
-window.Buffer = window.buffer.Buffer;
-		
-    //var client = new Colyseus.Client('ws://192.168.1.28:2567');
+    var room;
 
+    (async () => {
+      try {
+        // Replace with your Colyseus server URL
+        const SERVER_URL = "ws://76.13.102.11:2567";
+        //const SERVER_URL = "ws://192.168.1.48:2567";
 
-   
+        // Create a Colyseus client
+        const client = new Colyseus.Client(SERVER_URL);
 
+        // Join or create a room
+        room = await client.joinOrCreate("my_room", { username: "Player1" });
 
-    
+        console.log("Connected to room:", room.name, "with sessionId:", room.sessionId);
+
+        // Listen for state changes
+        room.onStateChange((state) => {
+          console.log("Room state updated:", state);
+        });
+
+        // Listen for messages from the server
+        room.onMessage("welcomeMessage", (message) => {
+          console.log("Chat message received:", message);
+        });
+
+        room.onMessage("data", (message) => {
+          console.log("Data received:", message);
+        });
+
+        // Example: send a message to the server
+        room.send("data", { text: "Hello from client!" });
+
+      } catch (err) {
+        console.error("Connection error:", err);
+      }
+    })();
+
+    function SendMessage(){
+      room.send("data", {msg: document.getElementById('msg').value});
+    }
+
   </script>
 </body>
-
 </html>

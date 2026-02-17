@@ -1,0 +1,229 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<title>Drunk Artist</title>
+	<!-- Styles -->
+	<link href="/css/bootstrap.min.3.4.1.css" rel="stylesheet">
+	<link href="/css/BOOTSTRAP-5.2.0-DIST/css/bootstrap.css" rel="stylesheet">
+	<style>
+		body {
+			padding-bottom: 20px;
+			overscroll-behavior: contain;
+		}
+		
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0px;
+			top: 0px;
+			width: 100vw; /* Full width */
+			height: 100vh; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(245,245,245); /* Fallback color */
+		}
+	
+		.modal-vis {
+			display: block;
+		}
+	</style>
+</head>
+<body>
+	<!-- Fixed navbar -->
+    <nav class="navbar navbar-default" style="margin-bottom: 0px;">
+      <div class="container">
+        <div class="navbar-header">
+			<img style="width: 40px; padding: 0px; position: relative;
+				float: right;
+				margin-right: 15px;
+				margin-top: 8px;
+				margin-bottom: 8px;
+				background-color: transparent;
+				background-image: none;
+				border: 1px solid transparent;
+				border-radius: 4px;" src="/images/icons/gear.svg" onclick='ToggleModal("settingsModal")' />
+			<span class="navbar-brand" style="height: auto;">Drunk Artist</span>
+			<button class="btn btn-secondary navbar-btn" onclick='ToggleModal("ModalHowToPlay")'>How To Play</button>
+        </div>
+      </div>
+    </nav>
+	<!-- Content -->
+	<div id="ImageArtist">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<p>Listen to the instructions performed by the Leader. Draw what they tell you. You won't be able to see your work until it is finished.</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h1>ROOM CODE: <b id="roomCode">ROOM CODE HERE</b></h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<button onclick='StartGame()'>START</button>
+				</div>
+			</div>
+			<div id="PlayerDrawSelection" class="row">
+				
+			</div>
+			<br/>
+			
+		</div>
+
+	</div>
+
+	
+	<div class="modal" style="hidden" id="ModalHowToPlay">
+		<h1>How To Play</h1>
+		<button onclick='ToggleModal("ModalHowToPlay")' class="btn btn-primary">Close</button>
+		<p>One player is the Leader, all others are Artists. The leader is given a random image and must give instructions for the artists to draw. Once finished the Artists guess their image. First person to guess correctly is the leader next. If nobody guesses correctly, the Leader chooses whoever he thinks got the closest to the original image and that player becomes the next Leader.</p>
+		<p>Oh, also, Artists can't see what they're drawing.</p>
+			<div>
+				<h1>As an Artist:</h1>
+				<p>Listen to the leaders instructions and draw as directed. Once done, click submit to see your drawing. You can enable easy mode to see your drawing before it's finished. Be sure to ask questions for unclear instructions. If the leader says "draw a rectangle" ask Where? What size? Verticle or Horizontal?</p>
+			</div>
+			<div>
+				<h1>As the Leader:</h1>
+				<p>You'll be given a random image. Do your best giving simple instructions to have the artists draw this. Don't simply say what to draw, for example, don't say "Draw a snowman". You can say "draw a square in the top center of your screen (the snomans hat) underneath that square draw a small circle. Under that circle draw a medium circle and under that circle draw a large circle"</p>
+			</div>
+			<div>
+				<h1>As a drinking game:</h1>
+				<p><i>Optional</i> drinking rules are as follows. Once the leader is finished the guessing begins</p>
+				<ul>
+					<li>BEFORE revealing your image</li>
+						<ul>
+							<li>If you can guess what it is without revealing your image, the leader takes 5 drinks for making it too easy</li>
+						</ul>
+					<li>Reveal your image WITHOUT sharing screens</li>
+						<ul>
+							<li>if you can guess based on your image, all other players drink</li>
+						</ul>
+					<li>Share screens</li>
+						<ul>
+							<li>Look at the other artists drawings. First to guess correctly and the Leader are safe, all others drink</li>
+						</ul>
+					<li>Nobody Can Guess</li>
+						<ul>
+							<li>If nobody can guess even when sharing screens, everyone drinks. Artists for drawing bad and Leader for giving bad direction.</li>
+						</ul>
+				</ul>
+			</div>
+		
+
+	</div>
+	
+	<div class="modal" style="hidden" id="settingsModal">
+		<h1>Settings</h1>
+		<button onclick='ToggleModal("settingsModal")' class="btn btn-primary">Close</button>
+		<p>Currently no settings. Future placeholder.</p>
+	</div>
+	
+	
+	<script src="/scripts/modal.js"></script>
+	<script src="/scripts/socket.io/client-dist/socket.io.js"></script>
+	<script src="/scripts/socket-conn.js"></script>
+  <script>
+	const urlString = window.location.search;
+	const urlParams = new URLSearchParams(urlString);
+    let userName = "HOST";
+    let room = "ABCD";
+    let ID = "";
+	let players = [];
+	
+
+	//send event that user has joined room
+	socket.emit("join_Room", {username : userName, roomName : room, gameType : "DrunkArtist"});
+
+
+	
+
+	socket.on("messageFromHost", (data) => {
+		var jsonData = JSON.parse(data.data.value);
+		console.log("Message from host");
+		console.log(jsonData);
+		
+		if(ID == jsonData.leader){
+			document.getElementById("ImageDraw").innerHTML = '<image width="100%" height="100%" xlink:href="../host/images/' + jsonData.image + '"></image>';
+			ToggleModal("ModalLeader");
+		}
+	});
+	
+	socket.on("playerJoined", data =>{
+		console.log("Player has joined");
+		console.log(data);
+		
+		if (players.some(e => e.name == data.username) || players.some(e => e.socketId == data.socketId)) {
+			console.log("Player " + data.username + " already exists - update name or socket");
+			
+			
+		}
+		else{
+			let newPlayer = new PlayerObj(data.socketId, data.username)
+			players.push(newPlayer);
+			document.getElementById("PlayerDrawSelection").innerHTML += '<div class="col-3"><h1>' + data.username +'</h1><svg id="svg' + data.username + '" width="100%" height="100%"><g id="drawGroup' + data.username + '" style="stroke: white; fill: transparent;" stroke-width="5"></g></svg></div>'
+		}
+		console.log(players);
+	})
+
+	
+	
+    function decodeMessage(data) {
+		if(data.data.msgType == "join"){
+			//Player Joined
+			document.getElementById("PlayerDrawSelection").innerHTML += '<div class="col-3"><h1>' + data.data.username +'</h1><svg id="svg' + data.data.username + '" width="100%" height="100%"><g id="drawGroup' + data.data.username + '" style="stroke: white; fill: transparent;" stroke-width="5"></g></svg></div>'
+		}
+		else if (data.data.msgType == "drawUpdate"){
+			//var artistSpace = document.getElementById(data.data.user);
+			//artistSpace.innerHTML = data.data.value;
+		}
+    }
+	
+	
+	
+	
+
+	
+	window.onload = (event) => {
+		document.getElementById("roomCode").innerText = room;
+	}
+
+
+	
+	function StartGame(){
+		//socket.emit("messageFromHost", {username : userName, roomName : room});
+		socket.emit("EmitTo", {room: room, emit: "testEmit", time: Date.now()});
+	}
+	
+	function StopGame(){
+		console.log("stop game");
+	}
+	
+	
+	
+	
+	
+	
+	class PlayerObj{
+		constructor(socketId, name){
+			this.socketId = socketId;
+			this.name = name;
+		}
+		
+		UpdateSocketId(newSocketId){
+			this.socketId = newSocketId;
+		}
+	}
+	
+	
+	
+	
+	</script>
+</body>
+</html>
