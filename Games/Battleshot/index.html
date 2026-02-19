@@ -205,7 +205,9 @@
     <script>
         //const client = new Colyseus.Client("ws://localhost:2567");
         //const client = new Colyseus.Client("ws://76.13.102.11:2567");
-        const client = new Colyseus.Client("ws://100.115.102.89:7788");
+        //const client = new Colyseus.Client("ws://100.115.102.89:7788");
+        //const client = new Colyseus.Client("ws://100.115.102.89:2567");
+        const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/");
         console.log(client);
 
         if(sessionStorage.getItem("reconnectionToken")){
