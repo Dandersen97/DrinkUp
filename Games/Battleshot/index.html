@@ -38,7 +38,7 @@
     <img id="imgTinyShip" class="float-start d-none" src=''>
     <img id="imgSmallShip" class="float-start d-none" src=''>
     <img id="imgMedShip" class="float-start d-none" src=''>
-    <img id="imgLargeShip" class="float-start d-none" src=''>
+    <img id="imgLargeShip" class="float-start d-none" src='' width="100" height="100">
 
     <div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -203,11 +203,10 @@
     <script src="https://unpkg.com/@colyseus/sdk@^0.17.0/dist/colyseus.js"></script>
 	<script src="scripts/templateLoad.js"></script>
     <script>
-        //const client = new Colyseus.Client("ws://localhost:2567");
-        //const client = new Colyseus.Client("ws://76.13.102.11:2567");
-        //const client = new Colyseus.Client("ws://100.115.102.89:7788");
-        //const client = new Colyseus.Client("ws://100.115.102.89:2567");
-        const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/");
+        //const client = new Colyseus.Client("ws://localhost:2567"); //LAN
+        //const client = new Colyseus.Client("http://192.168.1.125:2567"); LAN Alt
+        //const client = new Colyseus.Client("ws://100.115.102.89:2567"); //LAN Alt
+        const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/"); //WAN
         console.log(client);
 
         if(sessionStorage.getItem("reconnectionToken")){
@@ -235,14 +234,14 @@
                 "Name": "Wine",
                 "LargeShip": "images/Icons/wineGlass2.svg",
                 "MedShip" :  "images/Icons/wineBottle.svg",
-                "SmallShip": "images/Icons/wineGlass4.svg",
+                "SmallShip": "images/Icons/wineBottleAndGlasses.svg",
                 "TinyShip":  "images/Icons/wineGlass.svg"
             },
             {
                 "Name": "Beer",
-                "LargeShip": "images/Icons/beerBarrel.svg",
+                "LargeShip": "images/Icons/beerBarrel.svg", //beerBarrel
                 "MedShip" :  "images/Icons/beerStein.svg",
-                "SmallShip": "images/Icons/beer.svg",
+                "SmallShip": "images/Icons/bottle3pack2.svg",
                 "TinyShip":  "images/Icons/beer3.svg"
             }
 
@@ -312,7 +311,7 @@
             for(let i = 0; i < (stateData.width * stateData.height); i++){
                 
                 let y = Math.floor(i / stateData.width) * gridItemWidth;
-                let x = Math.floor(i%stateData.width) * gridItemWidth
+                let x = Math.floor(i%stateData.width) * gridItemWidth;
 
                 for(let ii = 0; ii < stateData.players.get(sessionId).board.ships2.size; ii++){
                     let shipValid = stateData.players.get(sessionId).board.ships2.get(ii.toString()).id;
@@ -324,19 +323,44 @@
                             ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
                             ctx.stroke(); 
                         }
-                        let image = document.getElementById('img' +  stateData.players.get(sessionId).board.ships2.get(ii.toString()).idText);
-                        ctx.drawImage(image, x, y, gridItemWidth, gridItemWidth)
+                        let shipType = stateData.players.get(sessionId).board.ships2.get(ii.toString()).idText;
+                        let clipX = stateData.players.get(sessionId).board.ships2.get(ii.toString()).x;
+                        let clipY = stateData.players.get(sessionId).board.ships2.get(ii.toString()).y;
+                        let image = document.getElementById('img' +  shipType);
+                        
+                        if (shipType == 'LargeShip') {
+                            ctx.drawImage(image,
+                                           (clipX * (canvas.width / 2)), (clipY * (canvas.height / 3)), (canvas.width / 2), (canvas.height / 3),
+                                            x, y, gridItemWidth, gridItemWidth);
+                        }
+                        if (shipType == 'MedShip') {
+                            ctx.drawImage(image,
+                                           (clipX * (canvas.width)), (clipY * (canvas.height / 3)), (canvas.width), (canvas.height / 3),
+                                            x, y, gridItemWidth, gridItemWidth);
+                        }
+                        if (shipType == 'SmallShip') {
+                            ctx.drawImage(image,
+                                           (clipX * (canvas.width / 2)), (clipY * (canvas.height)), (canvas.width / 2), (canvas.height),
+                                            x, y, gridItemWidth, gridItemWidth);
+                        }
+                        if (shipType == 'TinyShip') {
+                            ctx.drawImage(image,
+                                           (clipX * (canvas.width )), (clipY * (canvas.height )), (canvas.width), (canvas.height),
+                                            x, y, gridItemWidth, gridItemWidth);
+                        }
+
                         break;
                     }
                     else{
                         ctx.beginPath();
                         ctx.fillStyle = "green";
-                        ctx.fillRect(x,y, 10, 10);
+                        ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                        ctx.strokeRect(x, y, gridItemWidth, gridItemWidth);
                         ctx.stroke();
                     }
-                }               
+                }       
+                
 		    }
-            //$('#gameBoard')
         }
 
         function UpdatePlayingBoard(){
@@ -355,12 +379,32 @@
                 }
             })
 
-
             for(let i = 0; i < (stateData.width * stateData.height); i++){
-                
                 let y = Math.floor(i / stateData.width) * gridItemWidth;
                 let x = Math.floor(i%stateData.width) * gridItemWidth
 
+                ctx.beginPath();
+                ctx.fillStyle = "green";
+                ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                ctx.strokeRect(x,y, gridItemWidth, gridItemWidth);
+                ctx.stroke();
+
+                if (stateData.players.get(sessionId).board.ships.has((i + 1).toString())){
+                    let hitMiss = stateData.players.get(sessionId).board.ships.get((i + 1).toString()).hit
+                    if (hitMiss == 'true'){
+                            ctx.beginPath();
+                            ctx.fillStyle = "red";
+                            ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                            ctx.stroke(); 
+                    }
+                    else if (hitMiss == "miss"){
+                        ctx.beginPath();
+                            ctx.fillStyle = "gray";
+                            ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                            ctx.stroke(); 
+                    }
+                }
+                /*
                 for(let ii = 0; ii < stateData.players.get(opponentId).board.ships2.size; ii++){
                     let shipValid = stateData.players.get(opponentId).board.ships2.get(ii.toString()).id;
                     if (shipValid == (i+1)){
@@ -379,11 +423,12 @@
                         ctx.beginPath();
                         ctx.fillStyle = "green";
                         ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                        ctx.strokeRect(x,y, gridItemWidth, gridItemWidth);
                         ctx.stroke();
                     }
                 }
                 //ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
-                
+                */
 		    }
             //$('#gameBoard')
         }
@@ -462,6 +507,10 @@
             //console.log(room.state);
             //SetupBoard(room.state.width, room.state.height);
 
+            room.onMessage("strike-resp", (msg) => {
+                console.log(msg);
+                alert("Strike on " + msg.id + " was a " + msg.hit);
+            })
 
             room.onDrop((code, reason) => {
                     console.log(`Connection dropped! Code: ${code}, Reason: ${reason}`);
@@ -470,7 +519,12 @@
 
             room.onReconnect(() => {
                 console.log("Reconnected successfully!");
-                //hideReconnectingOverlay();
+                if (room.state.turn == sessionId) {
+                    $('#WaitingMessage').html('<p>Your Turn. Select a tile</p>')
+                }
+                else {
+                    $('#WaitingMessage').html('<p>Opponents Turn. Please wait.</p>')
+                }
             });
 
             room.onStateChange((state) => {
@@ -487,7 +541,13 @@
                         console.log('Start Game!');
                         stateData = state;
                         UpdatePreviewBoard();
-                        UpdatePlayingBoard();     
+                        UpdatePlayingBoard();    
+                        if (room.state.turn == sessionId) {
+                            $('#WaitingMessage').html('<p>Your Turn. Select a tile</p>')
+                        }
+                        else {
+                            $('#WaitingMessage').html('<p>Opponents Turn. Please wait.</p>')
+                        } 
                     }
                     else{
                         console.log('else', state.players.get(room.sessionId));
@@ -593,12 +653,12 @@
                     if (CheckPlacement(id, shipType)){
                     switch(shipType){
                         case "LargeShip":
-                            ships.push({id: id, idText: "LargeShip"});
-                            ships.push({id: (id + (stateData.width)), idText: "LargeShip"});
-                            ships.push({id: (id - (stateData.width)), idText: "LargeShip"});
-                            ships.push({id: (id + 1), idText: "LargeShip"});
-                            ships.push({id: ((id  + 1) + (stateData.width)), idText: "LargeShip"});
-                            ships.push({id: ((id  + 1) - (stateData.width)), idText: "LargeShip"});
+                            ships.push({id: id, idText: "LargeShip", x: 0, y: 1});
+                            ships.push({id: (id + (stateData.width)), idText: "LargeShip", x: 0, y: 2});
+                            ships.push({id: (id - (stateData.width)), idText: "LargeShip", x: 0, y: 0});
+                            ships.push({id: (id + 1), idText: "LargeShip", x: 1, y: 1});
+                            ships.push({id: ((id  + 1) + (stateData.width)), idText: "LargeShip", x: 1, y: 2});
+                            ships.push({id: ((id  + 1) - (stateData.width)), idText: "LargeShip", x: 1, y: 0});
                             img = boardThemes[selectedTheme].LargeShip;
                             $('#Setup' + (id)).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
                             $('#Setup' + (id + (stateData.width))).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
@@ -609,9 +669,9 @@
                             $('#Setup' + ((id  + 1) - (stateData.width))).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
                             break;
                         case "MedShip":
-                            ships.push({id: id, idText: "MedShip"});
-                            ships.push({id: (id - stateData.width), idText: "MedShip"});
-                            ships.push({id: (id + stateData.width), idText: "MedShip"});
+                            ships.push({id: id, idText: "MedShip", x:0, y: 1});
+                            ships.push({id: (id - stateData.width), idText: "MedShip", x: 0, y: 0});
+                            ships.push({id: (id + stateData.width), idText: "MedShip", x: 0, y: 2});
                             img = boardThemes[selectedTheme].MedShip;
 
                             //$('#Setup' + id).load('images/Icons/Subimage/bottle2.svg');
@@ -622,14 +682,14 @@
                             $('#Setup' + (id + stateData.width)).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
                             break
                         case "SmallShip":
-                            ships.push({id: id, idText: "SmallShip"});
-                            ships.push({id: (id + 1), idText: "SmallShip"});
+                            ships.push({id: id, idText: "SmallShip", x: 0, y: 0});
+                            ships.push({id: (id + 1), idText: "SmallShip", x: 1, y: 0});
                             img = boardThemes[selectedTheme].SmallShip;
                             $('#Setup' + id).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
                             $('#Setup' + (id + 1)).html('<img class="float-start" src="' + img +'" height="100%" width="100%">');
                             break;
                         case "TinyShip":
-                            ships.push({id: id, idText: "TinyShip"});
+                            ships.push({id: id, idText: "TinyShip", x: 0, y: 0});
                             img = boardThemes[selectedTheme].TinyShip;
                             $('#Setup' + id).html('<img class="float-start" src="' + img + '" height="100%" width="100%">');
                             //$('#Setup' + id).load('images/Icons/Subimage/bottle2.svg');
