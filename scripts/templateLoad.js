@@ -516,6 +516,15 @@ const GameData = {
 		 },
 		 {
 			 "GameInfo":{
+				 "Name":"Battleshot",
+				 "Link":"Games/Battleshot/",
+				 "Img":"images/Logos/battleshot.svg",
+				 "Desc":"<p>Based on the board game Battleship. 2 player lay out drinks on a board and take turns guessing where their opponents drinks are. If they guess right, your opponent drinks. If wrong, next players turn and hope they guess wrong too.</p>",
+				 "Active":true
+			 }
+		 },
+		 {
+			 "GameInfo":{
 				 "Name":"Do or Drink / Kwitter",
 				 "Link":"games/doordrink/",
 				 "Img":"images/Logos/5.svg",
