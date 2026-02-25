@@ -103,11 +103,8 @@
     </nav>
 
 	<!-- MAIN BODY DIV -->
-     <div id="RoomCode">Room Code:</div>
+    <div id="RoomCode">Room Code:</div>
     <div id="WaitingMessage"></div>
-     <button class="btn btn-primary" onclick="UpdatePlayingBoard()">Setup</button>
-    
-    
      <div class="container position-relative">
         <canvas id="Gameboard" class="border border-dark"></canvas>
         
@@ -148,6 +145,8 @@
     <img id="imgSmallShip" class="float-start d-none" src=''>
     <img id="imgMedShip" class="float-start d-none" src=''>
     <img id="imgLargeShip" class="float-start d-none" src='' width="100" height="100">
+
+    <div id="debug"></div>
 
     <div class="modal fade" id="HowToPlayModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -416,6 +415,7 @@
             
             gridItemWidth = canvas.width / stateData.width;
             row = canvas.width / stateData.width;
+            $("#debug").text("Width: " + canvas.width + "    Parent Width: " + $('#Gameboard2').parent().width() + "    gridItemWidth: " + gridItemWidth);
 
             for(let i = 0; i < (stateData.width * stateData.height); i++){
                 
