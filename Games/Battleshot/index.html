@@ -313,9 +313,9 @@
 	<script src="scripts/templateLoad.js"></script>
     <script>
         //const client = new Colyseus.Client("ws://localhost:2567"); //LAN
-        const client = new Colyseus.Client("http://192.168.1.125:2567"); //LAN Alt
+        //const client = new Colyseus.Client("http://192.168.1.125:2567"); //LAN Alt
         //const client = new Colyseus.Client("ws://100.115.102.89:2567"); //LAN Alt
-        //const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/"); //WAN
+        const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/"); //WAN
         console.log(client);
 
         if(sessionStorage.getItem("reconnectionToken")){
