@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebRTC Video Chat Application</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>WebRTC Video Chat</h1>
+      <div class="connection-status">
+        <span id="status">Disconnected</span>
+      </div>
+    </header>
+
+    <main>
+      <div class="video-container">
+        <div class="video-wrapper">
+          <video id="localVideo" autoplay muted playsinline></video>
+          <label>You</label>
+        </div>
+        <div class="video-wrapper">
+          <video id="remoteVideo" autoplay playsinline></video>
+          <label>Remote Peer</label>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="startButton" class="btn btn-primary">
+          <span>Start Camera</span>
+        </button>
+        <button id="callButton" class="btn btn-success" disabled>
+          <span>Start Call</span>
+        </button>
+        <button id="hangupButton" class="btn btn-danger" disabled>
+          <span>Hang Up</span>
+        </button>
+        <button id="muteButton" class="btn btn-secondary" disabled>
+          <span>Mute Audio</span>
+        </button>
+        <button id="videoToggle" class="btn btn-secondary" disabled>
+          <span>Stop Video</span>
+        </button>
+      </div>
+
+      <div class="chat-container">
+        <div id="chatMessages" class="chat-messages"></div>
+        <div class="chat-input">
+          <input 
+            type="text" 
+            id="messageInput" 
+            placeholder="Type a message..." 
+            disabled
+          />
+          <button id="sendButton" class="btn btn-primary" disabled>Send</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="signaling.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -145,6 +145,7 @@
     <img id="imgSmallShip" class="float-start d-none" src=''>
     <img id="imgMedShip" class="float-start d-none" src=''>
     <img id="imgLargeShip" class="float-start d-none" src='' width="100" height="100">
+    <img id="imgTable" class="float-start d-none" src='images/Test/table2.jpg'>
 
     <div id="debug"></div>
 
@@ -312,9 +313,9 @@
 	<script src="scripts/templateLoad.js"></script>
     <script>
         //const client = new Colyseus.Client("ws://localhost:2567"); //LAN
-        //const client = new Colyseus.Client("http://192.168.1.125:2567"); //LAN Alt
+        const client = new Colyseus.Client("http://192.168.1.125:2567"); //LAN Alt
         //const client = new Colyseus.Client("ws://100.115.102.89:2567"); //LAN Alt
-        const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/"); //WAN
+        //const client = new Colyseus.Client("https://srv1299249.hstgr.cloud:7788/"); //WAN
         console.log(client);
 
         if(sessionStorage.getItem("reconnectionToken")){
@@ -416,6 +417,17 @@
             gridItemWidth = canvas.width / stateData.width;
             row = canvas.width / stateData.width;
             $("#debug").text("Width: " + canvas.width + "    Parent Width: " + $('#Gameboard2').parent().width() + "    gridItemWidth: " + gridItemWidth);
+            let image2 = document.getElementById('img' +  'Table');
+
+            ctx.save();
+            ctx.translate(canvas.width, 0);
+            ctx.rotate((90 * Math.PI) / 180);
+            
+            ctx.drawImage(image2, 0, 0, canvas.width, canvas.height);
+            ctx.restore();
+
+            
+
 
             for(let i = 0; i < (stateData.width * stateData.height); i++){
                 
@@ -425,6 +437,10 @@
                 for(let ii = 0; ii < stateData.players.get(sessionId).board.ships2.size; ii++){
                     let shipValid = stateData.players.get(sessionId).board.ships2.get(ii.toString()).id;
                     if (shipValid == (i+1)){
+
+                        
+
+
                         //console.log('ShipSquare: ' + shipValid + '/' + (i+1));
                         if (stateData.players.get(sessionId).board.ships2.get(ii.toString()).hit == 'true'){
                             ctx.beginPath();
@@ -432,11 +448,17 @@
                             ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
                             ctx.stroke(); 
                         }
+
+                        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)'; // Shadow color with transparency
+                        ctx.shadowBlur = 15;                    // How soft the shadow edges are
+                        ctx.shadowOffsetX = 10;                  // Horizontal shadow offset
+                        ctx.shadowOffsetY = 10; 
+
                         let shipType = stateData.players.get(sessionId).board.ships2.get(ii.toString()).idText;
                         let clipX = stateData.players.get(sessionId).board.ships2.get(ii.toString()).x;
                         let clipY = stateData.players.get(sessionId).board.ships2.get(ii.toString()).y;
                         let image = document.getElementById('img' +  shipType);
-                        
+                        $("#debug").append("image: " + image.width + ' - ' + image.height);
                         if (shipType == 'LargeShip') {
                             ctx.drawImage(image,
                                            (clipX * (canvas.width / 2)), (clipY * (canvas.height / 3)), (canvas.width / 2), (canvas.height / 3),
@@ -463,11 +485,13 @@
                     }
                     else{
                         ctx.beginPath();
-                        ctx.fillStyle = "green";
-                        ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
-                        ctx.strokeRect(x, y, gridItemWidth, gridItemWidth);
-                        ctx.stroke();
+                //ctx.fillStyle = "green";
+                //ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                ctx.strokeRect(x,y, gridItemWidth, gridItemWidth);
+                ctx.stroke();
                     }
+
+                    ctx.shadowColor = 'transparent';
                 }       
                 
 		    }
@@ -478,6 +502,13 @@
             const ctx = canvas.getContext("2d");
             canvas.width = $('#Gameboard').parent().width();
             canvas.height = $('#Gameboard').parent().width();
+            
+            let image2 = document.getElementById('img' +  'Table');
+            ctx.save();
+            ctx.translate(canvas.width, 0);
+            ctx.rotate((90 * Math.PI) / 180);
+            ctx.drawImage(image2, 0, 0, canvas.width, canvas.height);
+            ctx.restore();
             
             gridItemWidth = $('#Gameboard').parent().width() / stateData.width;
             row = $('#Gameboard').parent().width() / stateData.width
@@ -494,8 +525,8 @@
                 let x = Math.floor(i%stateData.width) * gridItemWidth
 
                 ctx.beginPath();
-                ctx.fillStyle = "green";
-                ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
+                //ctx.fillStyle = "green";
+                //ctx.fillRect(x,y, gridItemWidth, gridItemWidth);
                 ctx.strokeRect(x,y, gridItemWidth, gridItemWidth);
                 ctx.stroke();
 
@@ -620,8 +651,9 @@
             room.onMessage("strike-resp", (msg) => {
                 console.log(msg);
                 if (msg.hit=="true") {
-                    $("#HitText").removeClass("d-none");
-                    $("#HitText").animate({color: "blue"}, 4000, function() {$("#HitText").addClass("d-none");});
+                    DrawHit();
+                    //$("#HitText").removeClass("d-none");
+                    //$("#HitText").animate({color: "blue"}, 4000, function() {$("#HitText").addClass("d-none");});
                 }
                 else if (msg.hit=="miss"){
                     $('#HitModal').modal('show');
@@ -890,6 +922,47 @@
             $('#imgSmallShip').attr('src',boardThemes[selectedTheme].SmallShip);
             $('#imgMedShip').attr('src',boardThemes[selectedTheme].MedShip);
             $('#imgLargeShip').attr('src',boardThemes[selectedTheme].LargeShip);
+        }
+    
+        function DrawHit(){
+            const canvas = document.getElementById('Gameboard');
+            const ctx = canvas.getContext('2d');
+
+            const text = "HIT!";
+            let index = 0; // Current character index
+            const x = 50;  // Starting X position
+            const y = 100; // Y position for text
+            //const fontSize = 128;
+            const typingSpeed = 100; // milliseconds per character
+
+            function drawText() {
+                // Clear only the text area to avoid flicker
+                //ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                
+                //Draw board first
+                UpdatePlayingBoard();
+                //ctx.font = "260px Calibri";
+                ctx.textBaseline = "middle";
+                ctx.fillStyle = "red";
+
+                ctx.font = "148px serif";
+                //ctx.strokeText("Hello world", 10, 50);
+                // Draw the substring up to the current index
+                ctx.fillText(text.substring(0, index), x, y);
+
+                if (index < text.length) {
+                    index++;
+                    setTimeout(() => requestAnimationFrame(drawText), typingSpeed);
+                    console.log('draw letter');
+                }
+            }
+
+            // Start animation
+            drawText();
+            console.log('finish animation and clear');
+            UpdatePlayingBoard();
+            console.log('finish clear');
         }
     </script>
 </body>

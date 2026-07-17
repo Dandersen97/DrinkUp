@@ -1,0 +1,24 @@
+{
+  "bob_arguments" : {
+    "sha1" : "3969a7e3381405aff80b7ecc9fb1fa5ffdcdc1dc",
+    "version" : "1.13.0",
+    "timestamp" : "2026-06-29 07:54:28"
+  },
+  "defold_sdk" : "3969a7e3381405aff80b7ecc9fb1fa5ffdcdc1dc",
+  "dependencies" : [ {
+    "link" : "https://github.com/Insality/defold-event/archive/refs/tags/14.zip",
+    "md5" : "B190CE34AA698356B1394D72D9C2389F"
+  }, {
+    "link" : "https://github.com/Insality/asset-store/archive/refs/tags/3.zip",
+    "md5" : "49AB44B75435365C8F738AE1E0357E2D"
+  }, {
+    "link" : "https://github.com/Insality/druid/archive/refs/tags/1.2.5.zip",
+    "md5" : "ABC1DADDD5C07A5B19D0E45F732D0081"
+  }, {
+    "link" : "https://github.com/defold/extension-websocket/archive/4.2.1.zip",
+    "md5" : "883907BC2C1A8A5125538F0005F6AE00"
+  }, {
+    "link" : "https://github.com/colyseus/colyseus-defold/archive/0.17.zip",
+    "md5" : "44D211AED1A02A53CAB2FAC622EB02AA"
+  } ]
+}

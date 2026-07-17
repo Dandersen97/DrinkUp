@@ -65,7 +65,7 @@ let modalLoginData = `<div class="modal fade" id="ModalLogin" data-bs-backdrop="
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="sessionStorage.setItem('bypassLogin', true);">Contine to Games</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="sessionStorage.setItem('bypassLogin', true);">Continue to Games</button>
 				</div>
 			</div>
 		</div>
